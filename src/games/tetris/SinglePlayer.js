@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { withStyles, Box } from "@material-ui/core";
-import { Engine, Field, Toolbar, Preview } from './';
+import { Engine, Field, Toolbar, MobileBar } from './';
 import { COL_SIZE } from './helpers/constants';
 
-const styles = () => ({
+const styles = theme => ({
     layout: {
+        position: 'relative',
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -18,15 +19,22 @@ const styles = () => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'column',
     },
     content: {
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'stretch',
         justifyContent: 'center',
     },
-    preview: {
-        alignSelf: 'flex-start',
-        marginLeft: COL_SIZE,
+    toolbar: {
+        //alignSelf: 'flex-start',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: COL_SIZE,
+        },
+    },
+    mobileBar: {
+        //flexBasis: 50,
+        alignSelf: 'stretch',
     },
 });
 
@@ -35,30 +43,32 @@ class SinglePlayer extends PureComponent {
     render() {
         const { classes } = this.props;
         return (
-            <Box
-                className={classes.layout}
-            >
+            <Fragment>
                 <Engine />
                 <Box
-                    className={classes.header}
-                >
-                    <Toolbar />
-                </Box>
-                <Box
-                    className={classes.body}
+                    className={classes.layout}
                 >
                     <Box
-                        className={classes.content}
+                        className={classes.body}
                     >
-                        <Field />
                         <Box
-                            className={classes.preview}
+                            className={classes.content}
                         >
-                            <Preview />
+                            <Field />
+                            <Box
+                                className={classes.toolbar}
+                            >
+                                <Toolbar />
+                            </Box>
                         </Box>
                     </Box>
+                    <Box
+                        className={classes.mobileBar}
+                    >
+                        <MobileBar />
+                    </Box>
                 </Box>
-            </Box>
+            </Fragment>
         )
     }
 

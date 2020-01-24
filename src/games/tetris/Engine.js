@@ -1,25 +1,27 @@
-import { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { MOVE_DIRECTION } from './helpers/constants';
-import { storeMoveAction, moveFigure, moveFigureDown, rotateFigure } from '../../actions/tetris';
+import { MOVE_DIRECTION, KEY_MAP } from './helpers/constants';
+import { Results } from '../../components';
+import { storeActionData, moveFigure, moveFigureDown, rotateFigure, closeResults } from '../../actions/tetris';
 import { getPrevRotationPosition, getNextRotationPosition } from './helpers/etc';
+import { MobileBar } from './';
 
 class Engine extends PureComponent {
 
     constructor(props) {
         super(props);
         this.key_map = {
-            'ArrowUp':    () => props.rotateFigure(getPrevRotationPosition),
-            'ArrowDown':  () => props.rotateFigure(getNextRotationPosition),
-            'ArrowLeft':  () => props.moveFigure(MOVE_DIRECTION.LEFT),
-            'ArrowRight': () => props.moveFigure(MOVE_DIRECTION.RIGHT),
-            'Space':      () => props.moveFigureDown(),
+            [KEY_MAP.UP]:    () => props.rotateFigure(getPrevRotationPosition),
+            [KEY_MAP.DOWN]:  () => props.rotateFigure(getNextRotationPosition),
+            [KEY_MAP.LEFT]:  () => props.moveFigure(MOVE_DIRECTION.LEFT),
+            [KEY_MAP.RIGHT]: () => props.moveFigure(MOVE_DIRECTION.RIGHT),
+            [KEY_MAP.SPACE]: () => props.moveFigureDown(),
         };
     }
 
     componentDidMount() {
-        const { storeMoveAction, moveFigureDown } = this.props;
-        storeMoveAction(moveFigureDown);
+        const { storeActionData, moveFigureDown } = this.props;
+        storeActionData(moveFigureDown, this.key_map);
         document.addEventListener('keydown', this.handleKeyPress);
     }
 
@@ -29,25 +31,29 @@ class Engine extends PureComponent {
 
     handleKeyPress = (e) => {
         const { code } = e;
-        const { isKeyPressAllowed } = this.props;
-        if((code in this.key_map) && isKeyPressAllowed) {
-            console.log(`${code} pressed`);
-            this.key_map[code]();
-        }
+        const { isKeyPressingAllowed } = this.props;
+        if((code in this.key_map) && isKeyPressingAllowed) this.key_map[code]();
     }
 
     render() {
-        console.log(this.props.speed);
-        return null;
+        const { results, closeResults } = this.props;
+        return (
+            <Fragment>
+                {
+                    results ? <Results data={results} onClose={closeResults} /> : null
+                }
+            </Fragment>
+        )
     }
 
 }
 
 export default connect(
     store => {
+        const { isGameRunning, isPause, isResultModalOpen, score } = store.tetris;
         return {
-            isKeyPressAllowed: !store.tetris.isPause && store.tetris.isGameRunning,
-            speed: store.tetris.speed,
+            isKeyPressingAllowed: !isPause && isGameRunning,
+            results: isResultModalOpen ? [{label: 'Your score', value: score}] : null,
         }
     },
     dispatch => {
@@ -55,7 +61,8 @@ export default connect(
             moveFigure: direction => { dispatch(moveFigure(direction)) },
             moveFigureDown: () => { dispatch(moveFigureDown()) },
             rotateFigure: getRotation => { dispatch(rotateFigure(getRotation)) },
-            storeMoveAction: func => { dispatch(storeMoveAction(func)) },
+            storeActionData: (moveFunc, key_map) => { dispatch(storeActionData(moveFunc, key_map)) },
+            closeResults: () => { dispatch(closeResults()) },
         }
     }
 )(Engine);

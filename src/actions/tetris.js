@@ -32,6 +32,13 @@ export function startNewGame() {
     };
 }
 
+export const STOP_GAME = 'STOP_GAME';
+export function stopGame() {
+    return {
+        type: STOP_GAME,
+    };
+}
+
 export const START_MOVING = 'START_MOVING';
 export function startMoving() {
     return {
@@ -56,12 +63,20 @@ export function rotateFigure(getRotation) {
     };
 }
 
-export const STORE_MOVE_ACTION = 'STORE_MOVE_ACTION';
-export function storeMoveAction(func) {
+export const STORE_ACTION_DATA = 'STORE_ACTION_DATA';
+export function storeActionData(moveFunc, key_map) {
     return {
-        type: STORE_MOVE_ACTION,
+        type: STORE_ACTION_DATA,
         payload: {
-            func
+            moveFunc,
+            key_map
         },
+    };
+}
+
+export const CLOSE_RESULTS = 'CLOSE_RESULTS';
+export function closeResults(func) {
+    return {
+        type: CLOSE_RESULTS,
     };
 }

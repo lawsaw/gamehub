@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withStyles, Box, Typography } from "@material-ui/core";
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 const styles = () => ({
     score: {},
@@ -16,7 +17,7 @@ class Score extends PureComponent {
                 className={cx(classes.score, className)}
             >
                 <Typography
-                    variant="h3"
+                    variant={isWidthUp('sm', this.props.width) ? 'h3' : 'h5'}
                 >
                     {score}
                 </Typography>
@@ -32,4 +33,4 @@ export default connect(
             score: store.tetris.score,
         }
     },
-)(withStyles(styles)(Score));
+)(withStyles(styles)(withWidth()(Score)));

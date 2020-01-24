@@ -7,6 +7,7 @@ import Toolbar from './Toolbar';
 import Score from './Score';
 import Preview from './Preview';
 import Grid from './Grid';
+import MobileBar from './MobileBar';
 
 export {
     Root,
@@ -18,4 +19,5 @@ export {
     Score,
     Preview,
     Grid,
+    MobileBar,
 }

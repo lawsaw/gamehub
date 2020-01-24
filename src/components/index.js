@@ -3,6 +3,8 @@ import Resizer from './Resizer';
 import TextInput from './TextInput';
 import Page from './Page';
 import Toolbar from './Toolbar';
+import Results from './Results';
+import Modal from './Modal';
 
 export {
     RouteLink,
@@ -10,4 +12,6 @@ export {
     TextInput,
     Page,
     Toolbar,
+    Results,
+    Modal,
 }

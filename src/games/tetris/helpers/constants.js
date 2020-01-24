@@ -1,6 +1,7 @@
 //export const SOCKET_SERVER = 'http://localhost:3005/';
 export const SOCKET_SERVER = 'https://lawsaw-tetris-server.herokuapp.com/';
 export const COL_SIZE = 30;
+export const COL_SIZE_MOBILE = 20;
 export const ROWS_HIDDEN = 4; //TODO it must be like the biggest figure
 export const ROWS = 20 + ROWS_HIDDEN;
 export const COLS = 10;
@@ -27,6 +28,14 @@ export const MOVE_STEP_MAP = {
     [MOVE_DIRECTION.DOWN]: ([row, col]) => ([row + 1, col]),
     [MOVE_DIRECTION.LEFT]: ([row, col]) => ([row, col - 1]),
     [MOVE_DIRECTION.RIGHT]: ([row, col]) => ([row, col + 1]),
+};
+
+export const KEY_MAP = {
+    LEFT: 'ArrowLeft',
+    RIGHT: 'ArrowRight',
+    UP: 'ArrowUp',
+    DOWN: 'ArrowDown',
+    SPACE: 'Space',
 };
 
 export const FIGURES = {

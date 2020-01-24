@@ -1,4 +1,4 @@
-import { SET_SPEED, MOVE_FIGURE, START_NEW_GAME, START_MOVING, STOP_MOVING, MOVE_FIGURE_DOWN, ROTATE_FIGURE, STORE_MOVE_ACTION } from "../actions/tetris";
+import { SET_SPEED, MOVE_FIGURE, START_NEW_GAME, STOP_GAME, START_MOVING, STOP_MOVING, MOVE_FIGURE_DOWN, ROTATE_FIGURE, STORE_ACTION_DATA, CLOSE_RESULTS } from "../actions/tetris";
 import { COLS, ROWS, POSITION, SPEED, MOVE_STEP_MAP, ROWS_HIDDEN, MOVE_DIRECTION } from "../games/tetris/helpers/constants";
 import {
     generateGrid,
@@ -95,6 +95,7 @@ let initialState = {
     isGameRunning: false,
     isResultModalOpen: false,
     moveAction: null,
+    key_map: null,
 };
 
 const MOVE_RULE = {
@@ -147,6 +148,14 @@ export default function room(state = initialState, action) {
                 isPause: false,
                 isGameRunning: true,
                 speed: SPEED,
+            };
+
+        case STOP_GAME:
+            clearInterval(timer);
+            return {
+                ...initialState,
+                moveAction: state.moveAction,
+                key_map: state.key_map,
             };
 
         case START_MOVING:
@@ -212,10 +221,17 @@ export default function room(state = initialState, action) {
                 rotation: rotationNew,
             } : state;
 
-        case STORE_MOVE_ACTION:
+        case STORE_ACTION_DATA:
             return {
                 ...state,
-                moveAction: action.payload.func,
+                moveAction: action.payload.moveFunc,
+                key_map: action.payload.key_map,
+            };
+
+        case CLOSE_RESULTS:
+            return {
+                ...state,
+                isResultModalOpen: false,
             };
 
         default:

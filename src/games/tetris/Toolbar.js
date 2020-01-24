@@ -1,61 +1,102 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { withStyles, IconButton, Button } from "@material-ui/core";
+import { withStyles, IconButton, Button, Box } from "@material-ui/core";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import { Toolbar as ToolbarComponent } from '../../components';
-import { Score } from './';
-import { startMoving, startNewGame, stopMoving } from "../../actions/tetris";
+import { Score, Preview } from './';
+import { startMoving, startNewGame, stopGame, stopMoving } from "../../actions/tetris";
 
-const styles = () => ({
+const styles = theme => ({
     toolbar: {
         flexWrap: 'wrap',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+    },
+    item: {
+        '&:not(:first-child)': {
+            marginTop: theme.spacing(2),
+            // [theme.breakpoints.up('sm')]: {
+            //     marginTop: theme.spacing(3),
+            // },
+            // [theme.breakpoints.down('xs')]: {
+            //
+            // },
+        },
     },
     score: {
-        flexGrow: 1,
+        //flexGrow: 1,
     },
 });
 
-
 class Toolbar extends PureComponent {
 
-    handleStart = () => {
+    handleStart = (e) => {
+        e.currentTarget.blur();
         const { startNewGame, startMoving } = this.props;
-        console.log('handleStart');
         startNewGame();
         startMoving();
     }
 
+
     render() {
-        const { classes, isGameRunning, isPause, startMoving, stopMoving } = this.props;
+        const { classes, isGameRunning, isPlayButton, isPauseButton, startMoving, stopMoving, stopGame } = this.props;
         return (
             <ToolbarComponent
                 className={classes.toolbar}
             >
-                <Score
-                    className={classes.score}
-                />
-                <Button
-                    onClick={this.handleStart}
+                <Box
+                    className={classes.item}
                 >
-                    Start
-                </Button>
+                    <Score />
+                </Box>
+                <Box
+                    className={classes.item}
+                >
+                    <Preview />
+                </Box>
                 {
-                    isGameRunning ? isPause ? (
-                        <IconButton
-                            onClick={startMoving}
-                            size="small"
+                    isGameRunning ? (
+                        <Button
+                            className={classes.item}
+                            variant="outlined"
+                            onClick={stopGame}
                         >
-                            <PlayArrow />
-                        </IconButton>
+                            Stop
+                        </Button>
                     ) : (
+                        <Button
+                            className={classes.item}
+                            variant="outlined"
+                            onClick={this.handleStart}
+                        >
+                            Start
+                        </Button>
+                    )
+                }
+                {
+                    isPlayButton && (
                         <IconButton
+                            className={classes.item}
+                            variant="outlined"
+                            onClick={startMoving}
+                            size="medium"
+                        >
+                            <PlayArrow/>
+                        </IconButton>
+                    )
+                }
+                {
+                    isPauseButton && (
+                        <IconButton
+                            className={classes.item}
+                            variant="outlined"
                             onClick={stopMoving}
-                            size="small"
+                            size="medium"
                         >
                             <Pause />
                         </IconButton>
-                    ) : null
+                    )
                 }
 
             </ToolbarComponent>
@@ -66,14 +107,17 @@ class Toolbar extends PureComponent {
 
 export default connect(
     store => {
+        const { isGameRunning, isPause } = store.tetris;
         return {
-            isPause: store.tetris.isPause,
-            isGameRunning: store.tetris.isGameRunning,
+            isGameRunning,
+            isPlayButton:  isGameRunning && isPause,
+            isPauseButton:  isGameRunning && !isPause,
         }
     },
     dispatch => {
         return {
             startNewGame: () => { dispatch(startNewGame()) },
+            stopGame: () => { dispatch(stopGame()) },
             startMoving: () => { dispatch(startMoving()) },
             stopMoving: () => { dispatch(stopMoving()) },
         }

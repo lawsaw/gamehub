@@ -1,19 +1,32 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import cx from 'classnames';
 import { withStyles, Box } from "@material-ui/core";
-import { ROWS_HIDDEN, COL_SIZE, ROWS, COLS } from './helpers/constants';
-import { merge } from './helpers/etc';
+import { fade } from '@material-ui/core/styles/colorManipulator';
+import { ROWS_HIDDEN, COL_SIZE, COL_SIZE_MOBILE, ROWS, COLS } from './helpers/constants';
 
-const styles = () => ({
+const setSize = size => ({
+    height:  (ROWS - ROWS_HIDDEN) * size - (ROWS - ROWS_HIDDEN - 1),
+    width: COLS * size - COLS + 1,
+});
+
+const styles = theme => ({
     field: {
         position: 'relative',
-        height: (ROWS - ROWS_HIDDEN) * COL_SIZE - (ROWS - ROWS_HIDDEN - 1),
-        width: COLS * COL_SIZE - COLS + 1,
-        //overflow: 'hidden',
+        [theme.breakpoints.up('sm')]: {
+            ...setSize(COL_SIZE),
+        },
+        [theme.breakpoints.down('xs')]: {
+            ...setSize(COL_SIZE_MOBILE),
+        },
         '&$fieldPreview': {
-            height: ROWS_HIDDEN * COL_SIZE,
-            width: ROWS_HIDDEN * COL_SIZE,
+            [theme.breakpoints.up('sm')]: {
+                height: ROWS_HIDDEN * COL_SIZE,
+                width: ROWS_HIDDEN * COL_SIZE,
+            },
+            [theme.breakpoints.down('xs')]: {
+                height: ROWS_HIDDEN * COL_SIZE_MOBILE,
+                width: ROWS_HIDDEN * COL_SIZE_MOBILE,
+            },
         },
     },
     fieldPreview: {},
@@ -23,8 +36,7 @@ const styles = () => ({
         left: 0,
         right: 0,
         '$fieldPreview &': {
-            bottom: 'auto',
-            top: 0,
+            position: 'relative',
         }
     },
     row: {
@@ -38,11 +50,17 @@ const styles = () => ({
         }
     },
     col: {
-        width: COL_SIZE,
-        height: COL_SIZE,
+        [theme.breakpoints.up('sm')]: {
+            width: COL_SIZE,
+            height: COL_SIZE,
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: COL_SIZE_MOBILE,
+            height: COL_SIZE_MOBILE,
+        },
         flexShrink: 0,
         margin: 0,
-        border: '1px solid lightgrey',
+        border: `1px solid ${fade('#999', 0.5)}`,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -54,7 +72,7 @@ const styles = () => ({
         '&$colPreview': {
             borderColor: 'transparent',
             '&$square': {
-                borderColor: 'lightgrey',
+                borderColor: fade('#999', 0.5),
             },
         },
     },
@@ -70,10 +88,10 @@ const styles = () => ({
 class Grid extends PureComponent {
 
     render() {
-        const { classes, grid, isField, isPreview } = this.props;
+        const { classes, grid, isField, isPreview, className } = this.props;
         return (
             <Box
-                className={cx(classes.field, isPreview && classes.fieldPreview)}
+                className={cx(classes.field, isPreview && classes.fieldPreview, className)}
             >
                 <Box
                     className={classes.fieldInner}
