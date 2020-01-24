@@ -5,6 +5,8 @@ import MultiPlayer from './MultiPlayer';
 import Field from './Field';
 import Toolbar from './Toolbar';
 import Score from './Score';
+import Preview from './Preview';
+import Grid from './Grid';
 
 export {
     Root,
@@ -14,4 +16,6 @@ export {
     Field,
     Toolbar,
     Score,
+    Preview,
+    Grid,
 }

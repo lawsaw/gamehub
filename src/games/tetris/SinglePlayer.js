@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withStyles, Box } from "@material-ui/core";
-import { Engine, Field, Toolbar } from './';
+import { Engine, Field, Toolbar, Preview } from './';
+import { COL_SIZE } from './helpers/constants';
 
 const styles = () => ({
     layout: {
@@ -17,6 +18,15 @@ const styles = () => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    content: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    preview: {
+        alignSelf: 'flex-start',
+        marginLeft: COL_SIZE,
     },
 });
 
@@ -37,7 +47,16 @@ class SinglePlayer extends PureComponent {
                 <Box
                     className={classes.body}
                 >
-                    <Field />
+                    <Box
+                        className={classes.content}
+                    >
+                        <Field />
+                        <Box
+                            className={classes.preview}
+                        >
+                            <Preview />
+                        </Box>
+                    </Box>
                 </Box>
             </Box>
         )

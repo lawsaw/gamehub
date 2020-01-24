@@ -35,10 +35,10 @@ const styles = () => ({
 class Root extends PureComponent {
 
     componentDidMount() {
-        const socket = this.context;
-        socket.on('connect',        this.socketOnConnect);
-        socket.on('disconnect',     this.socketOnDisconnect);
-        socket.on(SOCKET_MESSAGE,   this.socketOnMessage);
+        // const socket = this.context;
+        // socket.on('connect',        this.socketOnConnect);
+        // socket.on('disconnect',     this.socketOnDisconnect);
+        // socket.on(SOCKET_MESSAGE,   this.socketOnMessage);
     }
 
     // componentWillUnmount() {

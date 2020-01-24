@@ -16,7 +16,8 @@ const store = createStore(
     mainReducer
 );
 
-let socket = socketIOClient(SOCKET_SERVER);
+//let socket = socketIOClient(SOCKET_SERVER);
+let socket = null;
 
 class App extends PureComponent {
 
