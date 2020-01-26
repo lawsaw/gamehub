@@ -5,9 +5,9 @@ export const COL_SIZE_MOBILE = 20;
 export const ROWS_HIDDEN = 4; //TODO it must be like the biggest figure
 export const ROWS = 20 + ROWS_HIDDEN;
 export const COLS = 10;
-export const SPEED = 250;
+export const SPEED = 150;
 export const SPEED_STEP = 30;
-export const SPEED_RAISE_FOR_SCORE = 1;
+export const SPEED_RAISE_FOR_SCORE = 0;
 export const POSITION = [0, COLS/2-1];
 
 export const MOVE_DIRECTION_LEFT = 'MOVE_DIRECTION_LEFT';

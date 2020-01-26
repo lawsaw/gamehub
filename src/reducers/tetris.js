@@ -13,8 +13,6 @@ import {
     hasTablesConflict
 } from "../games/tetris/helpers/etc";
 
-import { moveFigureDown } from '../actions/tetris';
-
 let hasFigureRightToMove = (position, store) => {
     const { table, figure, rotation } = store;
     if(!isPositionInArea(position, rotation, store)) return false;

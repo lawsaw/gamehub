@@ -4,7 +4,6 @@ import { MOVE_DIRECTION, KEY_MAP } from './helpers/constants';
 import { Results } from '../../components';
 import { storeActionData, moveFigure, moveFigureDown, rotateFigure, closeResults } from '../../actions/tetris';
 import { getPrevRotationPosition, getNextRotationPosition } from './helpers/etc';
-import { MobileBar } from './';
 
 class Engine extends PureComponent {
 
@@ -31,8 +30,8 @@ class Engine extends PureComponent {
 
     handleKeyPress = (e) => {
         const { code } = e;
-        const { isKeyPressingAllowed } = this.props;
-        if((code in this.key_map) && isKeyPressingAllowed) this.key_map[code]();
+        const { key_map } = this.props;
+        if(code in key_map) key_map[code]();
     }
 
     render() {
@@ -50,9 +49,10 @@ class Engine extends PureComponent {
 
 export default connect(
     store => {
-        const { isGameRunning, isPause, isResultModalOpen, score } = store.tetris;
+        const { isGameRunning, isPause, isResultModalOpen, score, key_map } = store.tetris;
+        let isKeyPressingAllowed = !isPause && isGameRunning;
         return {
-            isKeyPressingAllowed: !isPause && isGameRunning,
+            key_map: isKeyPressingAllowed ? key_map : {},
             results: isResultModalOpen ? [{label: 'Your score', value: score}] : null,
         }
     },

@@ -40,7 +40,7 @@ class Toolbar extends PureComponent {
 
 
     render() {
-        const { classes, isGameRunning, isPlayButton, isPauseButton, startMoving, stopMoving, stopGame } = this.props;
+        const { classes, isGameRunning, isPlayButton, isPauseButton, speed, startMoving, stopMoving, stopGame } = this.props;
         return (
             <ToolbarComponent
                 className={classes.toolbar}
@@ -49,11 +49,7 @@ class Toolbar extends PureComponent {
                     className={classes.item}
                 >
                     <Score />
-                </Box>
-                <Box
-                    className={classes.item}
-                >
-                    <Preview />
+                    Speed: {speed}
                 </Box>
                 {
                     isGameRunning ? (
@@ -74,6 +70,11 @@ class Toolbar extends PureComponent {
                         </Button>
                     )
                 }
+                <Box
+                    className={classes.item}
+                >
+                    <Preview />
+                </Box>
                 {
                     isPlayButton && (
                         <IconButton
@@ -107,9 +108,10 @@ class Toolbar extends PureComponent {
 
 export default connect(
     store => {
-        const { isGameRunning, isPause } = store.tetris;
+        const { isGameRunning, isPause, speed } = store.tetris;
         return {
             isGameRunning,
+            speed,
             isPlayButton:  isGameRunning && isPause,
             isPauseButton:  isGameRunning && !isPause,
         }

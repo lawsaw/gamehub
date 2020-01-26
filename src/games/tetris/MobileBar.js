@@ -1,12 +1,7 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
-import { withStyles, IconButton, Button, Box } from "@material-ui/core";
-import PlayArrow from '@material-ui/icons/PlayArrow';
-import Pause from '@material-ui/icons/Pause';
-import { Toolbar as ToolbarComponent } from '../../components';
-import { Score, Preview } from './';
-import { startMoving, startNewGame, stopGame, stopMoving } from "../../actions/tetris";
+import { withStyles, Button, Box } from "@material-ui/core";
 import RotateRightIcon from '@material-ui/icons/RotateRight';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
@@ -49,22 +44,27 @@ const styles = theme => ({
     },
     arrow: {
         position: 'absolute',
-        '&:nth-child(1)': {
-            top: 0,
-            left: '-100%',
-        },
-        '&:nth-child(2)': {
-            top: 0,
-            right: '-100%',
-        },
-        '&:nth-child(3)': {
-            bottom: '-100%',
-        },
-        '&:only-child': {
-            top: 0,
-            left: 0,
-        },
-    }
+        borderRadius: '100%',
+    },
+    arrow_left: {
+        top: 0,
+        left: '-100%',
+    },
+    arrow_right: {
+        top: 0,
+        right: '-100%',
+    },
+    arrow_down: {
+        bottom: '-100%',
+    },
+    arrow_center: {
+        top: 0,
+        left: 0,
+    },
+    arrow_rightCenter: {
+        top: '50%',
+        right: '-100%',
+    },
 });
 
 const TouchButton = ({ classes, onClick, icon, className }) => {
@@ -82,13 +82,16 @@ const TouchButton = ({ classes, onClick, icon, className }) => {
 const ARROWS_MAP = [
     {
         icon: <KeyboardArrowLeftIcon />,
-        action: KEY_MAP.LEFT
+        action: KEY_MAP.LEFT,
+        position: 'left',
     },{
         icon: <KeyboardArrowRightIcon />,
-        action: KEY_MAP.RIGHT
+        action: KEY_MAP.RIGHT,
+        position: 'right',
     },{
         icon: <KeyboardArrowDownIcon />,
-        action: KEY_MAP.SPACE
+        action: KEY_MAP.SPACE,
+        position: 'down',
     }
 ];
 
@@ -107,12 +110,12 @@ class MobileBar extends PureComponent {
                         className={classes.arrows}
                     >
                         {
-                            ARROWS_MAP.map(({ icon, action }, index) => (
+                            ARROWS_MAP.map(({ icon, action, position }, index) => (
                                 <TouchButton
                                     key={index}
                                     icon={icon}
                                     onClick={key_map[action]}
-                                    className={cx(classes.touchButton, classes.arrow)}
+                                    className={cx(classes.touchButton, classes[`arrow`], classes[`arrow_${position}`])}
                                 />
                             ))
                         }
@@ -127,7 +130,7 @@ class MobileBar extends PureComponent {
                         <TouchButton
                             icon={<RotateRightIcon />}
                             onClick={key_map[KEY_MAP.DOWN]}
-                            className={cx(classes.touchButton, classes.arrow)}
+                            className={cx(classes.touchButton, classes.arrow, classes.arrow_rightCenter)}
                         />
                     </Box>
                 </Box>
@@ -139,8 +142,10 @@ class MobileBar extends PureComponent {
 
 export default connect(
     store => {
+        const { isGameRunning, isPause, key_map } = store.tetris;
+        let isKeyPressingAllowed = !isPause && isGameRunning;
         return {
-            key_map: store.tetris.key_map || {},
+            key_map: isKeyPressingAllowed ? key_map : {},
         }
     },
     null

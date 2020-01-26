@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { withStyles, Box, Dialog, DialogTitle, Table, TableHead, TableCell, TableRow } from "@material-ui/core";
+import { withStyles, Table, TableHead, TableCell, TableRow } from "@material-ui/core";
 import { Modal } from './';
 
 const styles = () => ({

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import CloseIcon from '@material-ui/icons/Close';
-import { withStyles, Box, Dialog, DialogTitle, DialogActions, DialogContent, IconButton, Typography, Table, TableHead, TableCell, TableRow, Button } from "@material-ui/core";
+import { withStyles, Dialog, DialogTitle, DialogActions, DialogContent, IconButton, Typography, Button } from "@material-ui/core";
 
 const styles = theme => ({
     title: {

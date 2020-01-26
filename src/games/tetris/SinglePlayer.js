@@ -1,5 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { withStyles, Box } from "@material-ui/core";
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Engine, Field, Toolbar, MobileBar } from './';
 import { COL_SIZE } from './helpers/constants';
 
@@ -41,7 +42,7 @@ const styles = theme => ({
 class SinglePlayer extends PureComponent {
 
     render() {
-        const { classes } = this.props;
+        const { classes, width } = this.props;
         return (
             <Fragment>
                 <Engine />
@@ -62,11 +63,15 @@ class SinglePlayer extends PureComponent {
                             </Box>
                         </Box>
                     </Box>
-                    <Box
-                        className={classes.mobileBar}
-                    >
-                        <MobileBar />
-                    </Box>
+                    {
+                        isWidthDown('xs', width) ? (
+                            <Box
+                                className={classes.mobileBar}
+                            >
+                                <MobileBar />
+                            </Box>
+                        ) : null
+                    }
                 </Box>
             </Fragment>
         )
@@ -74,4 +79,4 @@ class SinglePlayer extends PureComponent {
 
 }
 
-export default withStyles(styles)(SinglePlayer);
+export default withWidth()(withStyles(styles)(SinglePlayer));
