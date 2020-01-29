@@ -38,7 +38,6 @@ class Toolbar extends PureComponent {
         startMoving();
     }
 
-
     render() {
         const { classes, isGameRunning, isPlayButton, isPauseButton, speed, startMoving, stopMoving, stopGame } = this.props;
         return (

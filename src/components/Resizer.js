@@ -43,7 +43,7 @@ class Resizer extends PureComponent {
     }
 
     listener = () => {
-        console.log('listener');
+        //console.log('listener');
         if(!this.getting) {
             clearTimeout(this.timer);
         };
@@ -51,7 +51,7 @@ class Resizer extends PureComponent {
         this.timer = setTimeout(() => {
             this.getting = true;
             let size = this.getSize();
-            console.log(size);
+            //console.log(size);
             this.setSize(size);
         }, 250);
     }
@@ -80,11 +80,11 @@ class Resizer extends PureComponent {
         let { parentElement: { offsetWidth: parentOffsetWidth, offsetHeight: parentOffsetHeight } } = this.ref.current;
         let size;
         if(parentOffsetWidth < parentOffsetHeight) {
-            console.log('type 1');
+            //console.log('type 1');
             size = this.setType1(parentOffsetWidth);
             if(size.height > parentOffsetHeight) size = this.setType2(parentOffsetHeight);
         } else if(parentOffsetWidth > parentOffsetHeight) {
-            console.log('type 2');
+            //console.log('type 2');
             size = this.setType2(parentOffsetHeight);
             if(size.width > parentOffsetWidth) size = this.setType1(parentOffsetWidth);
         } else {

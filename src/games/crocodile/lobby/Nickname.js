@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { withStyles } from "@material-ui/core";
 import { TextInput } from '../../../components';
 import { preventMultipleSubmit } from '../helpers/etc';
-import { SOCKET_ON_NICKNAME_CHANGE } from '../helpers/constants';
+import { SOCKET_ON_NICKNAME_VALIDATE } from '../../../helpers/constants';
 import SocketContext from '../../../helpers/SocketContext';
 
 const styles = () => ({
@@ -29,8 +29,12 @@ class Nickname extends PureComponent {
     submitNickname = () => {
         const socket = this.context;
         const { nickname } = this.state;
-        socket.emit(SOCKET_ON_NICKNAME_CHANGE, {
+        socket.emitCommon(SOCKET_ON_NICKNAME_VALIDATE, {
             nickname,
+            onSuccess: {
+                action: 'SOCKET_ON_LOBBY_STEP_CHANGE',
+                step: 'LOBBY_STEP_ROOM_SELECTION',
+            }
         });
     }
 

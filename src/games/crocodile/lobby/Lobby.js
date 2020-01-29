@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { withStyles, Box } from "@material-ui/core";
 import { Nickname, RoomSelection } from './';
-import { SOCKET_ON_LOBBY_STEP_CHANGE, LOBBY_STEP_NICKNAME, LOBBY_STEP_ROOM_SELECTION } from '../helpers/constants';
+import { SOCKET_ON_LOBBY_STEP_CHANGE } from '../../../helpers/constants';
+import { LOBBY_STEP_NICKNAME, LOBBY_STEP_ROOM_SELECTION } from '../helpers/constants';
 import SocketContext from '../../../helpers/SocketContext';
 
 const styles = () => ({

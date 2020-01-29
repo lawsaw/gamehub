@@ -61,7 +61,7 @@ class RoomSelection extends PureComponent {
 
     getRoomList = () => {
         const socket = this.context;
-        socket.emit(SOCKET_ON_ROOM_LIST);
+        socket.emitCrocodile(SOCKET_ON_ROOM_LIST);
     }
 
     updateRoomList = ({ rooms }) => {
@@ -99,13 +99,13 @@ class RoomSelection extends PureComponent {
 
     submitNewRoom = (room) => {
         const socket = this.context;
-        socket.emit(SOCKET_ON_ROOM_ADD, { room });
+        socket.emitCrocodile(SOCKET_ON_ROOM_ADD, { room });
     }
 
 
     handleJoinRoom = (room_name) => {
         const socket = this.context;
-        socket.emit(SOCKET_ON_ROOM_JOIN, { room: room_name });
+        socket.emitCrocodile(SOCKET_ON_ROOM_JOIN, { room: room_name });
     }
     
     render() {

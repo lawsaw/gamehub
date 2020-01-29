@@ -8,6 +8,9 @@ import Score from './Score';
 import Preview from './Preview';
 import Grid from './Grid';
 import MobileBar from './MobileBar';
+import Lobby from './Lobby';
+import Arena from './Arena';
+import FieldOpponent from './FieldOpponent';
 
 export {
     Root,
@@ -20,4 +23,7 @@ export {
     Preview,
     Grid,
     MobileBar,
+    Lobby,
+    Arena,
+    FieldOpponent,
 }

@@ -80,3 +80,13 @@ export function closeResults(func) {
         type: CLOSE_RESULTS,
     };
 }
+
+export const INIT_OPPONENT = 'INIT_OPPONENT';
+export function initOpponent(opponent) {
+    return {
+        type: INIT_OPPONENT,
+        payload: {
+            opponent,
+        },
+    };
+}

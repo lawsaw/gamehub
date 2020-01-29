@@ -48,7 +48,9 @@ class Chat extends PureComponent {
 
     onChat = (message) => {
         const socket = this.context;
-        socket.emit(SOCKET_ON_CHAT, message);
+        socket.emitCrocodile(SOCKET_ON_CHAT, {
+            message
+        });
     }
 
     handleChat = () => {
@@ -70,7 +72,10 @@ class Chat extends PureComponent {
 
     handleLikeMessage = id => value => {
         const socket = this.context;
-        socket.emit(SOCKET_ON_MESSAGE_LIKE, { id, value });
+        socket.emitCrocodile(SOCKET_ON_MESSAGE_LIKE, {
+            id,
+            value
+        });
     }
 
     render() {

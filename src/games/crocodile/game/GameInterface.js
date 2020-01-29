@@ -40,7 +40,7 @@ class GameInterface extends PureComponent {
     handleLeaveRoom = () => {
         const socket = this.context;
         const { setApp, cleanRoom } = this.props;
-        socket.emit(SOCKET_ON_ROOM_LEAVE);
+        socket.emitCrocodile(SOCKET_ON_ROOM_LEAVE);
         cleanRoom();
         setApp({
             topAction: null,
@@ -54,7 +54,7 @@ class GameInterface extends PureComponent {
 
     requestRoomData = () => {
         const socket = this.context;
-        socket.emit(SOCKET_ON_ROOM);
+        socket.emitCrocodile(SOCKET_ON_ROOM);
     }
 
     // getPlayer = () => {
