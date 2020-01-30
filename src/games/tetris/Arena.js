@@ -2,7 +2,9 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withStyles, Box } from "@material-ui/core";
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
-import { Engine, Field, Toolbar, MobileBar, FieldOpponent } from './';
+import { Engine } from './';
+import { Field as FieldSingle, Toolbar as ToolbarSingle, MobileBar } from './single';
+import { Field as FieldOpponent, Toolbar as ToolbarOpponent } from './opponent';
 import { COL_SIZE } from './helpers/constants';
 
 const styles = theme => ({
@@ -56,11 +58,11 @@ class Arena extends PureComponent {
                         <Box
                             className={classes.content}
                         >
-                            <Field />
+                            <FieldSingle />
                             <Box
                                 className={classes.toolbar}
                             >
-                                <Toolbar />
+                                <ToolbarSingle />
                             </Box>
                         </Box>
                         {
@@ -69,6 +71,11 @@ class Arena extends PureComponent {
                                     className={classes.content}
                                 >
                                     <FieldOpponent />
+                                    <Box
+                                        className={classes.toolbar}
+                                    >
+                                        <ToolbarOpponent />
+                                    </Box>
                                 </Box>
                             ) : null
                         }

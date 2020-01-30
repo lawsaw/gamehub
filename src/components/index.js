@@ -5,6 +5,7 @@ import Page from './Page';
 import Toolbar from './Toolbar';
 import Results from './Results';
 import Modal from './Modal';
+import Stepper from './Stepper';
 
 export {
     RouteLink,
@@ -14,4 +15,5 @@ export {
     Toolbar,
     Results,
     Modal,
+    Stepper,
 }

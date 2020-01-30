@@ -1,33 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { withStyles, IconButton, Button, Box } from "@material-ui/core";
+import { IconButton, Button, Typography } from "@material-ui/core";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
-import { Toolbar as ToolbarComponent } from '../../components';
+import { Toolbar as ToolbarComponent } from '../components';
 import { Score, Preview } from './';
-import { startMoving, startNewGame, stopGame, stopMoving } from "../../actions/tetris";
-
-const styles = theme => ({
-    toolbar: {
-        flexWrap: 'wrap',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-    },
-    item: {
-        '&:not(:first-child)': {
-            marginTop: theme.spacing(2),
-            // [theme.breakpoints.up('sm')]: {
-            //     marginTop: theme.spacing(3),
-            // },
-            // [theme.breakpoints.down('xs')]: {
-            //
-            // },
-        },
-    },
-    score: {
-        //flexGrow: 1,
-    },
-});
+import { startMoving, startNewGame, stopGame, stopMoving } from "../../../actions/tetris";
 
 class Toolbar extends PureComponent {
 
@@ -39,21 +17,26 @@ class Toolbar extends PureComponent {
     }
 
     render() {
-        const { classes, isGameRunning, isPlayButton, isPauseButton, speed, startMoving, stopMoving, stopGame } = this.props;
+        const { isGameRunning, isPlayButton, isPauseButton, speed, startMoving, stopMoving, stopGame, nickname } = this.props;
         return (
             <ToolbarComponent
-                className={classes.toolbar}
-            >
-                <Box
-                    className={classes.item}
-                >
-                    <Score />
-                    Speed: {speed}
-                </Box>
-                {
+                data={[
+
+                    nickname && (
+                        <Typography
+                            variant='h5'
+                        >
+                            {nickname}
+                        </Typography>
+                    ),
+
+                    <Fragment>
+                        <Score />
+                        Speed: {speed}
+                    </Fragment>,
+
                     isGameRunning ? (
                         <Button
-                            className={classes.item}
                             variant="outlined"
                             onClick={stopGame}
                         >
@@ -61,35 +44,27 @@ class Toolbar extends PureComponent {
                         </Button>
                     ) : (
                         <Button
-                            className={classes.item}
                             variant="outlined"
                             onClick={this.handleStart}
                         >
                             Start
                         </Button>
-                    )
-                }
-                <Box
-                    className={classes.item}
-                >
-                    <Preview />
-                </Box>
-                {
+                    ),
+
+                    <Preview />,
+
                     isPlayButton && (
                         <IconButton
-                            className={classes.item}
                             variant="outlined"
                             onClick={startMoving}
                             size="medium"
                         >
-                            <PlayArrow/>
+                            <PlayArrow />
                         </IconButton>
-                    )
-                }
-                {
+                    ),
+
                     isPauseButton && (
                         <IconButton
-                            className={classes.item}
                             variant="outlined"
                             onClick={stopMoving}
                             size="medium"
@@ -97,9 +72,10 @@ class Toolbar extends PureComponent {
                             <Pause />
                         </IconButton>
                     )
-                }
 
-            </ToolbarComponent>
+                ]}
+            />
+
         )
     }
 
@@ -107,12 +83,13 @@ class Toolbar extends PureComponent {
 
 export default connect(
     store => {
-        const { isGameRunning, isPause, speed } = store.tetris;
+        const { isGameRunning, isPause, speed, opponent, config } = store.tetris;
         return {
             isGameRunning,
             speed,
             isPlayButton:  isGameRunning && isPause,
             isPauseButton:  isGameRunning && !isPause,
+            nickname: opponent !== null && config.nickname,
         }
     },
     dispatch => {
@@ -123,4 +100,4 @@ export default connect(
             stopMoving: () => { dispatch(stopMoving()) },
         }
     }
-)(withStyles(styles)(Toolbar));
+)(Toolbar);

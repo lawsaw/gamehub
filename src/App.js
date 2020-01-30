@@ -24,7 +24,7 @@ const store = createStore(
     applyMiddleware(
         thunk,
         createSocketEmitMiddleware(IO),
-        createSocketListenMiddleware(IO),
+        //createSocketListenMiddleware(IO),
     )
 );
 

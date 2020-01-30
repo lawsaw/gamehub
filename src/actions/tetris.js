@@ -81,12 +81,22 @@ export function closeResults(func) {
     };
 }
 
-export const INIT_OPPONENT = 'INIT_OPPONENT';
-export function initOpponent(opponent) {
+export const UPDATE_OPPONENT = 'UPDATE_OPPONENT';
+export function updateOpponent(opponent) {
     return {
-        type: INIT_OPPONENT,
+        type: UPDATE_OPPONENT,
         payload: {
             opponent,
+        },
+    };
+}
+
+export const UPDATE_CONFIG = 'UPDATE_CONFIG';
+export function updateConfig(config) {
+    return {
+        type: UPDATE_CONFIG,
+        payload: {
+            config,
         },
     };
 }

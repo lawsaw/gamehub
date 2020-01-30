@@ -52,6 +52,9 @@ export function createSocketEmitMiddleware(socket, channelName=SOCKET_CLIENT) {
         return next => {
             return action => {
                 if(action.meta && action.meta.remote === 'socket_emit') {
+                    console.log({
+                        emit: action
+                    });
                     socket.emit(channelName, action);
                 }
                 return next(action);
@@ -60,16 +63,17 @@ export function createSocketEmitMiddleware(socket, channelName=SOCKET_CLIENT) {
     };
 }
 
-export function createSocketListenMiddleware(socket) {
-    return store => {
-        return next => {
-            return action => {
-                if(action.meta && action.meta.remote === 'socket_listen') {
-                    let value = action.state === true ? 'on' : 'off';
-                    socket[value](action.action, action.callback);
-                }
-                return next(action);
-            };
-        };
-    };
-}
+// export function createSocketListenMiddleware(socket) {
+//     return store => {
+//         return next => {
+//             return act => {
+//                 const { type, action, ...props } = act;
+//                 if(action.meta && action.meta.remote === 'socket_listen') {
+//                     let value = action.state === true ? 'on' : 'off';
+//                     socket[value](type, args => action.callback(args));
+//                 }
+//                 return next(action);
+//             };
+//         };
+//     };
+// }

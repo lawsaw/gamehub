@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Grid } from './';
+import { Grid } from '../components';
 
-class FieldOpponent extends PureComponent {
+class Field extends PureComponent {
 
     render() {
         const { grid } = this.props;
@@ -23,4 +23,4 @@ export default connect(
             grid: opponent.field && opponent.field.length ? opponent.field : store.tetris.table,
         }
     }
-)(FieldOpponent);
+)(Field);

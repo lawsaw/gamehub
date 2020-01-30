@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
-import { connect } from 'react-redux';
 import { withStyles } from "@material-ui/core";
 import { Grid } from './';
 
@@ -26,10 +25,4 @@ class Preview extends PureComponent {
 
 }
 
-export default connect(
-    store => {
-        return {
-            preview: store.tetris.isGameRunning && store.tetris.figureNext[store.tetris.rotationNext],
-        }
-    },
-)(withStyles(styles)(Preview));
+export default withStyles(styles)(Preview);

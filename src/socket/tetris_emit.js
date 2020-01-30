@@ -5,27 +5,26 @@ const ACTION_INIT = {
     meta: { remote: 'socket_emit' },
 };
 
-export const SOCKET_ON_CLIENT_CONNECT = 'SOCKET_ON_CLIENT_CONNECT';
-export function makeConnection({ server_id }) {
+export const MAKE_CONNECTION = 'MAKE_CONNECTION';
+export function makeConnection(server_id) {
     return {
-        action: SOCKET_ON_CLIENT_CONNECT,
+        action: MAKE_CONNECTION,
         server_id,
         ...ACTION_INIT,
     };
 }
 
 export const SEND_MOVE = 'SEND_MOVE';
-export function sendMove({ field, preview }) {
+export function sendMove(data) {
     return {
         action: SEND_MOVE,
-        field,
-        preview,
+        ...data,
         ...ACTION_INIT,
     };
 }
 
 export const VALIDATE_NICKNAME = 'VALIDATE_NICKNAME';
-export function socketValidateNickname({ nickname }) {
+export function socketValidateNickname(nickname) {
     return {
         action: VALIDATE_NICKNAME,
         nickname,

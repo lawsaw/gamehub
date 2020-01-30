@@ -6,11 +6,11 @@ import RotateRightIcon from '@material-ui/icons/RotateRight';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import { KEY_MAP } from './helpers/constants';
+import { KEY_MAP } from '../helpers/constants';
 
 const ARROW_SIZE = 60;
 
-const styles = theme => ({
+const styles = () => ({
     mobileBar: {
         position: 'relative',
         display: 'flex',

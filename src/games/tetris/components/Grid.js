@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { withStyles, Box } from "@material-ui/core";
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import { ROWS_HIDDEN, COL_SIZE, COL_SIZE_MOBILE, ROWS, COLS } from './helpers/constants';
+import { ROWS_HIDDEN, COL_SIZE, COL_SIZE_MOBILE, ROWS, COLS } from '../helpers/constants';
 
 const setSize = size => ({
     height:  (ROWS - ROWS_HIDDEN) * size - (ROWS - ROWS_HIDDEN - 1),

@@ -1,4 +1,4 @@
-import { SET_SPEED, MOVE_FIGURE, START_NEW_GAME, STOP_GAME, START_MOVING, STOP_MOVING, MOVE_FIGURE_DOWN, ROTATE_FIGURE, STORE_ACTION_DATA, CLOSE_RESULTS, INIT_OPPONENT } from "../actions/tetris";
+import { SET_SPEED, MOVE_FIGURE, START_NEW_GAME, STOP_GAME, START_MOVING, STOP_MOVING, MOVE_FIGURE_DOWN, ROTATE_FIGURE, STORE_ACTION_DATA, CLOSE_RESULTS, UPDATE_OPPONENT, UPDATE_CONFIG } from "../actions/tetris";
 import { COLS, ROWS, POSITION, SPEED, MOVE_STEP_MAP, ROWS_HIDDEN, MOVE_DIRECTION } from "../games/tetris/helpers/constants";
 import {
     generateGrid,
@@ -95,6 +95,11 @@ let initialState = {
     moveAction: null,
     key_map: null,
     opponent: null,
+    config: {
+        nickname: '',
+        type: 'TYPE_CLIENT',
+        step: 'LOBBY_STEP_NICKNAME',
+    },
 };
 
 const MOVE_RULE = {
@@ -233,7 +238,7 @@ export default function room(state = initialState, action) {
                 isResultModalOpen: false,
             };
 
-        case INIT_OPPONENT:
+        case UPDATE_OPPONENT:
             return {
                 ...state,
                 opponent: {
@@ -241,6 +246,15 @@ export default function room(state = initialState, action) {
                     ...action.payload.opponent,
                 },
             };
+
+        case UPDATE_CONFIG:
+            return {
+                ...state,
+                config: {
+                    ...state.config,
+                    ...action.payload.config
+                }
+            }
 
         default:
             return state;

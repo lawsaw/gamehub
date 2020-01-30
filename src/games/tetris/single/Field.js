@@ -1,20 +1,22 @@
 import React, { PureComponent } from 'react';
 import { isEqual } from 'lodash';
 import { connect } from 'react-redux';
-import { merge } from './helpers/etc';
-import { Grid } from './';
-import SocketContext from '../../helpers/SocketContext';
-import { sendMove } from '../../socket/tetris_emit';
+import { merge } from '../helpers/etc';
+import { Grid } from '../components';
+import SocketContext from '../../../helpers/SocketContext';
+import { sendMove } from '../../../socket/tetris_emit';
 
 class Field extends PureComponent {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const { isOpponent } = this.props;
         if(isOpponent && !isEqual(this.props.field, prevProps.field)) {
-            const { sendMove, field, preview } = this.props;
+            const { sendMove, field, preview, speed, score } = this.props;
             sendMove({
                 field,
-                preview
+                preview,
+                speed,
+                score,
             });
         }
     }
@@ -35,10 +37,12 @@ Field.contextType = SocketContext;
 
 export default connect(
     store => {
-        const { opponent, isGameRunning, figureNext, rotationNext, figure, rotation, position, table } = store.tetris;
+        const { opponent, isGameRunning, figureNext, rotationNext, figure, rotation, position, table, speed, score } = store.tetris;
         return {
             isOpponent: opponent !== null,
             preview: isGameRunning && figureNext[rotationNext],
+            speed,
+            score,
             field: figure
                 ? merge(figure[rotation], position, table)
                 : table,

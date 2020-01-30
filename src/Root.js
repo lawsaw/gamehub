@@ -1,12 +1,9 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { withSnackbar } from 'notistack';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { withStyles, Grid } from "@material-ui/core";
 import { Header, Footer } from './containers';
 import { ROUTES } from './helpers/routes';
-import { socketConnect, socketDisconnect } from './actions/socket';
-import { listenConnect, listenDisconnect, listenMessage } from "./socket/common_listen";
+import IO from './IO';
 
 const styles = () => ({
     layout: {
@@ -33,44 +30,11 @@ const styles = () => ({
 
 class Root extends PureComponent {
 
-    componentDidMount() {
-        const { startListenConnect, startListenDisconnect, startListenMessage } = this.props;
-        startListenConnect(this.socketOnConnect);
-        startListenDisconnect(this.socketOnDisconnect);
-        startListenMessage(this.socketOnMessage);
-    }
-
-    componentWillUnmount() {
-        const { stopListenConnect, stopListenDisconnect, stopListenMessage } = this.props;
-        stopListenConnect(this.socketOnConnect);
-        stopListenDisconnect(this.socketOnDisconnect);
-        stopListenMessage(this.socketOnMessage);
-    }
-
-    socketOnConnect = () => {
-        const socket = this.context;
-        const { socketConnect } = this.props;
-        socketConnect(socket.id);
-    }
-
-    socketOnDisconnect = () => {
-        const socket = this.context;
-        const { socketDisconnect } = this.props;
-        socketDisconnect(socket.id);
-    }
-
-    socketOnMessage = ({ message_type, message }) => {
-        const { enqueueSnackbar } = this.props;
-        enqueueSnackbar(message, {
-            variant: message_type,
-            autoHideDuration: 1500,
-        });
-    }
-
     render() {
         const { classes } = this.props;
         return (
             <Router>
+                <IO />
                 <Grid
                     container
                     direction="column"
@@ -116,18 +80,4 @@ class Root extends PureComponent {
 
 }
 
-export default connect(
-    null,
-    dispatch => {
-        return {
-            socketConnect: id => dispatch(socketConnect(id)),
-            socketDisconnect: id => dispatch(socketDisconnect(id)),
-            startListenConnect: callback => dispatch(listenConnect(true, callback)),
-            stopListenConnect: callback => dispatch(listenConnect(false, callback)),
-            startListenDisconnect: callback => dispatch(listenDisconnect(true, callback)),
-            stopListenDisconnect: callback => dispatch(listenDisconnect(false, callback)),
-            startListenMessage: callback => dispatch(listenMessage(true, callback)),
-            stopListenMessage: callback => dispatch(listenMessage(false, callback)),
-        }
-    }
-)(withSnackbar(withStyles(styles)(Root)));
+export default withStyles(styles)(Root);
