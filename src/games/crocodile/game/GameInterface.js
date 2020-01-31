@@ -2,10 +2,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withStyles, Box } from "@material-ui/core";
 import { GamePainter, GameWatcher } from "./";
-import { SOCKET_ON_ROOM, SOCKET_ON_ROOM_LEAVE } from '../helpers/constants';
-import { updateRoom, cleanRoom } from '../../../actions/crocodile';
+import { cleanRoom } from '../../../actions/crocodile';
 import { setApp } from '../../../actions/app';
-import SocketContext from '../../../helpers/SocketContext';
+import { socketLeaveRoom } from '../../../socket/crocodile_emit';
 
 const styles = () => ({
     interface: {
@@ -21,85 +20,61 @@ const Interface = ({ classes, ...props }) => {
 
 class GameInterface extends PureComponent {
 
+    constructor(props) {
+        super(props);
+        this.is_left = false;
+    }
+
     componentDidMount() {
-        const socket = this.context;
-        const { setApp } = this.props;
-        socket.on(SOCKET_ON_ROOM, this.updateRoom);
-        this.requestRoomData();
+        const { setApp, roomName } = this.props;
         setApp({
+            sub_header: roomName,
             topAction: this.handleLeaveRoom,
         });
     }
 
     componentWillUnmount() {
-        const socket = this.context;
         this.handleLeaveRoom();
-        socket.off(SOCKET_ON_ROOM, this.updateRoom);
     }
 
     handleLeaveRoom = () => {
-        const socket = this.context;
-        const { setApp, cleanRoom } = this.props;
-        socket.emitCrocodile(SOCKET_ON_ROOM_LEAVE);
+        if(this.is_left) return false;
+        const { setApp, cleanRoom, socketLeaveRoom } = this.props;
+        socketLeaveRoom();
         cleanRoom();
         setApp({
+            sub_header: null,
             topAction: null,
         });
+        this.is_left = true;
     }
-
-    updateRoom = ({ room }) => {
-        const { updateRoom } = this.props;
-        updateRoom(room);
-    }
-
-    requestRoomData = () => {
-        const socket = this.context;
-        socket.emitCrocodile(SOCKET_ON_ROOM);
-    }
-
-    // getPlayer = () => {
-    //     const { socket: { id }, room } = this.props;
-    //     let player = (room && room.players && room.players[id]) || {};
-    //     player['id'] = id;
-    //     return player;
-    // }
 
     render() {
-        const { classes, isRoom, isPainter } = this.props;
-        return isRoom ? (
+        const { classes, isPainter } = this.props;
+        return (
             <Box className={classes.interface}>
                 <Interface
                     isPainter={isPainter}
                     {...this.props}
                 />
             </Box>
-        ) : 'Room is loading'
+        )
     }
 }
-
-GameInterface.contextType = SocketContext;
 
 export default connect(
     store => {
         return {
-            isRoom: Object.keys(store.crocodile.room).length,
+            sub_header: store.app.sub_header,
             isPainter: (store.crocodile.room.painter || {}).id === store.socket.id,
+            roomName: store.crocodile.room.roomName,
         }
     },
     dispatch => {
         return {
-            updateRoom: room => {
-                dispatch(updateRoom(room))
-            },
-            cleanRoom: () => {
-                dispatch(cleanRoom())
-            },
-            setApp: status => {
-                dispatch(setApp(status))
-            }
-            // cleanApp: () => {
-            //     dispatch(cleanApp())
-            // }
+            cleanRoom: () => { dispatch(cleanRoom()) },
+            setApp: status => { dispatch(setApp(status)) },
+            socketLeaveRoom: () => { dispatch(socketLeaveRoom()) },
         }
     }
 )(withStyles(styles)(GameInterface));

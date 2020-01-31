@@ -1,10 +1,8 @@
 import React, { PureComponent, Fragment } from 'react';
-import { withStyles, Paper, IconButton, Box, List, ListItem, ListItemText, Divider, Grid, Dialog, Typography, Container } from "@material-ui/core";
+import { connect } from 'react-redux';
+import { withStyles, Paper, IconButton, Box, List, ListItem, ListItemText, Divider, Grid, Typography, Container } from "@material-ui/core";
 import { Add, ArrowBack } from '@material-ui/icons';
-import { TextInput } from '../../../components';
-import { SOCKET_ON_ROOM_LIST, SOCKET_ON_ROOM_ADD, SOCKET_ON_ROOM_JOIN } from '../helpers/constants';
-import { preventMultipleSubmit } from "../helpers/etc";
-import SocketContext from '../../../helpers/SocketContext';
+import { socketJoinRoom } from '../../../socket/crocodile_emit';
 
 const styles = theme => ({
     root: {
@@ -38,79 +36,19 @@ const styles = theme => ({
 });
 class RoomSelection extends PureComponent {
 
-    constructor(props) {
-        super(props);
-        this.handleNewRoomSubmitDecorator = preventMultipleSubmit();
-        this.state = {
-            new_room_name: '',
-            isNewRoomModal: false,
-            rooms: null,
-        }
-    }
-
-    componentDidMount() {
-        const socket = this.context;
-        socket.on(SOCKET_ON_ROOM_LIST, this.updateRoomList);
-        this.getRoomList();
-    }
-
-    componentWillUnmount() {
-        const socket = this.context;
-        socket.off(SOCKET_ON_ROOM_LIST, this.updateRoomList);
-    }
-
-    getRoomList = () => {
-        const socket = this.context;
-        socket.emitCrocodile(SOCKET_ON_ROOM_LIST);
-    }
-
-    updateRoomList = ({ rooms }) => {
-        this.setState(() => ({
-            rooms,
-            isNewRoomModal: false,
-            new_room_name: '',
-        }));
-    }
-    
     handleNewRoomModalOpen = () => {
         this.setState(() => ({
             isNewRoomModal: true,
         }));
     }
 
-    handleNewRoomModalClose = () => {
-        this.setState(() => ({
-            isNewRoomModal: false,
-            new_room_name: '',
-        }));
-    }
-
-    handleNewRoomChange = (e) => {
-        const { value } = e.target;
-        this.setState(() => ({
-            new_room_name: value,
-        }));
-    }
-
-    handleNewRoomSubmit = () => {
-        const { new_room_name } = this.state;
-        this.handleNewRoomSubmitDecorator(() => this.submitNewRoom(new_room_name));
-    }
-
-    submitNewRoom = (room) => {
-        const socket = this.context;
-        socket.emitCrocodile(SOCKET_ON_ROOM_ADD, { room });
-    }
-
-
     handleJoinRoom = (room_name) => {
-        const socket = this.context;
-        socket.emitCrocodile(SOCKET_ON_ROOM_JOIN, { room: room_name });
+        const { socketJoinRoom } = this.props;
+        socketJoinRoom(room_name);
     }
     
     render() {
-        const { classes, onBackToNickname } = this.props;
-        const { rooms, new_room_name, isNewRoomModal } = this.state;
+        const { classes, rooms, onBackToNickname } = this.props;
         return (
             <Container>
                 <Typography
@@ -174,22 +112,20 @@ class RoomSelection extends PureComponent {
                         </Paper>
                     </Grid>
                 </Grid>
-                <Dialog
-                    open={isNewRoomModal}
-                    onClose={this.handleNewRoomModalClose}
-                >
-                    <TextInput
-                        onChange={this.handleNewRoomChange}
-                        onSubmit={this.handleNewRoomSubmit}
-                        placeholder="Enter new room name"
-                        value={new_room_name}
-                    />
-                </Dialog>
             </Container>
         )
     }
 }
 
-RoomSelection.contextType = SocketContext;
-
-export default withStyles(styles)(RoomSelection);
+export default connect(
+    store => {
+        return {
+            rooms: store.crocodile.rooms,
+        }
+    },
+    dispatch => {
+        return {
+            socketJoinRoom: room => dispatch( socketJoinRoom(room) ),
+        }
+    }
+)(withStyles(styles)(RoomSelection));

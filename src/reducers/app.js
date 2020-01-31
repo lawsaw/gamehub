@@ -2,6 +2,7 @@ import { SET_APP, CLEAN_APP } from "../actions/app";
 
 let initialState = {
     header: null,
+    sub_header: null,
     topAction: null,
 };
 

@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { withStyles, Box, Button, Radio, RadioGroup, FormControlLabel, Typography } from '@material-ui/core';
+import { withStyles, Box, Typography } from '@material-ui/core';
 import SocketContext from '../../../helpers/SocketContext';
 import { updateConfig } from "../../../actions/tetris";
 import { TextInput, Stepper } from "../../../components";

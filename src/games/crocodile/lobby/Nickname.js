@@ -1,13 +1,9 @@
 import React, { PureComponent } from 'react';
-import { withStyles } from "@material-ui/core";
+import { connect } from 'react-redux';
 import { TextInput } from '../../../components';
 import { preventMultipleSubmit } from '../helpers/etc';
-import { SOCKET_ON_NICKNAME_VALIDATE } from '../../../helpers/constants';
-import SocketContext from '../../../helpers/SocketContext';
-
-const styles = () => ({
-
-});
+import { updateConfig } from "../../../actions/crocodile";
+import { socketValidateNickname } from "../../../socket/crocodile_emit";
 
 class Nickname extends PureComponent {
 
@@ -21,21 +17,16 @@ class Nickname extends PureComponent {
 
     handleNicknameChange = (e) => {
         const { value } = e.target;
-        this.setState(() => ({
+        const { updateConfig } = this.props;
+        updateConfig({
             nickname: value,
-        }));
+        });
     }
 
     submitNickname = () => {
-        const socket = this.context;
-        const { nickname } = this.state;
-        socket.emitCommon(SOCKET_ON_NICKNAME_VALIDATE, {
-            nickname,
-            onSuccess: {
-                action: 'SOCKET_ON_LOBBY_STEP_CHANGE',
-                step: 'LOBBY_STEP_ROOM_SELECTION',
-            }
-        });
+        const { nickname } = this.props;
+        const { socketValidateNickname } = this.props;
+        socketValidateNickname(nickname);
     }
 
     handleNicknameSubmit = () => {
@@ -43,7 +34,7 @@ class Nickname extends PureComponent {
     }
 
     render() {
-        const { nickname } = this.state;
+        const { nickname } = this.props;
         return (
             <TextInput
                 onChange={this.handleNicknameChange}
@@ -55,6 +46,16 @@ class Nickname extends PureComponent {
     }
 }
 
-Nickname.contextType = SocketContext;
-
-export default withStyles(styles)(Nickname);
+export default connect(
+    store => {
+        return {
+            nickname: store.crocodile.config.nickname,
+        }
+    },
+    dispatch => {
+        return {
+            updateConfig: config => dispatch( updateConfig(config) ),
+            socketValidateNickname: nickname => dispatch( socketValidateNickname(nickname) ),
+        }
+    }
+)(Nickname);

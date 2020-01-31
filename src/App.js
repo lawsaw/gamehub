@@ -6,16 +6,15 @@ import { SnackbarProvider } from 'notistack';
 import SocketContext from './helpers/SocketContext';
 import thunk from 'redux-thunk';
 import socketIOClient from 'socket.io-client';
-import socketIoMiddleware from 'redux-socket.io-middleware';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import theme from './helpers/theme';
 import Root from './Root';
 import mainReducer from './reducers';
-import { SOCKET_SERVER, SOCKET_MAP, SOCKET_CLIENT } from "./helpers/constants";
+import { SOCKET_SERVER } from "./helpers/constants";
 
 
-import { createSocketEmitMiddleware, createSocketListenMiddleware } from './helpers/etc';
+import { createSocketEmitMiddleware } from './helpers/etc';
 
 const IO = socketIOClient(SOCKET_SERVER);
 
@@ -24,22 +23,20 @@ const store = createStore(
     applyMiddleware(
         thunk,
         createSocketEmitMiddleware(IO),
-        //createSocketListenMiddleware(IO),
     )
 );
 
-
 //let socket = null;
 
-SOCKET_MAP.forEach(({ game, method }) => {
-    IO[method] = (action, request) => {
-        IO.emit(SOCKET_CLIENT, {
-            game,
-            action,
-            ...request,
-        });
-    };
-});
+// SOCKET_MAP.forEach(({ game, method }) => {
+//     IO[method] = (action, request) => {
+//         IO.emit(SOCKET_CLIENT, {
+//             game,
+//             action,
+//             ...request,
+//         });
+//     };
+// });
 
 class App extends PureComponent {
 

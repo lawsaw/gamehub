@@ -2,10 +2,9 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withStyles, Box, Button, Dialog } from "@material-ui/core";
 import { Paint, Game } from "./";
-import { SOCKET_ON_WORD_SELECT, SOCKET_ON_PAINT } from '../helpers/constants';
-import SocketContext from '../../../helpers/SocketContext';
+import { socketWordSelect, socketPaint } from "../../../socket/crocodile_emit";
 
-const styles = (theme) => ({
+const styles = theme => ({
     wordList: {
         display: 'flex',
         flexDirection: 'column',
@@ -24,19 +23,15 @@ const styles = (theme) => ({
 class GamePainter extends PureComponent {
 
     handleWordSelect = (e, word) => {
-        const socket = this.context;
-        socket.emitCrocodile(SOCKET_ON_WORD_SELECT, {
-            word
-        });
+        const { socketWordSelect } = this.props;
+        socketWordSelect(word);
     }
 
     handleConvertToImage = (canvas) => {
         if(!canvas) return false;
-        const socket = this.context;
+        const { socketPaint } = this.props;
         let image = canvas.current.toDataURL();
-        socket.emitCrocodile(SOCKET_ON_PAINT, {
-            image
-        });
+        socketPaint(image);
     }
 
     getTask = () => {
@@ -83,8 +78,6 @@ class GamePainter extends PureComponent {
     }
 }
 
-GamePainter.contextType = SocketContext;
-
 export default connect(
     store => {
         return {
@@ -92,4 +85,10 @@ export default connect(
             words: store.crocodile.room.words,
         }
     },
+    dispatch => {
+        return {
+            socketWordSelect: word => dispatch( socketWordSelect(word) ),
+            socketPaint: image => dispatch( socketPaint(image) ),
+        }
+    }
 )(withStyles(styles)(GamePainter));

@@ -3,7 +3,6 @@ import { isEqual } from 'lodash';
 import { connect } from 'react-redux';
 import { merge } from '../helpers/etc';
 import { Grid } from '../components';
-import SocketContext from '../../../helpers/SocketContext';
 import { sendMove } from '../../../socket/tetris_emit';
 
 class Field extends PureComponent {
@@ -32,8 +31,6 @@ class Field extends PureComponent {
     }
 
 }
-
-Field.contextType = SocketContext;
 
 export default connect(
     store => {

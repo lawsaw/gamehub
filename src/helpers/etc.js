@@ -52,9 +52,9 @@ export function createSocketEmitMiddleware(socket, channelName=SOCKET_CLIENT) {
         return next => {
             return action => {
                 if(action.meta && action.meta.remote === 'socket_emit') {
-                    console.log({
-                        emit: action
-                    });
+                    // console.log({
+                    //     emit: action
+                    // });
                     socket.emit(channelName, action);
                 }
                 return next(action);

@@ -41,7 +41,7 @@ export const TETRIS_SINGLE = {
     label: 'Singleplayer',
     description: 'Play with your own',
     page: props => <Page
-        header={'Tetris/Single player'}
+        header={'Tetris/singleplayer'}
         component={<SinglePlayer {...props} />}
     />
 };
@@ -51,7 +51,7 @@ export const TETRIS_ONLINE = {
     label: 'Multiplayer',
     description: 'Play vs your friend',
     page: props => <Page
-        header={'Tetris/Online player'}
+        header={'Tetris/multiplayer'}
         component={<MultiPlayer {...props} />}
     />
 };

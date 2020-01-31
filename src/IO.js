@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import { socketConnect, socketDisconnect } from './actions/socket';
 import SocketContext from './helpers/SocketContext';
-import { updateConfig, updateOpponent } from "./actions/tetris";
+import { updateConfig as updateConfigTetris, updateOpponent } from "./actions/tetris";
+import { updateConfig as updateConfigCrocodile, updateRoomList, updateRoom } from "./actions/crocodile";
 
 class Root extends PureComponent {
 
@@ -14,9 +15,14 @@ class Root extends PureComponent {
                 'SOCKET_MESSAGE': this.socketOnMessage,
             },
             'GAME_TETRIS': {
-                'LOBBY_UPDATE_CONFIG': props.updateConfig,
+                'LOBBY_UPDATE_CONFIG': props.updateConfigTetris,
                 'ON_GAME': props.updateOpponent,
-            }
+            },
+            'GAME_CROCODILE': {
+                'LOBBY_UPDATE_CONFIG': props.updateConfigCrocodile,
+                'UPDATE_ROOM_LIST': props.updateRoomList,
+                'UPDATE_ROOM': props.updateRoom,
+            },
         };
     }
 
@@ -35,11 +41,14 @@ class Root extends PureComponent {
     }
 
     handleSocket = (props) => {
-        console.log({
-            socketReceive: props,
-        });
+        // console.log({
+        //     socketReceive: props,
+        // });
         const { target, action, args } = props;
-        if(target in this.listen_map && action in this.listen_map[target]) this.listen_map[target][action](args);
+        if(target in this.listen_map && action in this.listen_map[target]) {
+            //console.log(`${target} - ${action}`);
+            this.listen_map[target][action](args);
+        }
     }
 
     socketOnConnect = () => {
@@ -76,8 +85,15 @@ export default connect(
         return {
             socketConnect: id => dispatch( socketConnect(id) ),
             socketDisconnect: id => dispatch( socketDisconnect(id) ),
-            updateConfig: config => dispatch( updateConfig(config) ),
+
+            //Tetris
+            updateConfigTetris: config => dispatch( updateConfigTetris(config) ),
             updateOpponent: opponent => dispatch( updateOpponent(opponent) ),
+
+            //Crocodile
+            updateConfigCrocodile: config => dispatch( updateConfigCrocodile(config) ),
+            updateRoomList: rooms => dispatch( updateRoomList(rooms) ),
+            updateRoom: room => dispatch( updateRoom(room) ),
         }
     }
 )(withSnackbar(Root));

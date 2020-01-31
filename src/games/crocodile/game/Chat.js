@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { withStyles, Grid } from "@material-ui/core";
 import { TextInput } from '../../../components';
 import { ChatWindow } from './';
 import { preventMultipleSubmit } from '../../../helpers/etc';
-import { SOCKET_ON_CHAT, SOCKET_ON_MESSAGE_LIKE } from '../helpers/constants';
-import SocketContext from '../../../helpers/SocketContext';
+import { socketChat, socketMessageMark } from "../../../socket/crocodile_emit";
 
 const styles = (theme) => ({
     chat: {
@@ -47,10 +47,8 @@ class Chat extends PureComponent {
     }
 
     onChat = (message) => {
-        const socket = this.context;
-        socket.emitCrocodile(SOCKET_ON_CHAT, {
-            message
-        });
+        const { socketChat } = this.props;
+        socketChat(message);
     }
 
     handleChat = () => {
@@ -71,11 +69,8 @@ class Chat extends PureComponent {
     }
 
     handleLikeMessage = id => value => {
-        const socket = this.context;
-        socket.emitCrocodile(SOCKET_ON_MESSAGE_LIKE, {
-            id,
-            value
-        });
+        const { socketMessageMark } = this.props;
+        socketMessageMark(id, value);
     }
 
     render() {
@@ -119,6 +114,12 @@ class Chat extends PureComponent {
     }
 }
 
-Chat.contextType = SocketContext;
-
-export default withStyles(styles)(Chat);
+export default connect(
+    null,
+    dispatch => {
+        return {
+            socketChat: message => dispatch( socketChat(message) ),
+            socketMessageMark: (id, value) => dispatch( socketMessageMark(id, value) ),
+        }
+    }
+)(withStyles(styles)(Chat));

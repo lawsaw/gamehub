@@ -100,3 +100,10 @@ export function updateConfig(config) {
         },
     };
 }
+
+export const RESET_CONFIG = 'RESET_CONFIG';
+export function resetConfig() {
+    return {
+        type: RESET_CONFIG,
+    };
+}

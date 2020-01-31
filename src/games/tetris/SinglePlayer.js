@@ -11,7 +11,7 @@ class SinglePlayer extends PureComponent {
     render() {
         return (
             <Fragment>
-               <Arena />
+               <Arena isOpponent={false} />
             </Fragment>
         )
     }

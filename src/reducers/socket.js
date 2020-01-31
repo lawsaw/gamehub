@@ -15,11 +15,11 @@ export default function room(state = initialState, action) {
             newState = JSON.parse(JSON.stringify(state));
             newState.isConnected = true;
             newState.id = action.payload.id;
-            console.log(`${action.payload.id} connected`);
+            //console.log(`${action.payload.id} connected`);
             return newState;
 
         case DISCONNECT:
-            console.log(`${action.payload.id} disconnected`);
+            //console.log(`${action.payload.id} disconnected`);
             return initialState;
 
         default:

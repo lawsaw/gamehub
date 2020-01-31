@@ -1,4 +1,4 @@
-import { SET_SPEED, MOVE_FIGURE, START_NEW_GAME, STOP_GAME, START_MOVING, STOP_MOVING, MOVE_FIGURE_DOWN, ROTATE_FIGURE, STORE_ACTION_DATA, CLOSE_RESULTS, UPDATE_OPPONENT, UPDATE_CONFIG } from "../actions/tetris";
+import { SET_SPEED, MOVE_FIGURE, START_NEW_GAME, STOP_GAME, START_MOVING, STOP_MOVING, MOVE_FIGURE_DOWN, ROTATE_FIGURE, STORE_ACTION_DATA, CLOSE_RESULTS, UPDATE_OPPONENT, UPDATE_CONFIG, RESET_CONFIG } from "../actions/tetris";
 import { COLS, ROWS, POSITION, SPEED, MOVE_STEP_MAP, ROWS_HIDDEN, MOVE_DIRECTION } from "../games/tetris/helpers/constants";
 import {
     generateGrid,
@@ -80,6 +80,12 @@ let getFigureFullGrid = (store) => {
     return getFigureMap(figureSquare, position);
 };
 
+let initialConfig = {
+    nickname: '',
+    type: 'TYPE_CLIENT',
+    step: 'LOBBY_STEP_NICKNAME',
+};
+
 let initialState = {
     table: renderDemoHouse(generateGrid(COLS, ROWS)),
     rotation: getRandomRotation(),
@@ -96,9 +102,7 @@ let initialState = {
     key_map: null,
     opponent: null,
     config: {
-        nickname: '',
-        type: 'TYPE_CLIENT',
-        step: 'LOBBY_STEP_NICKNAME',
+        ...initialConfig,
     },
 };
 
@@ -253,6 +257,14 @@ export default function room(state = initialState, action) {
                 config: {
                     ...state.config,
                     ...action.payload.config
+                }
+            }
+
+        case RESET_CONFIG:
+            return {
+                ...state,
+                config: {
+                    ...initialConfig,
                 }
             }
 

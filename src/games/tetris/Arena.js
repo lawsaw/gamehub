@@ -1,5 +1,4 @@
 import React, { PureComponent, Fragment } from 'react';
-import { connect } from 'react-redux';
 import { withStyles, Box } from "@material-ui/core";
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Engine } from './';
@@ -96,10 +95,4 @@ class Arena extends PureComponent {
 
 }
 
-export default connect(
-    store => {
-        return {
-            isOpponent: store.tetris.opponent !== null,
-        }
-    }
-)(withWidth()(withStyles(styles)(Arena)));
+export default withWidth()(withStyles(styles)(Arena));

@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { withStyles, Box } from "@material-ui/core";
 import { Nickname, RoomSelection } from './';
-import { SOCKET_ON_LOBBY_STEP_CHANGE } from '../../../helpers/constants';
 import { LOBBY_STEP_NICKNAME, LOBBY_STEP_ROOM_SELECTION } from '../helpers/constants';
-import SocketContext from '../../../helpers/SocketContext';
+import { updateConfig } from "../../../actions/crocodile";
 
 const styles = () => ({
     lobby: {
@@ -19,53 +19,41 @@ class Lobby extends PureComponent {
     constructor(props) {
         super(props);
         this.steps = {
-            [LOBBY_STEP_NICKNAME]: () => <Nickname />,
-            [LOBBY_STEP_ROOM_SELECTION]: () => <RoomSelection onBackToNickname={this.handleBackToNickname} />,
+            [LOBBY_STEP_NICKNAME]: <Nickname />,
+            [LOBBY_STEP_ROOM_SELECTION]: <RoomSelection onBackToNickname={this.handleBackToNickname} />,
         };
-        this.state = {
-            step: LOBBY_STEP_NICKNAME,
-        };
-    }
-
-    componentDidMount() {
-        const socket = this.context;
-        socket.on(SOCKET_ON_LOBBY_STEP_CHANGE, this.onStepChange);
-    }
-
-    componentWillUnmount() {
-        const socket = this.context;
-        socket.off(SOCKET_ON_LOBBY_STEP_CHANGE, this.onStepChange);
-    }
-
-    onStepChange = ({ step }) => {
-        this.setStep(step);
-    }
-
-    setStep = (step) => {
-        this.setState(() => ({
-            step,
-        }));
     }
 
     handleBackToNickname = () => {
-        this.setStep(LOBBY_STEP_NICKNAME);
+        const { updateConfig } = this.props;
+        updateConfig({
+            step: LOBBY_STEP_NICKNAME
+        })
     }
 
     render() {
-        const { classes } = this.props;
-        const { step } = this.state;
+        const { classes, step } = this.props;
         return (
             <Box
                 className={classes.lobby}
             >
                 {
-                    this.steps[step]()
+                    step in this.steps ? this.steps[step] : step
                 }
             </Box>
         )
     }
 }
 
-Lobby.contextType = SocketContext;
-
-export default withStyles(styles)(Lobby);
+export default connect(
+    store => {
+        return {
+            step: store.crocodile.config.step,
+        }
+    },
+    dispatch => {
+        return {
+            updateConfig: config => dispatch( updateConfig(config) ),
+        }
+    }
+)(withStyles(styles)(Lobby));

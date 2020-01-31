@@ -15,7 +15,7 @@ const styles = () => ({
 class Header extends PureComponent {
 
     render() {
-        const { classes, location: { pathname }, header, topAction } = this.props;
+        const { classes, location: { pathname }, header, sub_header, topAction } = this.props;
         return (
             <AppBar
                 position="static"
@@ -37,6 +37,9 @@ class Header extends PureComponent {
                     <Typography variant="h6" className={classes.title}>
                         {
                             header && `${header}`
+                        }
+                        {
+                            sub_header && `/${sub_header}`
                         }
                     </Typography>
                     {
@@ -60,9 +63,11 @@ class Header extends PureComponent {
 
 export default connect(
     store => {
+        const { header, sub_header, topAction } = store.app;
         return {
-            header: store.app.header,
-            topAction: store.app.topAction,
+            header,
+            sub_header,
+            topAction,
         }
     }
 )(withStyles(styles)(Header));

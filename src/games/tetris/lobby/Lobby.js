@@ -31,7 +31,7 @@ class Lobby extends PureComponent {
                 className={classes.lobby}
             >
                 {
-                    this.steps[step]
+                    step in this.steps ? this.steps[step] : step
                 }
             </Box>
         )
