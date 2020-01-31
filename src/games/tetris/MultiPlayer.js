@@ -3,8 +3,16 @@ import { connect } from 'react-redux';
 import { Arena } from './';
 import { Lobby } from './lobby';
 import { resetConfig } from '../../actions/tetris';
+import { setApp } from "../../actions/app";
 
 class MultiPlayer extends PureComponent {
+
+    componentDidMount() {
+        const { setApp } = this.props;
+        setApp({
+
+        });
+    }
 
     componentWillUnmount() {
         const { resetConfig } = this.props;
@@ -16,7 +24,7 @@ class MultiPlayer extends PureComponent {
         return isConnected ? (
             <Fragment>
                 {
-                    is_lobby ? <Lobby /> : <Arena isOpponent={true} />
+                    is_lobby ? <Lobby /> : <Arena />
                 }
             </Fragment>
         ) : (
@@ -38,6 +46,7 @@ export default connect(
     dispatch => {
         return {
             resetConfig: () => dispatch( resetConfig() ),
+            setApp: options => dispatch( setApp(options) ),
         }
     }
 )(MultiPlayer);

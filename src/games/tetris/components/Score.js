@@ -5,6 +5,9 @@ import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 const styles = () => ({
     score: {},
+    typograpy: {
+        lineHeight: 1,
+    },
 });
 
 class Score extends PureComponent {
@@ -16,7 +19,8 @@ class Score extends PureComponent {
                 className={cx(classes.score, className)}
             >
                 <Typography
-                    variant={isWidthUp('sm', width) ? 'h3' : 'h5'}
+                    variant={isWidthUp('sm', width) ? 'h5' : 'h6'}
+                    className={classes.typograpy}
                 >
                     {score}
                 </Typography>

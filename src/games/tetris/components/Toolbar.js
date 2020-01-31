@@ -10,13 +10,12 @@ const styles = theme => ({
     },
     item: {
         '&:not(:first-child)': {
-            marginTop: theme.spacing(2),
-            // [theme.breakpoints.up('sm')]: {
-            //     marginTop: theme.spacing(3),
-            // },
-            // [theme.breakpoints.down('xs')]: {
-            //
-            // },
+            [theme.breakpoints.up('sm')]: {
+                marginTop: theme.spacing(2),
+            },
+            [theme.breakpoints.down('xs')]: {
+                marginTop: theme.spacing(1),
+            },
         },
     },
     score: {

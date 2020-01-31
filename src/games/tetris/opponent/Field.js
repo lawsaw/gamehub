@@ -5,11 +5,12 @@ import { Grid } from '../components';
 class Field extends PureComponent {
 
     render() {
-        const { grid } = this.props;
+        const { grid, ...props } = this.props;
         return (
             <Grid
                 grid={grid}
                 isField={true}
+                {...props}
             />
         )
     }

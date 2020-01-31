@@ -13,12 +13,13 @@ const styles = () => ({
 class Preview extends PureComponent {
 
     render() {
-        const { preview, className, classes } = this.props;
+        const { preview, className, classes, ...props } = this.props;
         return (
             <Grid
                 grid={preview}
                 className={cx(classes.preview, className)}
                 isPreview={true}
+                {...props}
             />
         )
     }

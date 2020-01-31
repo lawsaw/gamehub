@@ -1,11 +1,13 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
+import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 import { IconButton, Button, Typography } from "@material-ui/core";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import { Toolbar as ToolbarComponent } from '../components';
-import { Score, Preview } from './';
+import { Score } from './';
 import { startMoving, startNewGame, stopGame, stopMoving } from "../../../actions/tetris";
+import { Opponent } from '../opponent';
 
 class Toolbar extends PureComponent {
 
@@ -17,21 +19,25 @@ class Toolbar extends PureComponent {
     }
 
     render() {
-        const { isGameRunning, isPlayButton, isPauseButton, speed, startMoving, stopMoving, stopGame, nickname } = this.props;
+        const { isGameRunning, isPlayButton, isPauseButton, speed, startMoving, stopMoving, stopGame, nickname, previewComponent, isOpponent, width } = this.props;
+        let isTablet = isWidthDown('sm', width);
+        let isMobile = isWidthDown('xs', width);
+        let col_size = isMobile ? 5 : 15;
         return (
             <ToolbarComponent
                 data={[
 
                     nickname && (
                         <Typography
-                            variant='h5'
+                            variant='h6'
                         >
                             {nickname}
                         </Typography>
                     ),
 
+                    <Score />,
+
                     <Fragment>
-                        <Score />
                         Speed: {speed}
                     </Fragment>,
 
@@ -51,7 +57,7 @@ class Toolbar extends PureComponent {
                         </Button>
                     ),
 
-                    <Preview />,
+                    previewComponent,
 
                     isPlayButton && (
                         <IconButton
@@ -71,6 +77,10 @@ class Toolbar extends PureComponent {
                         >
                             <Pause />
                         </IconButton>
+                    ),
+
+                    isOpponent && isTablet && (
+                        <Opponent size={col_size} />
                     )
 
                 ]}
@@ -90,6 +100,7 @@ export default connect(
             isPlayButton:  isGameRunning && isPause,
             isPauseButton:  isGameRunning && !isPause,
             nickname: opponent !== null && config.nickname,
+            isOpponent: opponent !== null,
         }
     },
     dispatch => {
@@ -100,4 +111,4 @@ export default connect(
             stopMoving: () => { dispatch(stopMoving()) },
         }
     }
-)(Toolbar);
+)(withWidth()(Toolbar));

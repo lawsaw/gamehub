@@ -73,7 +73,7 @@ export default connect(
     dispatch => {
         return {
             cleanRoom: () => { dispatch(cleanRoom()) },
-            setApp: status => { dispatch(setApp(status)) },
+            setApp: options => { dispatch(setApp(options)) },
             socketLeaveRoom: () => { dispatch(socketLeaveRoom()) },
         }
     }

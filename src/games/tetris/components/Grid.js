@@ -2,34 +2,22 @@ import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { withStyles, Box } from "@material-ui/core";
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import { ROWS_HIDDEN, COL_SIZE, COL_SIZE_MOBILE, ROWS, COLS } from '../helpers/constants';
+import { ROWS_HIDDEN, ROWS, COLS, COL_SIZE } from '../helpers/constants';
 
-const setSize = size => ({
-    height:  (ROWS - ROWS_HIDDEN) * size - (ROWS - ROWS_HIDDEN - 1),
-    width: COLS * size - COLS + 1,
-});
-
-const styles = theme => ({
+const styles = () => ({
     field: {
         position: 'relative',
-        [theme.breakpoints.up('sm')]: {
-            ...setSize(COL_SIZE),
-        },
-        [theme.breakpoints.down('xs')]: {
-            ...setSize(COL_SIZE_MOBILE),
-        },
-        '&$fieldPreview': {
-            [theme.breakpoints.up('sm')]: {
-                height: ROWS_HIDDEN * COL_SIZE,
-                width: ROWS_HIDDEN * COL_SIZE,
-            },
-            [theme.breakpoints.down('xs')]: {
-                height: ROWS_HIDDEN * COL_SIZE_MOBILE,
-                width: ROWS_HIDDEN * COL_SIZE_MOBILE,
-            },
-        },
+        height:  props => ((ROWS - ROWS_HIDDEN) * props.size - (ROWS - ROWS_HIDDEN - 1)),
+        width: props => (COLS * props.size - COLS + 1),
+        // '&$fieldPreview': {
+        //     height: props => (ROWS_HIDDEN * props.size),
+        //     width: props => (ROWS_HIDDEN * props.size),
+        // },
     },
-    fieldPreview: {},
+    fieldPreview: {
+        height: props => (ROWS_HIDDEN * props.size),
+        width: props => (ROWS_HIDDEN * props.size),
+    },
     fieldInner: {
         position: 'absolute',
         bottom: 0,
@@ -50,14 +38,8 @@ const styles = theme => ({
         }
     },
     col: {
-        [theme.breakpoints.up('sm')]: {
-            width: COL_SIZE,
-            height: COL_SIZE,
-        },
-        [theme.breakpoints.down('xs')]: {
-            width: COL_SIZE_MOBILE,
-            height: COL_SIZE_MOBILE,
-        },
+        width: props => props.size,
+        height: props => props.size,
         flexShrink: 0,
         margin: 0,
         border: `1px solid ${fade('#999', 0.5)}`,
@@ -86,6 +68,10 @@ const styles = theme => ({
 });
 
 class Grid extends PureComponent {
+
+    static defaultProps = {
+        size: COL_SIZE,
+    };
 
     render() {
         const { classes, grid, isField, isPreview, className } = this.props;

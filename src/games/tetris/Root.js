@@ -1,5 +1,5 @@
 import React, { PureComponent, forwardRef } from 'react';
-import {withStyles, Container, Grid, CardContent, Typography, CardActionArea, Card} from "@material-ui/core";
+import { withStyles, Container, Grid, CardContent, Typography, CardActionArea, Card } from "@material-ui/core";
 import { RouteLink } from '../../components';
 import { TETRIS_ROUTES } from '../../helpers/routes';
 
