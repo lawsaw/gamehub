@@ -20,10 +20,6 @@ class Toolbar extends PureComponent {
 
                     <Score />,
 
-                    <Fragment>
-                        Speed: {speed}
-                    </Fragment>,
-
                     previewComponent,
 
                 ]}
@@ -36,9 +32,8 @@ class Toolbar extends PureComponent {
 
 export default connect(
     store => {
-        const { speed, nickname } = store.tetris.opponent;
+        const { nickname } = store.tetris.opponent;
         return {
-            speed,
             nickname,
         }
     }

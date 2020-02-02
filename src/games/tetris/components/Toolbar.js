@@ -7,14 +7,15 @@ const styles = theme => ({
         flexWrap: 'wrap',
         flexDirection: 'column',
         alignItems: 'flex-start',
+        height: '100%',
     },
     item: {
         '&:not(:first-child)': {
             [theme.breakpoints.up('sm')]: {
-                marginTop: theme.spacing(2),
+                marginTop: theme.spacing(1),
             },
             [theme.breakpoints.down('xs')]: {
-                marginTop: theme.spacing(1),
+                marginTop: theme.spacing(0.5),
             },
         },
     },

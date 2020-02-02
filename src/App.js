@@ -30,7 +30,7 @@ const store = createStore(
 
 // SOCKET_MAP.forEach(({ game, method }) => {
 //     IO[method] = (action, request) => {
-//         IO.emit(SOCKET_CLIENT, {
+//         IO.emit(SOCKET_CHANNEL, {
 //             game,
 //             action,
 //             ...request,

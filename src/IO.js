@@ -5,20 +5,21 @@ import { socketConnect, socketDisconnect } from './actions/socket';
 import SocketContext from './helpers/SocketContext';
 import { updateConfig as updateConfigTetris, updateOpponent } from "./actions/tetris";
 import { updateConfig as updateConfigCrocodile, updateRoomList, updateRoom } from "./actions/crocodile";
+import { SOCKET_CHANNEL, COMMON_ACTIONS, GAME_TETRIS, GAME_CROCODILE } from "./helpers/constants";
 
 class Root extends PureComponent {
 
     constructor(props) {
         super(props);
         this.listen_map = {
-            'COMMON': {
+            [COMMON_ACTIONS]: {
                 'SOCKET_MESSAGE': this.socketOnMessage,
             },
-            'GAME_TETRIS': {
+            [GAME_TETRIS]: {
                 'LOBBY_UPDATE_CONFIG': props.updateConfigTetris,
                 'ON_GAME': props.updateOpponent,
             },
-            'GAME_CROCODILE': {
+            [GAME_CROCODILE]: {
                 'LOBBY_UPDATE_CONFIG': props.updateConfigCrocodile,
                 'UPDATE_ROOM_LIST': props.updateRoomList,
                 'UPDATE_ROOM': props.updateRoom,
@@ -30,14 +31,14 @@ class Root extends PureComponent {
         const IO = this.context;
         IO.on('connect', this.socketOnConnect);
         IO.on('disconnect', this.socketOnDisconnect);
-        IO.on('SOCKET_CLIENT', this.handleSocket);
+        IO.on(SOCKET_CHANNEL, this.handleSocket);
     }
 
     componentWillUnmount() {
         const IO = this.context;
         IO.off('connect', this.socketOnConnect);
         IO.off('disconnect', this.socketOnDisconnect);
-        IO.off('SOCKET_CLIENT', this.handleSocket);
+        IO.off(SOCKET_CHANNEL, this.handleSocket);
     }
 
     handleSocket = (props) => {

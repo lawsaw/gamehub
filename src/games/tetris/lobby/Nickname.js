@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { TextInput } from '../../../components';
 import { preventMultipleSubmit } from '../../../helpers/etc';
-import { socketValidateNickname} from '../../../socket/tetris_emit';
+import { socketValidateNickname} from '../../../socket/tetris';
 import { updateConfig } from "../../../actions/tetris";
 
 class Nickname extends PureComponent {

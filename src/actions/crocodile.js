@@ -7,26 +7,26 @@ export function updateRoom(room) {
 }
 
 export const CLEAN_ROOM = 'CLEAN_ROOM';
-export function cleanRoom(room) {
+export function cleanRoom() {
     return {
         type: CLEAN_ROOM,
     };
 }
 
-export const UPDATE_CONFIG_2 = 'UPDATE_CONFIG_2';
+export const UPDATE_CONFIG = 'UPDATE_CONFIG';
 export function updateConfig(config) {
     return {
-        type: UPDATE_CONFIG_2,
+        type: UPDATE_CONFIG,
         payload: {
             config,
         },
     };
 }
 
-export const RESET_CONFIG_2 = 'RESET_CONFIG_2';
+export const RESET_CONFIG = 'RESET_CONFIG';
 export function resetConfig() {
     return {
-        type: RESET_CONFIG_2,
+        type: RESET_CONFIG,
     };
 }
 
@@ -37,13 +37,3 @@ export function updateRoomList(rooms) {
         payload: rooms,
     };
 }
-
-// export const UPDATE_ROOM = 'UPDATE_ROOM';
-// export function updateRoomList({ room }) {
-//     return {
-//         type: UPDATE_ROOM,
-//         payload: {
-//             room,
-//         },
-//     };
-// }

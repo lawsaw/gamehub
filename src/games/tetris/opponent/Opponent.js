@@ -2,11 +2,15 @@ import React, { PureComponent } from 'react';
 import { withStyles, Box } from "@material-ui/core";
 import { Field, Toolbar, Preview } from './';
 
-const styles = () => ({
+const styles = theme => ({
     opponent: {
         display: 'flex',
         alignItems: 'stretch',
         justifyContent: 'center',
+        [theme.breakpoints.down('sm')]: {
+            position: 'absolute',
+            bottom: 0,
+        },
     },
     toolbar: {},
 });

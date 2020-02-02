@@ -4,7 +4,7 @@ import { withStyles, Box } from "@material-ui/core";
 import { GamePainter, GameWatcher } from "./";
 import { cleanRoom } from '../../../actions/crocodile';
 import { setApp } from '../../../actions/app';
-import { socketLeaveRoom } from '../../../socket/crocodile_emit';
+import { socketLeaveRoom } from '../../../socket/crocodile';
 
 const styles = () => ({
     interface: {

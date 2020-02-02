@@ -1,4 +1,4 @@
-import { SOCKET_CLIENT } from './constants';
+import { SOCKET_CHANNEL, META_SOCKET_EMIT } from './constants';
 
 export function getHeightFromWidth(widthNew, width, height) {
     return ( widthNew * height ) / width;
@@ -30,28 +30,12 @@ export function socketCrocodileRequest(socket, action, request) {
     socket.emit();
 }
 
-// export function createSocketMiddleware(socket, channelName='action') {
-//     return function (store) {
-//         socket.on(channelName, store.dispatch);
-//         return function (next) {
-//             return function (action) {
-//                 if (action.meta && action.meta.remote) {
-//                     socket.emit(channelName, action);
-//                 }
-//                 let request = next(action);
-//                 //console.log(a);
-//                 //return a;
-//             };
-//         };
-//     };
-// }
 
-export function createSocketEmitMiddleware(socket, channelName=SOCKET_CLIENT) {
+export function createSocketEmitMiddleware(socket, channelName=SOCKET_CHANNEL) {
     return store => {
-        //socket.on(channelName, store.dispatch);
         return next => {
             return action => {
-                if(action.meta && action.meta.remote === 'socket_emit') {
+                if(action.meta && action.meta.remote === META_SOCKET_EMIT) {
                     // console.log({
                     //     emit: action
                     // });
@@ -62,18 +46,3 @@ export function createSocketEmitMiddleware(socket, channelName=SOCKET_CLIENT) {
         };
     };
 }
-
-// export function createSocketListenMiddleware(socket) {
-//     return store => {
-//         return next => {
-//             return act => {
-//                 const { type, action, ...props } = act;
-//                 if(action.meta && action.meta.remote === 'socket_listen') {
-//                     let value = action.state === true ? 'on' : 'off';
-//                     socket[value](type, args => action.callback(args));
-//                 }
-//                 return next(action);
-//             };
-//         };
-//     };
-// }

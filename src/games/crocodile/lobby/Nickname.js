@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { TextInput } from '../../../components';
 import { preventMultipleSubmit } from '../helpers/etc';
 import { updateConfig } from "../../../actions/crocodile";
-import { socketValidateNickname } from "../../../socket/crocodile_emit";
+import { socketValidateNickname } from "../../../socket/crocodile";
 
 class Nickname extends PureComponent {
 

@@ -4,6 +4,7 @@ import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 import { IconButton, Button, Typography } from "@material-ui/core";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
+import Stop from '@material-ui/icons/Stop';
 import { Toolbar as ToolbarComponent } from '../components';
 import { Score } from './';
 import { startMoving, startNewGame, stopGame, stopMoving } from "../../../actions/tetris";
@@ -19,10 +20,11 @@ class Toolbar extends PureComponent {
     }
 
     render() {
-        const { isGameRunning, isPlayButton, isPauseButton, speed, startMoving, stopMoving, stopGame, nickname, previewComponent, isOpponent, width } = this.props;
-        let isTablet = isWidthDown('sm', width);
-        let isMobile = isWidthDown('xs', width);
-        let col_size = isMobile ? 5 : 15;
+        const { isGameRunning, isPlayButton, isPauseButton, startMoving, stopMoving, stopGame, nickname, previewComponent, isOpponent, width } = this.props;
+        let is_tablet = isWidthDown('sm', width);
+        let is_mobile = isWidthDown('xs', width);
+        let col_size = is_mobile ? 7 : 16;
+        let button_size = is_tablet ? 'medium' : 'medium';
         return (
             <ToolbarComponent
                 data={[
@@ -37,49 +39,51 @@ class Toolbar extends PureComponent {
 
                     <Score />,
 
-                    <Fragment>
-                        Speed: {speed}
-                    </Fragment>,
-
                     isGameRunning ? (
-                        <Button
-                            variant="outlined"
-                            onClick={stopGame}
-                        >
-                            Stop
-                        </Button>
+                        <Fragment>
+                            <IconButton
+                                variant="outlined"
+                                onClick={stopGame}
+                                size={button_size}
+                            >
+                                <Stop />
+                            </IconButton>
+                            {
+                                isPlayButton && (
+                                    <IconButton
+                                        variant="outlined"
+                                        onClick={startMoving}
+                                        size={button_size}
+                                    >
+                                        <PlayArrow />
+                                    </IconButton>
+                                )
+                            }
+                            {
+                                isPauseButton && (
+                                    <IconButton
+                                        variant="outlined"
+                                        onClick={stopMoving}
+                                        size={button_size}
+                                    >
+                                        <Pause />
+                                    </IconButton>
+                                )
+                            }
+                        </Fragment>
                     ) : (
-                        <Button
-                            variant="outlined"
-                            onClick={this.handleStart}
-                        >
-                            Start
-                        </Button>
-                    ),
-
-                    previewComponent,
-
-                    isPlayButton && (
                         <IconButton
                             variant="outlined"
-                            onClick={startMoving}
-                            size="medium"
+                            onClick={this.handleStart}
+                            size={button_size}
                         >
                             <PlayArrow />
                         </IconButton>
                     ),
 
-                    isPauseButton && (
-                        <IconButton
-                            variant="outlined"
-                            onClick={stopMoving}
-                            size="medium"
-                        >
-                            <Pause />
-                        </IconButton>
-                    ),
+                    previewComponent,
 
-                    isOpponent && isTablet && (
+                    isOpponent && is_tablet && (
                         <Opponent size={col_size} />
                     )
 
@@ -93,10 +97,9 @@ class Toolbar extends PureComponent {
 
 export default connect(
     store => {
-        const { isGameRunning, isPause, speed, opponent, config } = store.tetris;
+        const { isGameRunning, isPause, opponent, config } = store.tetris;
         return {
             isGameRunning,
-            speed,
             isPlayButton:  isGameRunning && isPause,
             isPauseButton:  isGameRunning && !isPause,
             nickname: opponent !== null && config.nickname,

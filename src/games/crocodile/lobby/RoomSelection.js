@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withStyles, Paper, IconButton, Box, List, ListItem, ListItemText, Divider, Grid, Typography, Container } from "@material-ui/core";
 import { Add, ArrowBack } from '@material-ui/icons';
-import { socketJoinRoom } from '../../../socket/crocodile_emit';
+import { socketJoinRoom } from '../../../socket/crocodile';
 
 const styles = theme => ({
     root: {

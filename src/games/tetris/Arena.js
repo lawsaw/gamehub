@@ -70,9 +70,9 @@ class Arena extends PureComponent {
     render() {
         const { classes, width, isOpponent } = this.props;
 
-        let isMobile = isWidthDown('xs', width);
-        let isTablet = isWidthDown('sm', width);
-        let col_size = isMobile ? 15 : 30;
+        let is_mobile = isWidthDown('xs', width);
+        let is_tablet = isWidthDown('sm', width);
+        let col_size = is_mobile ? 16 : 30;
 
         return (
             <Fragment>
@@ -96,7 +96,7 @@ class Arena extends PureComponent {
                             </Box>
                         </Box>
                         {
-                            isOpponent && !isTablet ? (
+                            isOpponent && !is_tablet ? (
                                 <Opponent
                                     size={col_size}
                                 />
@@ -104,7 +104,7 @@ class Arena extends PureComponent {
                         }
                     </Box>
                     {
-                        isMobile ? (
+                        is_mobile ? (
                             <Box
                                 className={classes.mobileBar}
                             >

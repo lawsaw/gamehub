@@ -5,7 +5,7 @@ import SocketContext from '../../../helpers/SocketContext';
 import { updateConfig } from "../../../actions/tetris";
 import { TextInput, Stepper } from "../../../components";
 import { preventMultipleSubmit } from "../../../helpers/etc";
-import { makeConnection } from '../../../socket/tetris_emit';
+import { makeConnection } from '../../../socket/tetris';
 
 const styles = theme => ({
     form: {

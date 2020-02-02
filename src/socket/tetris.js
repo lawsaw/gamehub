@@ -1,8 +1,8 @@
-import { GAME_TETRIS } from '../helpers/constants';
+import { GAME_TETRIS, META_SOCKET_EMIT } from '../helpers/constants';
 
 const ACTION_INIT = {
     type: GAME_TETRIS,
-    meta: { remote: 'socket_emit' },
+    meta: { remote: META_SOCKET_EMIT },
 };
 
 export const MAKE_CONNECTION = 'MAKE_CONNECTION';

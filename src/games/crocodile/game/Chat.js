@@ -4,7 +4,7 @@ import { withStyles, Grid } from "@material-ui/core";
 import { TextInput } from '../../../components';
 import { ChatWindow } from './';
 import { preventMultipleSubmit } from '../../../helpers/etc';
-import { socketChat, socketMessageMark } from "../../../socket/crocodile_emit";
+import { socketChat, socketMessageMark } from "../../../socket/crocodile";
 
 const styles = (theme) => ({
     chat: {

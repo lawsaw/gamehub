@@ -9,6 +9,7 @@ const styles = () => ({
         position: 'relative',
         height:  props => ((ROWS - ROWS_HIDDEN) * props.size - (ROWS - ROWS_HIDDEN - 1)),
         width: props => (COLS * props.size - COLS + 1),
+        overflow: 'hidden',
         // '&$fieldPreview': {
         //     height: props => (ROWS_HIDDEN * props.size),
         //     width: props => (ROWS_HIDDEN * props.size),
@@ -63,6 +64,7 @@ const styles = () => ({
     },
     hidden: {
         opacity: 0,
+        pointerEvents: 'none',
     },
     colPreview: {},
 });

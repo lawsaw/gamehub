@@ -1,8 +1,8 @@
-import { GAME_CROCODILE } from '../helpers/constants';
+import { GAME_CROCODILE, META_SOCKET_EMIT } from '../helpers/constants';
 
 const ACTION_INIT = {
     type: GAME_CROCODILE,
-    meta: { remote: 'socket_emit' },
+    meta: { remote: META_SOCKET_EMIT },
 };
 
 export const VALIDATE_NICKNAME = 'VALIDATE_NICKNAME';

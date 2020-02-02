@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withStyles, Box, Button, Dialog } from "@material-ui/core";
 import { Paint, Game } from "./";
-import { socketWordSelect, socketPaint } from "../../../socket/crocodile_emit";
+import { socketWordSelect, socketPaint } from "../../../socket/crocodile";
 
 const styles = theme => ({
     wordList: {

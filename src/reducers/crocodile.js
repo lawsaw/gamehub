@@ -1,4 +1,4 @@
-import { UPDATE_ROOM, CLEAN_ROOM, UPDATE_CONFIG_2, RESET_CONFIG_2, UPDATE_ROOM_LIST } from "../actions/crocodile";
+import { UPDATE_ROOM, CLEAN_ROOM, UPDATE_CONFIG, RESET_CONFIG, UPDATE_ROOM_LIST } from "../actions/crocodile";
 import { cloneDeep } from "lodash";
 import { STATUS_MAP } from '../games/crocodile/helpers/constants';
 
@@ -50,7 +50,7 @@ export default function room(state = initialState, action) {
                 }
             };
 
-        case UPDATE_CONFIG_2:
+        case UPDATE_CONFIG:
             return {
                 ...state,
                 config: {
@@ -59,7 +59,7 @@ export default function room(state = initialState, action) {
                 }
             }
 
-        case RESET_CONFIG_2:
+        case RESET_CONFIG:
             return {
                 ...state,
                 config: {
