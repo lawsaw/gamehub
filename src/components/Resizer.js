@@ -26,6 +26,7 @@ class Resizer extends PureComponent {
 
     componentDidMount() {
         this.setSizeForce();
+        console.log('dsfds');
         window.addEventListener('resize', this.listener, false);
     }
 
@@ -77,6 +78,7 @@ class Resizer extends PureComponent {
     }
 
     getSize = () => {
+        if(!this.ref.current) return false;
         let { parentElement: { offsetWidth: parentOffsetWidth, offsetHeight: parentOffsetHeight } } = this.ref.current;
         let size;
         if(parentOffsetWidth < parentOffsetHeight) {
@@ -93,7 +95,9 @@ class Resizer extends PureComponent {
         return size;
     }
 
-    setSize = ({ width, height }) => {
+    setSize = (size) => {
+        if(!size) return false;
+        let { width, height } = size;
         this.setState(() => ({
             width,
             height,
