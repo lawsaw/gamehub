@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import cx from 'classnames';
+import { connect } from 'react-redux';
 import { withStyles, Box } from "@material-ui/core";
 import { Toolbar as ToolbarComponent } from '../../../components';
 
@@ -6,10 +8,14 @@ const styles = theme => ({
     toolbar: {
         flexWrap: 'wrap',
         flexDirection: 'column',
-        alignItems: 'flex-start',
+        alignItems: 'stretch',
         height: '100%',
     },
     item: {
+        display: 'flex',
+        alignItems: 'flex-start',
+    },
+    item_with_opponent: {
         '&:not(:first-child)': {
             [theme.breakpoints.up('sm')]: {
                 marginTop: theme.spacing(1),
@@ -17,6 +23,11 @@ const styles = theme => ({
             [theme.breakpoints.down('xs')]: {
                 marginTop: theme.spacing(0.5),
             },
+        },
+    },
+    item_without_opponent: {
+        '&:not(:first-child)': {
+            marginTop: theme.spacing(2),
         },
     },
     score: {
@@ -27,16 +38,16 @@ const styles = theme => ({
 class Toolbar extends PureComponent {
 
     render() {
-        const { classes, data } = this.props;
+        const { classes, data, isOpponent, className } = this.props;
         return (
             <ToolbarComponent
-                className={classes.toolbar}
+                className={cx(classes.toolbar, className)}
             >
                 {
                     data.map((children, index) => children ? (
                         <Box
                             key={index}
-                            className={classes.item}
+                            className={cx(classes.item, isOpponent ? classes.item_with_opponent : classes.item_without_opponent)}
                         >
                             {children}
                         </Box>
@@ -48,4 +59,11 @@ class Toolbar extends PureComponent {
 
 }
 
-export default withStyles(styles)(Toolbar);
+export default connect(
+    store => {
+        const { opponent } = store.tetris;
+        return {
+            isOpponent: opponent !== null,
+        }
+    },
+)(withStyles(styles)(Toolbar));

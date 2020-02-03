@@ -10,3 +10,8 @@ export const GAME_CROCODILE = 'GAME_CROCODILE';
 
 export const META_SOCKET_EMIT = 'META_SOCKET_EMIT';
 
+export const HEADER_HEIGHT = {
+    'MIN': 50,
+    'MAX': 60,
+};
+

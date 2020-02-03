@@ -4,6 +4,7 @@ let initialState = {
     header: null,
     sub_header: null,
     topAction: null,
+    topComponent: null,
 };
 
 export default function room(state = initialState, action) {

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { merge } from '../helpers/etc';
 import { Grid } from '../components';
-import { sendMove } from '../../../socket/tetris';
+import { socketSendMove } from '../../../socket/tetris';
 import { COL_SIZE, COL_SIZE_MOBILE } from "../helpers/constants";
 
 class Field extends PureComponent {
@@ -12,8 +12,8 @@ class Field extends PureComponent {
     componentDidUpdate(prevProps, prevState, snapshot) {
         const { isOpponent } = this.props;
         if(isOpponent && !isEqual(this.props.field, prevProps.field)) {
-            const { sendMove, field, preview, speed, score } = this.props;
-            sendMove({
+            const { socketSendMove, field, preview, speed, score } = this.props;
+            socketSendMove({
                 field,
                 preview,
                 speed,
@@ -51,7 +51,7 @@ export default connect(
     },
     dispatch => {
         return {
-            sendMove: data => dispatch( sendMove(data) ),
+            socketSendMove: data => dispatch( socketSendMove(data) ),
         }
     }
 )(withWidth()(Field));

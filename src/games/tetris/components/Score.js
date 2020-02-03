@@ -1,33 +1,48 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
-import { withStyles, Box, Typography } from "@material-ui/core";
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
+import { withStyles, Typography, Box } from "@material-ui/core";
 
-const styles = () => ({
-    score: {},
-    typograpy: {
+const styles = theme => ({
+    item: {
         lineHeight: 1,
+        '&:not(:first-child)': {
+            marginTop: theme.spacing(0.5),
+        },
     },
 });
+
+const DATA = [
+    {
+        value: 'score',
+        label: 'Score',
+    },
+    {
+        value: 'speed',
+        label: 'Speed',
+    }
+];
 
 class Score extends PureComponent {
 
     render() {
-        const { classes, className, score, width } = this.props;
+        const { classes, className } = this.props;
         return (
-            <Box
-                className={cx(classes.score, className)}
-            >
-                <Typography
-                    variant={isWidthUp('sm', width) ? 'h5' : 'h6'}
-                    className={classes.typograpy}
-                >
-                    {score}
-                </Typography>
+            <Box>
+                {
+                    DATA.map(({ value, label }, index) => (
+                        <Typography
+                            key={index}
+                            variant='h6'
+                            className={cx(classes.item, className)}
+                        >
+                            {label}: {this.props[value]}
+                        </Typography>
+                    ))
+                }
             </Box>
         )
     }
 
 }
 
-export default withStyles(styles)(withWidth()(Score));
+export default withStyles(styles)(Score);

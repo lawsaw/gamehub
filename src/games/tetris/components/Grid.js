@@ -43,7 +43,8 @@ const styles = () => ({
         height: props => props.size,
         flexShrink: 0,
         margin: 0,
-        border: `1px solid ${fade('#999', 0.5)}`,
+        //border: `1px solid ${fade('#999', 0.5)}`,
+        border: '1px solid #5a5a5a',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -55,12 +56,13 @@ const styles = () => ({
         '&$colPreview': {
             borderColor: 'transparent',
             '&$square': {
-                borderColor: fade('#999', 0.5),
+                //borderColor: fade('#999', 0.5),
+                borderColor: '#5a5a5a',
             },
         },
     },
     square: {
-        backgroundColor: 'grey',
+        backgroundColor: '#4050b5',
     },
     hidden: {
         opacity: 0,

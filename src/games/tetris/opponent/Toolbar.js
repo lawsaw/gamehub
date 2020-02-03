@@ -1,28 +1,35 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Typography } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import { Toolbar as ToolbarComponent } from '../components';
 import { Score } from './';
+import { Nickname } from '../components';
+
+const styles = () => ({
+
+});
 
 class Toolbar extends PureComponent {
 
     render() {
-        const { speed, nickname, previewComponent } = this.props;
+        const { speed, nickname, previewComponent, classes, labelClassName, ...props } = this.props;
         return (
             <ToolbarComponent
                 data={[
 
-                    <Typography
-                        variant='h6'
-                    >
-                        {nickname}
-                    </Typography>,
+                    <Nickname
+                        name={nickname}
+                        className={labelClassName}
+                    />,
 
-                    <Score />,
+                    <Score
+                        className={labelClassName}
+                    />,
 
                     previewComponent,
 
                 ]}
+                {...props}
             />
 
         )
@@ -37,4 +44,4 @@ export default connect(
             nickname,
         }
     }
-)(Toolbar);
+)(withStyles(styles)(Toolbar));

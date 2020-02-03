@@ -4,13 +4,12 @@ import { withRouter } from 'react-router-dom';
 import {withStyles, Box } from "@material-ui/core";
 import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
 import { Engine } from './';
-import { Field as FieldSingle, Toolbar as ToolbarSingle, MobileBar, Preview as PreviewSingle } from './single';
-import { Field as FieldOpponent, Toolbar as ToolbarOpponent, Opponent } from './opponent';
-import { COL_SIZE } from './helpers/constants';
+import { MobileBar, Single } from './single';
+import { Opponent } from './opponent';
 import { setApp } from "../../actions/app";
 import { TETRIS } from '../../helpers/routes';
 
-const styles = theme => ({
+const styles = () => ({
     layout: {
         position: 'relative',
         width: '100%',
@@ -20,24 +19,12 @@ const styles = theme => ({
         justifyContent: 'center',
         alignItems: 'stretch',
     },
-    header: {},
     body: {
         flexGrow: 1,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-    },
-    content: {
-        display: 'flex',
-        alignItems: 'stretch',
-        justifyContent: 'center',
-    },
-    toolbar: {
-        //alignSelf: 'flex-start',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: COL_SIZE,
-        },
     },
     mobileBar: {
         //flexBasis: 50,
@@ -46,20 +33,6 @@ const styles = theme => ({
 });
 
 class Arena extends PureComponent {
-
-    componentDidMount() {
-        const { setApp } = this.props;
-        setApp({
-            topAction: this.handleLeave,
-        });
-    }
-
-    componentWillUnmount() {
-        const { setApp } = this.props;
-        setApp({
-            topAction: null,
-        });
-    }
 
     handleLeave = () => {
         const { history } = this.props;
@@ -72,7 +45,7 @@ class Arena extends PureComponent {
 
         let is_mobile = isWidthDown('xs', width);
         let is_tablet = isWidthDown('sm', width);
-        let col_size = is_mobile ? 16 : 30;
+        let col_size = is_mobile ? 17 : 30;
 
         return (
             <Fragment>
@@ -83,18 +56,9 @@ class Arena extends PureComponent {
                     <Box
                         className={classes.body}
                     >
-                        <Box
-                            className={classes.content}
-                        >
-                            <FieldSingle size={col_size} />
-                            <Box
-                                className={classes.toolbar}
-                            >
-                                <ToolbarSingle
-                                    previewComponent={<PreviewSingle size={col_size} />}
-                                />
-                            </Box>
-                        </Box>
+                        <Single
+                            size={col_size}
+                        />
                         {
                             isOpponent && !is_tablet ? (
                                 <Opponent
@@ -127,7 +91,7 @@ export default connect(
     },
     dispatch => {
         return {
-            setApp: options => dispatch( setApp(options) ),
+            //setApp: options => dispatch( setApp(options) ),
         }
     }
 )(withRouter(withWidth()(withStyles(styles)(Arena))));

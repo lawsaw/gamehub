@@ -5,7 +5,7 @@ import SocketContext from '../../../helpers/SocketContext';
 import { updateConfig } from "../../../actions/tetris";
 import { TextInput, Stepper } from "../../../components";
 import { preventMultipleSubmit } from "../../../helpers/etc";
-import { makeConnection } from '../../../socket/tetris';
+import { socketMakeConnection } from '../../../socket/tetris';
 
 const styles = theme => ({
     form: {
@@ -77,8 +77,8 @@ class Connection extends PureComponent {
 
     submitClient = () => {
         const { server_id } = this.state;
-        const { makeConnection } = this.props;
-        makeConnection(server_id);
+        const { socketMakeConnection } = this.props;
+        socketMakeConnection(server_id);
     }
 
     handleBack = () => {
@@ -116,7 +116,7 @@ export default connect(
     dispatch => {
         return {
             updateConfig: config => dispatch( updateConfig(config) ),
-            makeConnection: server_id => dispatch( makeConnection(server_id) ),
+            socketMakeConnection: server_id => dispatch( socketMakeConnection(server_id) ),
         }
     }
 )(withStyles(styles)(Connection));

@@ -1,90 +1,186 @@
 import React, { PureComponent, Fragment } from 'react';
+import { withStyles } from "@material-ui/core";
 import { connect } from 'react-redux';
-import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
-import { IconButton, Button, Typography } from "@material-ui/core";
-import PlayArrow from '@material-ui/icons/PlayArrow';
-import Pause from '@material-ui/icons/Pause';
-import Stop from '@material-ui/icons/Stop';
-import { Toolbar as ToolbarComponent } from '../components';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
+import { Toolbar as ToolbarComponent, Fab, Nickname } from '../components';
 import { Score } from './';
 import { startMoving, startNewGame, stopGame, stopMoving } from "../../../actions/tetris";
 import { Opponent } from '../opponent';
+import { ROWS, ROWS_HIDDEN } from "../helpers/constants";
+import { setApp } from "../../../actions/app";
+import { socketSendButtonAction } from "../../../socket/tetris";
+
+const OPPONENT_COL_SIZE = {
+    'MIN': 10,
+    'MAX': 17,
+};
+
+const styles = theme => ({
+    button: {
+        '&:not(:first-child)': {
+            marginLeft: theme.spacing(1),
+        }
+    },
+    label: {
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '0.7rem',
+        },
+    },
+    labelOpponent: {
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '0.7rem',
+        },
+    },
+    labelSingle: {
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '0.8rem',
+        }
+    },
+    toolbarOpponent: {
+        [theme.breakpoints.down('xs')]: {
+            position: 'absolute',
+            bottom: (ROWS - ROWS_HIDDEN) * OPPONENT_COL_SIZE.MIN - (ROWS - ROWS_HIDDEN - 2),
+            left: 0,
+            padding: 0,
+            height: 'auto',
+        },
+    }
+});
 
 class Toolbar extends PureComponent {
 
+    componentDidMount() {
+        const { setApp } = this.props;
+        setApp({
+            topComponent: this.renderPlayPauseButtons(),
+        })
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const { setApp, isGameRunning, isPlayButton, isPauseButton } = this.props;
+        if(isGameRunning !== prevProps.isGameRunning || isPlayButton !== prevProps.isPlayButton || isPauseButton !== prevProps.isPauseButton) {
+            setApp({
+                topComponent: this.renderPlayPauseButtons(),
+            })
+        }
+    }
+
+    componentWillUnmount() {
+        const { setApp } = this.props;
+        setApp({
+            topComponent: null,
+        })
+    }
+
+    handleAction = (action) => {
+        const { isOpponent, socketSendButtonAction } = this.props;
+        let doAction = () => {
+            switch(action) {
+                case 'startNewGame':
+                    this.props[action]();
+                    this.props['startMoving']();
+                    break;
+                default:
+                    this.props[action]();
+                    break;
+            }
+        };
+        if(!isOpponent) {
+            doAction();
+        } else {
+            socketSendButtonAction(action);
+            doAction();
+        }
+    }
+
     handleStart = (e) => {
         e.currentTarget.blur();
-        const { startNewGame, startMoving } = this.props;
-        startNewGame();
-        startMoving();
+        this.handleAction('startNewGame');
+    }
+
+    handleStartMoving = () => {
+        this.handleAction('startMoving');
+    }
+
+    handleStopMoving = () => {
+        this.handleAction('stopMoving');
+    }
+
+    handleStopGame = () => {
+        this.handleAction('stopGame');
+    }
+
+    renderPlayPauseButtons = () => {
+        const { classes, isGameRunning, isPlayButton, isPauseButton } = this.props;
+        let button_size = 'small';
+        return (
+            <Fragment>
+                {
+                    isGameRunning ? (
+                        <Fragment>
+                            <Fab
+                                icon="Stop"
+                                size={button_size}
+                                onClick={this.handleStopGame}
+                                className={classes.button}
+                            />
+                            {
+                                isPlayButton && (
+                                    <Fab
+                                        icon="PlayArrow"
+                                        size={button_size}
+                                        onClick={this.handleStartMoving}
+                                        className={classes.button}
+                                    />
+                                )
+                            }
+                            {
+                                isPauseButton && (
+                                    <Fab
+                                        icon="Pause"
+                                        size={button_size}
+                                        onClick={this.handleStopMoving}
+                                        className={classes.button}
+                                    />
+                                )
+                            }
+                        </Fragment>
+                    ) : (
+                        <Fab
+                            icon="PlayArrow"
+                            size={button_size}
+                            onClick={this.handleStart}
+                        />
+                    )
+                }
+            </Fragment>
+        )
     }
 
     render() {
-        const { isGameRunning, isPlayButton, isPauseButton, startMoving, stopMoving, stopGame, nickname, previewComponent, isOpponent, width } = this.props;
+        const { classes, nickname, previewComponent, isOpponent, width } = this.props;
         let is_tablet = isWidthDown('sm', width);
         let is_mobile = isWidthDown('xs', width);
-        let col_size = is_mobile ? 7 : 16;
-        let button_size = is_tablet ? 'medium' : 'medium';
+        let col_size_opponent = is_mobile ? OPPONENT_COL_SIZE.MIN : OPPONENT_COL_SIZE.MAX;
         return (
             <ToolbarComponent
                 data={[
 
                     nickname && (
-                        <Typography
-                            variant='h6'
-                        >
-                            {nickname}
-                        </Typography>
+                        <Nickname
+                            name={nickname}
+                            className={isOpponent ? classes.label : classes.labelSingle}
+                        />
                     ),
 
-                    <Score />,
-
-                    isGameRunning ? (
-                        <Fragment>
-                            <IconButton
-                                variant="outlined"
-                                onClick={stopGame}
-                                size={button_size}
-                            >
-                                <Stop />
-                            </IconButton>
-                            {
-                                isPlayButton && (
-                                    <IconButton
-                                        variant="outlined"
-                                        onClick={startMoving}
-                                        size={button_size}
-                                    >
-                                        <PlayArrow />
-                                    </IconButton>
-                                )
-                            }
-                            {
-                                isPauseButton && (
-                                    <IconButton
-                                        variant="outlined"
-                                        onClick={stopMoving}
-                                        size={button_size}
-                                    >
-                                        <Pause />
-                                    </IconButton>
-                                )
-                            }
-                        </Fragment>
-                    ) : (
-                        <IconButton
-                            variant="outlined"
-                            onClick={this.handleStart}
-                            size={button_size}
-                        >
-                            <PlayArrow />
-                        </IconButton>
-                    ),
+                    <Score
+                        className={isOpponent ? classes.label : classes.labelSingle}
+                    />,
 
                     previewComponent,
 
                     isOpponent && is_tablet && (
-                        <Opponent size={col_size} />
+                        <Opponent size={col_size_opponent} labelClassName={classes.labelOpponent} toolbarClassName={classes.toolbarOpponent} />
                     )
 
                 ]}
@@ -112,6 +208,8 @@ export default connect(
             stopGame: () => { dispatch(stopGame()) },
             startMoving: () => { dispatch(startMoving()) },
             stopMoving: () => { dispatch(stopMoving()) },
+            setApp: options => dispatch( setApp(options) ),
+            socketSendButtonAction: button_action => dispatch( socketSendButtonAction(button_action) ),
         }
     }
-)(withWidth()(Toolbar));
+)(withWidth()(withStyles(styles)(Toolbar)));

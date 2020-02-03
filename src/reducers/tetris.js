@@ -164,6 +164,8 @@ export default function room(state = initialState, action) {
                 ...initialState,
                 moveAction: state.moveAction,
                 key_map: state.key_map,
+                config: state.config,
+                opponent: state.opponent,
             };
 
         case START_MOVING:
@@ -263,8 +265,10 @@ export default function room(state = initialState, action) {
         case RESET_CONFIG:
             return {
                 ...state,
+                opponent: null,
                 config: {
                     ...initialConfig,
+                    nickname: state.config.nickname,
                 }
             }
 

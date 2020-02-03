@@ -5,10 +5,12 @@ import { Score as ScoreComponent } from '../components';
 class Score extends PureComponent {
 
     render() {
-        const { score } = this.props;
+        const { score, speed, ...props } = this.props;
         return (
             <ScoreComponent
                 score={score}
+                speed={speed}
+                {...props}
             />
         )
     }
@@ -19,6 +21,7 @@ export default connect(
     store => {
         return {
             score: store.tetris.score,
+            speed: store.tetris.speed,
         }
     },
 )(Score);

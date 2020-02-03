@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import { socketConnect, socketDisconnect } from './actions/socket';
 import SocketContext from './helpers/SocketContext';
-import { updateConfig as updateConfigTetris, updateOpponent } from "./actions/tetris";
+import {updateConfig as updateConfigTetris, updateOpponent, startNewGame, startMoving, stopMoving, stopGame, resetConfig } from "./actions/tetris";
 import { updateConfig as updateConfigCrocodile, updateRoomList, updateRoom } from "./actions/crocodile";
 import { SOCKET_CHANNEL, COMMON_ACTIONS, GAME_TETRIS, GAME_CROCODILE } from "./helpers/constants";
+import { socketMakeConnection } from "./socket/tetris";
 
 class Root extends PureComponent {
 
@@ -18,6 +19,8 @@ class Root extends PureComponent {
             [GAME_TETRIS]: {
                 'LOBBY_UPDATE_CONFIG': props.updateConfigTetris,
                 'ON_GAME': props.updateOpponent,
+                'DO_BUTTON_ACTION': this.doTetrisActionButton,
+                'DO_GAME_DISCONNECT': () => { props.stopGame(); props.resetConfig() },
             },
             [GAME_CROCODILE]: {
                 'LOBBY_UPDATE_CONFIG': props.updateConfigCrocodile,
@@ -25,6 +28,27 @@ class Root extends PureComponent {
                 'UPDATE_ROOM': props.updateRoom,
             },
         };
+    }
+
+    doTetrisActionButton = ({ button_action }) => {
+        console.log(button_action);
+        const { opponentId } = this.props;
+        console.log(opponentId);
+        if(button_action in this.props) {
+            switch(button_action) {
+                case 'startNewGame':
+                    this.props[button_action]();
+                    this.props['startMoving']();
+                    break;
+                case 'stopGame':
+                    this.props[button_action]();
+                    this.props['socketMakeConnection'](opponentId);
+                    break;
+                default:
+                    this.props[button_action]();
+                    break;
+            }
+        }
     }
 
     componentDidMount() {
@@ -81,7 +105,11 @@ class Root extends PureComponent {
 Root.contextType = SocketContext;
 
 export default connect(
-    null,
+    store => {
+        return {
+            opponentId: store.tetris.opponent && store.tetris.opponent.id,
+        }
+    },
     dispatch => {
         return {
             socketConnect: id => dispatch( socketConnect(id) ),
@@ -90,6 +118,14 @@ export default connect(
             //Tetris
             updateConfigTetris: config => dispatch( updateConfigTetris(config) ),
             updateOpponent: opponent => dispatch( updateOpponent(opponent) ),
+            resetConfig: () => dispatch( resetConfig() ),
+            socketMakeConnection: server_id => dispatch( socketMakeConnection(server_id) ),
+
+            //button_actions
+            startNewGame: () => dispatch( startNewGame() ),
+            startMoving: () => dispatch( startMoving() ),
+            stopMoving: () => dispatch( stopMoving() ),
+            stopGame: () => dispatch( stopGame() ),
 
             //Crocodile
             updateConfigCrocodile: config => dispatch( updateConfigCrocodile(config) ),

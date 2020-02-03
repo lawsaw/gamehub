@@ -2,11 +2,8 @@ import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
 import { withStyles, Button, Box } from "@material-ui/core";
-import RotateRightIcon from '@material-ui/icons/RotateRight';
-import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { KEY_MAP } from '../helpers/constants';
+import { Fab } from '../components';
 
 const ARROW_SIZE = 60;
 
@@ -67,29 +64,17 @@ const styles = () => ({
     },
 });
 
-const TouchButton = ({ classes, onClick, icon, className }) => {
-    return (
-        <Box
-            component={Button}
-            className={className}
-            onClick={onClick}
-        >
-            {icon}
-        </Box>
-    )
-};
-
 const ARROWS_MAP = [
     {
-        icon: <KeyboardArrowLeftIcon />,
+        icon: 'KeyboardArrowLeft',
         action: KEY_MAP.LEFT,
         position: 'left',
     },{
-        icon: <KeyboardArrowRightIcon />,
+        icon: 'KeyboardArrowRight',
         action: KEY_MAP.RIGHT,
         position: 'right',
     },{
-        icon: <KeyboardArrowDownIcon />,
+        icon: 'KeyboardArrowDown',
         action: KEY_MAP.SPACE,
         position: 'down',
     }
@@ -111,7 +96,7 @@ class MobileBar extends PureComponent {
                     >
                         {
                             ARROWS_MAP.map(({ icon, action, position }, index) => (
-                                <TouchButton
+                                <Fab
                                     key={index}
                                     icon={icon}
                                     onClick={key_map[action]}
@@ -127,9 +112,9 @@ class MobileBar extends PureComponent {
                     <Box
                         className={classes.arrows}
                     >
-                        <TouchButton
-                            icon={<RotateRightIcon />}
-                            onClick={key_map[KEY_MAP.DOWN]}
+                        <Fab
+                            icon="RotateLeft"
+                            onClick={key_map[KEY_MAP.UP]}
                             className={cx(classes.touchButton, classes.arrow, classes.arrow_rightCenter)}
                         />
                     </Box>

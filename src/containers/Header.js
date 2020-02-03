@@ -4,25 +4,40 @@ import { Link } from 'react-router-dom';
 import { withStyles, AppBar, Toolbar, IconButton, Typography, Button } from "@material-ui/core";
 import HomeIcon from '@material-ui/icons/Home';
 import { HOME } from '../helpers/routes';
+import { HEADER_HEIGHT } from "../helpers/constants";
 
-const styles = () => ({
+const styles = theme => ({
     appBar: {},
     title: {
         flexGrow: 1,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        display: 'block',
+        width: 0,
     },
+    toolbar: {
+        [theme.breakpoints.down('sm')]: {
+            minHeight: 'auto',
+        },
+        [theme.breakpoints.up('sm')]: {
+            minHeight: HEADER_HEIGHT.MAX,
+        },
+    }
 });
 
 class Header extends PureComponent {
 
     render() {
-        const { classes, location: { pathname }, header, sub_header, topAction } = this.props;
+        const { classes, location: { pathname }, header, sub_header, topAction, topComponent } = this.props;
         return (
             <AppBar
                 position="static"
                 color="primary"
                 className={classes.appBar}
             >
-                <Toolbar>
+                <Toolbar
+                    className={classes.toolbar}
+                >
                     {
                         pathname !== HOME.link && (
                             <IconButton
@@ -54,6 +69,9 @@ class Header extends PureComponent {
                             </Button>
                         )
                     }
+                    {
+                        topComponent && topComponent
+                    }
                 </Toolbar>
             </AppBar>
         )
@@ -63,11 +81,12 @@ class Header extends PureComponent {
 
 export default connect(
     store => {
-        const { header, sub_header, topAction } = store.app;
+        const { header, sub_header, topAction, topComponent } = store.app;
         return {
             header,
             sub_header,
             topAction,
+            topComponent,
         }
     }
 )(withStyles(styles)(Header));

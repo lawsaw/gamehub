@@ -2,8 +2,9 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Arena } from './';
 import { Lobby } from './lobby';
-import { resetConfig } from '../../actions/tetris';
+import { resetConfig, stopGame } from '../../actions/tetris';
 import { setApp } from "../../actions/app";
+import { socketDisconnect } from "../../socket/tetris";
 
 class MultiPlayer extends PureComponent {
 
@@ -15,7 +16,12 @@ class MultiPlayer extends PureComponent {
     }
 
     componentWillUnmount() {
-        const { resetConfig } = this.props;
+        const { resetConfig, is_lobby, socketDisconnect, stopGame } = this.props;
+        if(!is_lobby) {
+            console.log('make disconnect');
+            stopGame();
+            socketDisconnect();
+        }
         resetConfig();
     }
 
@@ -47,6 +53,8 @@ export default connect(
         return {
             resetConfig: () => dispatch( resetConfig() ),
             setApp: options => dispatch( setApp(options) ),
+            stopGame: () => dispatch( stopGame() ),
+            socketDisconnect: () => dispatch( socketDisconnect() ),
         }
     }
 )(MultiPlayer);

@@ -1,37 +1,33 @@
 import React, { PureComponent } from 'react';
-import { withStyles, Box } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
+import { PlayerInterface } from '../components';
 import { Field, Toolbar, Preview } from './';
 
 const styles = theme => ({
     opponent: {
-        display: 'flex',
-        alignItems: 'stretch',
-        justifyContent: 'center',
         [theme.breakpoints.down('sm')]: {
             position: 'absolute',
             bottom: 0,
         },
     },
-    toolbar: {},
 });
 
 class Opponent extends PureComponent {
 
     render() {
-        const { classes, size } = this.props;
+        const { classes, size, labelClassName, toolbarClassName } = this.props;
         return (
-            <Box
+            <PlayerInterface
                 className={classes.opponent}
-            >
-                <Field size={size} />
-                <Box
-                    className={classes.toolbar}
-                >
+                field={<Field size={size} />}
+                toolbar={(
                     <Toolbar
+                        className={toolbarClassName}
+                        labelClassName={labelClassName}
                         previewComponent={<Preview size={size} />}
                     />
-                </Box>
-            </Box>
+                )}
+            />
         )
     }
 

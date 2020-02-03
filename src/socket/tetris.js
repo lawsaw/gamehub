@@ -6,7 +6,7 @@ const ACTION_INIT = {
 };
 
 export const MAKE_CONNECTION = 'MAKE_CONNECTION';
-export function makeConnection(server_id) {
+export function socketMakeConnection(server_id) {
     return {
         action: MAKE_CONNECTION,
         server_id,
@@ -15,7 +15,7 @@ export function makeConnection(server_id) {
 }
 
 export const SEND_MOVE = 'SEND_MOVE';
-export function sendMove(data) {
+export function socketSendMove(data) {
     return {
         action: SEND_MOVE,
         ...data,
@@ -28,6 +28,23 @@ export function socketValidateNickname(nickname) {
     return {
         action: VALIDATE_NICKNAME,
         nickname,
+        ...ACTION_INIT
+    };
+}
+
+export const SEND_BUTTON_ACTION = 'SEND_BUTTON_ACTION';
+export function socketSendButtonAction(button_action) {
+    return {
+        action: SEND_BUTTON_ACTION,
+        button_action,
+        ...ACTION_INIT
+    };
+}
+
+export const DISCONNECT = 'DISCONNECT';
+export function socketDisconnect() {
+    return {
+        action: DISCONNECT,
         ...ACTION_INIT
     };
 }
