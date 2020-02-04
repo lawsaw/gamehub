@@ -18,7 +18,7 @@ class Root extends PureComponent {
                 'SOCKET_MESSAGE': this.socketOnMessage,
             },
             [GAME_TETRIS]: {
-                'LOBBY_UPDATE_CONFIG': props.updateConfigTetris,
+                //'LOBBY_UPDATE_CONFIG': props.updateConfigTetris,
                 'ON_GAME': props.updateOpponent,
                 'DO_BUTTON_ACTION': this.doTetrisActionButton,
                 'DO_GAME_DISCONNECT': () => { props.stopGame(); props.resetConfig() },
@@ -152,7 +152,7 @@ export default connect(
             socketDisconnect: id => dispatch( socketDisconnect(id) ),
 
             //Tetris
-            updateConfigTetris: config => dispatch( updateConfigTetris(config) ),
+            //updateConfigTetris: config => dispatch( updateConfigTetris(config) ),
             updateOpponent: opponent => dispatch( updateOpponent(opponent) ),
             resetConfig: () => dispatch( resetConfig() ),
             showResults: () => dispatch( showResults() ),

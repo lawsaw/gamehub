@@ -1,68 +1,37 @@
 import React, { PureComponent } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import { SnackbarProvider } from 'notistack';
-import SocketContext from './helpers/SocketContext';
-import thunk from 'redux-thunk';
-import socketIOClient from 'socket.io-client';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import theme from './helpers/theme';
+import { withSnackbar } from 'notistack';
 import Root from './Root';
-import mainReducer from './reducers';
-import { SOCKET_SERVER } from "./helpers/constants";
-
-
-import { createSocketEmitMiddleware } from './helpers/etc';
-
-const IO = socketIOClient(SOCKET_SERVER);
-
-const store = createStore(
-    mainReducer,
-    applyMiddleware(
-        thunk,
-        createSocketEmitMiddleware(IO),
-        //apiRequest(IO),
-    )
-);
-
-//let socket = null;
-
-// SOCKET_MAP.forEach(({ game, method }) => {
-//     IO[method] = (action, request) => {
-//         IO.emit(SOCKET_CHANNEL, {
-//             game,
-//             action,
-//             ...request,
-//         });
-//     };
-// });
+import SnackbarContext from "./helpers/SnackbarContext";
+import ResponseContext from "./helpers/ResponseContext";
 
 class App extends PureComponent {
 
+    showSnackbar = (message, type="default") => {//TODO: type: 'default' | 'success' | 'error' | 'info
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(message, {
+            variant: type,
+            autoHideDuration: 2500,
+        });
+    }
+
+    validateResponse = (response, callback) => {
+        if(response.error) {
+            this.showSnackbar(response.error, 'error');
+        } else {
+            callback(response);
+        }
+    }
+
     render() {
         return (
-            <Router>
-                <Provider
-                    store={store}
-                >
-                    <MuiThemeProvider theme={theme}>
-                        <SnackbarProvider maxSnack={3} anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'center',
-                        }}>
-                            <CssBaseline />
-                            <SocketContext.Provider value={IO}>
-                                <Route component={Root} />
-                            </SocketContext.Provider>
-                        </SnackbarProvider>
-                    </MuiThemeProvider>
-                </Provider>
-            </Router>
+            <SnackbarContext.Provider value={this.showSnackbar}>
+                <ResponseContext.Provider value={this.validateResponse}>
+                    <Root />
+                </ResponseContext.Provider>
+            </SnackbarContext.Provider>
         )
     }
 
 }
 
-export default App;
+export default withSnackbar(App);

@@ -32,35 +32,36 @@ export function socketCrocodileRequest(socket, action, request) {
 
 
 export function createSocketEmitMiddleware(socket, channelName=SOCKET_CHANNEL) {
+    // return store => {
+    //     return next => {
+    //         return action => {
+    //             if(action.meta && action.meta.remote === META_SOCKET_EMIT) {
+    //                 // console.log({
+    //                 //     emit: action
+    //                 // });
+    //                 socket.emit(channelName, action);
+    //             }
+    //             return next(action);
+    //         };
+    //     };
+    // };
+}
+
+export function apiRequest(socket, channelName=SOCKET_CHANNEL) {
     return store => {
         return next => {
             return action => {
                 if(action.meta && action.meta.remote === META_SOCKET_EMIT) {
-                    // console.log({
-                    //     emit: action
-                    // });
-                    socket.emit(channelName, action);
+                    return new Promise((resolve, reject) => {
+                        socket.emit(channelName, action, response => {
+                            resolve(response);
+                            // if(!response.error) resolve(response);
+                            // else reject(response.error);
+                        });
+                    });
                 }
                 return next(action);
             };
         };
     };
 }
-
-// export function apiRequest(socket, channelName=SOCKET_CHANNEL) {
-//     return store => {
-//         return next => {
-//             return action => {
-//                 if(action.meta && action.meta.remote === META_SOCKET_EMIT) {
-//                     return new Promise((resolve, reject) => {
-//                         socket.emit(channelName, action, response => {
-//                             if(!response.error) resolve(response);
-//                             else reject(response.error);
-//                         });
-//                     });
-//                 }
-//                 return next(action);
-//             };
-//         };
-//     };
-// }

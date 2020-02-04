@@ -6,6 +6,7 @@ import { updateConfig } from "../../../actions/tetris";
 import { TextInput, Stepper } from "../../../components";
 import { preventMultipleSubmit } from "../../../helpers/etc";
 import { socketMakeConnection } from '../../../socket/tetris';
+import ResponseContext from '../../../helpers/ResponseContext';
 
 const styles = theme => ({
     form: {
@@ -105,7 +106,7 @@ class Connection extends PureComponent {
     }
 }
 
-Connection.contextType = SocketContext;
+Connection.contextType = {socket: SocketContext, response: ResponseContext};
 
 export default connect(
     store => {

@@ -4,6 +4,7 @@ import { TextInput } from '../../../components';
 import { preventMultipleSubmit } from '../../../helpers/etc';
 import { socketValidateNickname} from '../../../socket/tetris';
 import { updateConfig } from "../../../actions/tetris";
+import ResponseContext from '../../../helpers/ResponseContext';
 
 class Nickname extends PureComponent {
 
@@ -20,10 +21,13 @@ class Nickname extends PureComponent {
         });
     }
 
-    submitNickname = () => {
-        const { nickname } = this.props;
-        const { socketValidateNickname } = this.props;
-        socketValidateNickname(nickname);
+    submitNickname = async () => {
+        const validateResponse = this.context;
+        const { nickname, updateConfig, socketValidateNickname } = this.props;
+        let response = await socketValidateNickname(nickname);
+        validateResponse(response, data => {
+            updateConfig(data);
+        });
     }
 
     handleNicknameSubmit = () => {
@@ -42,6 +46,8 @@ class Nickname extends PureComponent {
         )
     }
 }
+
+Nickname.contextType = ResponseContext;
 
 export default connect(
     store => {
