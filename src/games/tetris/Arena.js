@@ -7,7 +7,9 @@ import { Engine } from './';
 import { MobileBar, Single } from './single';
 import { Opponent } from './opponent';
 import { setApp } from "../../actions/app";
+import { closeResults } from "../../actions/tetris";
 import { TETRIS } from '../../helpers/routes';
+import { Results } from '../../components';
 
 const styles = () => ({
     layout: {
@@ -92,6 +94,7 @@ export default connect(
     dispatch => {
         return {
             //setApp: options => dispatch( setApp(options) ),
+            closeResults: () => { dispatch(closeResults()) },
         }
     }
 )(withRouter(withWidth()(withStyles(styles)(Arena))));

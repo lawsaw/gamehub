@@ -107,3 +107,10 @@ export function resetConfig() {
         type: RESET_CONFIG,
     };
 }
+
+export const SHOW_RESULTS = 'SHOW_RESULTS';
+export function showResults() {
+    return {
+        type: SHOW_RESULTS,
+    };
+}

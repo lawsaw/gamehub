@@ -18,11 +18,11 @@ const styles = () => ({
 class Results extends PureComponent {
 
     render() {
-        const { classes, data, onClose } = this.props;
+        const { classes, data, onClose, title="Game results" } = this.props;
         return data && data.length ? (
             <Modal
                 open={true}
-                title="Game results"
+                title={title}
                 isCancel={true}
                 onClose={onClose}
             >

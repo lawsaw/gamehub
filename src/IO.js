@@ -1,9 +1,9 @@
-import { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import { socketConnect, socketDisconnect } from './actions/socket';
 import SocketContext from './helpers/SocketContext';
-import {updateConfig as updateConfigTetris, updateOpponent, startNewGame, startMoving, stopMoving, stopGame, resetConfig } from "./actions/tetris";
+import {updateConfig as updateConfigTetris, updateOpponent, startNewGame, startMoving, stopMoving, stopGame, resetConfig, showResults } from "./actions/tetris";
 import { updateConfig as updateConfigCrocodile, updateRoomList, updateRoom } from "./actions/crocodile";
 import { SOCKET_CHANNEL, COMMON_ACTIONS, GAME_TETRIS, GAME_CROCODILE } from "./helpers/constants";
 import { socketMakeConnection } from "./socket/tetris";
@@ -21,6 +21,7 @@ class Root extends PureComponent {
                 'ON_GAME': props.updateOpponent,
                 'DO_BUTTON_ACTION': this.doTetrisActionButton,
                 'DO_GAME_DISCONNECT': () => { props.stopGame(); props.resetConfig() },
+                'DO_GAME_FINISH': this.doGameFinish,
             },
             [GAME_CROCODILE]: {
                 'LOBBY_UPDATE_CONFIG': props.updateConfigCrocodile,
@@ -28,6 +29,14 @@ class Root extends PureComponent {
                 'UPDATE_ROOM': props.updateRoom,
             },
         };
+    }
+
+    doGameFinish = () => {
+        const { isResultModalOpen, showResults } = this.props;
+        if(!isResultModalOpen) {
+            console.log('make finish');
+            showResults();
+        }
     }
 
     doTetrisActionButton = ({ button_action }) => {
@@ -96,8 +105,26 @@ class Root extends PureComponent {
         });
     }
 
+    handleTest = () => {
+        const socket = this.context;
+        socket.emit('TEST', {
+            type: 'SUKA',
+            name: 'Peter',
+        }, data => {
+            console.log(data);
+        });
+    }
+
     render() {
-        return null;
+        return (
+            <div>
+
+                <button onClick={this.handleTest}>
+                    Test
+                </button>
+
+            </div>
+        );
     }
 
 }
@@ -108,6 +135,7 @@ export default connect(
     store => {
         return {
             opponentId: store.tetris.opponent && store.tetris.opponent.id,
+            isResultModalOpen: store.tetris.isResultModalOpen,
         }
     },
     dispatch => {
@@ -119,6 +147,7 @@ export default connect(
             updateConfigTetris: config => dispatch( updateConfigTetris(config) ),
             updateOpponent: opponent => dispatch( updateOpponent(opponent) ),
             resetConfig: () => dispatch( resetConfig() ),
+            showResults: () => dispatch( showResults() ),
             socketMakeConnection: server_id => dispatch( socketMakeConnection(server_id) ),
 
             //button_actions

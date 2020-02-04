@@ -1,4 +1,4 @@
-import { SET_SPEED, MOVE_FIGURE, START_NEW_GAME, STOP_GAME, START_MOVING, STOP_MOVING, MOVE_FIGURE_DOWN, ROTATE_FIGURE, STORE_ACTION_DATA, CLOSE_RESULTS, UPDATE_OPPONENT, UPDATE_CONFIG, RESET_CONFIG } from "../actions/tetris";
+import { SET_SPEED, MOVE_FIGURE, START_NEW_GAME, STOP_GAME, START_MOVING, STOP_MOVING, MOVE_FIGURE_DOWN, ROTATE_FIGURE, STORE_ACTION_DATA, CLOSE_RESULTS, UPDATE_OPPONENT, UPDATE_CONFIG, RESET_CONFIG, SHOW_RESULTS } from "../actions/tetris";
 import { COLS, ROWS, POSITION, SPEED, MOVE_STEP_MAP, ROWS_HIDDEN, MOVE_DIRECTION } from "../games/tetris/helpers/constants";
 import {
     generateGrid,
@@ -270,6 +270,14 @@ export default function room(state = initialState, action) {
                     ...initialConfig,
                     nickname: state.config.nickname,
                 }
+            }
+
+        case SHOW_RESULTS:
+            clearInterval(timer);
+            return {
+                ...state,
+                isResultModalOpen: true,
+                isGameRunning: false,
             }
 
         default:

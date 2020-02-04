@@ -1,8 +1,7 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { MOVE_DIRECTION, KEY_MAP } from './helpers/constants';
-import { Results } from '../../components';
-import { storeActionData, moveFigure, moveFigureDown, rotateFigure, closeResults } from '../../actions/tetris';
+import { storeActionData, moveFigure, moveFigureDown, rotateFigure } from '../../actions/tetris';
 import { getPrevRotationPosition, getNextRotationPosition } from './helpers/etc';
 
 class Engine extends PureComponent {
@@ -35,25 +34,17 @@ class Engine extends PureComponent {
     }
 
     render() {
-        const { results, closeResults } = this.props;
-        return (
-            <Fragment>
-                {
-                    results ? <Results data={results} onClose={closeResults} /> : null
-                }
-            </Fragment>
-        )
+        return null
     }
 
 }
 
 export default connect(
     store => {
-        const { isGameRunning, isPause, isResultModalOpen, score, key_map } = store.tetris;
+        const { isGameRunning, isPause, key_map } = store.tetris;
         let isKeyPressingAllowed = !isPause && isGameRunning;
         return {
             key_map: isKeyPressingAllowed ? key_map : {},
-            results: isResultModalOpen ? [{label: 'Your score', value: score}] : null,
         }
     },
     dispatch => {
@@ -62,7 +53,6 @@ export default connect(
             moveFigureDown: () => { dispatch(moveFigureDown()) },
             rotateFigure: getRotation => { dispatch(rotateFigure(getRotation)) },
             storeActionData: (moveFunc, key_map) => { dispatch(storeActionData(moveFunc, key_map)) },
-            closeResults: () => { dispatch(closeResults()) },
         }
     }
 )(Engine);

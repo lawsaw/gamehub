@@ -48,3 +48,11 @@ export function socketDisconnect() {
         ...ACTION_INIT
     };
 }
+
+export const GAME_FINISH = 'GAME_FINISH';
+export function socketGameFinish() {
+    return {
+        action: GAME_FINISH,
+        ...ACTION_INIT
+    };
+}
