@@ -46,3 +46,21 @@ export function createSocketEmitMiddleware(socket, channelName=SOCKET_CHANNEL) {
         };
     };
 }
+
+// export function apiRequest(socket, channelName=SOCKET_CHANNEL) {
+//     return store => {
+//         return next => {
+//             return action => {
+//                 if(action.meta && action.meta.remote === META_SOCKET_EMIT) {
+//                     return new Promise((resolve, reject) => {
+//                         socket.emit(channelName, action, response => {
+//                             if(!response.error) resolve(response);
+//                             else reject(response.error);
+//                         });
+//                     });
+//                 }
+//                 return next(action);
+//             };
+//         };
+//     };
+// }

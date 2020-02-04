@@ -7,6 +7,7 @@ import {updateConfig as updateConfigTetris, updateOpponent, startNewGame, startM
 import { updateConfig as updateConfigCrocodile, updateRoomList, updateRoom } from "./actions/crocodile";
 import { SOCKET_CHANNEL, COMMON_ACTIONS, GAME_TETRIS, GAME_CROCODILE } from "./helpers/constants";
 import { socketMakeConnection } from "./socket/tetris";
+import { apiTestConnection } from "./socket/api";
 
 class Root extends PureComponent {
 
@@ -28,6 +29,9 @@ class Root extends PureComponent {
                 'UPDATE_ROOM_LIST': props.updateRoomList,
                 'UPDATE_ROOM': props.updateRoom,
             },
+        };
+        this.state = {
+            test_value: null,
         };
     }
 
@@ -105,17 +109,20 @@ class Root extends PureComponent {
         });
     }
 
-    handleTest = () => {
-        const socket = this.context;
-        socket.emit('TEST', {
-            type: 'SUKA',
-            name: 'Peter',
-        }, data => {
-            console.log(data);
-        });
+    handleTest = async () => {
+        const { apiTestConnection } = this.props;
+        let a = await apiTestConnection({'huy': 'na palo4ke'});
+        console.log(a);
     }
 
+    // handleTest = () => {
+    //     const { apiTestConnection } = this.props;
+    //     let a = apiTestConnection({'huy': 'na palo4ke'});
+    //     console.log(a);
+    // }
+
     render() {
+        return null;
         return (
             <div>
 
@@ -140,6 +147,7 @@ export default connect(
     },
     dispatch => {
         return {
+            //Store socket connection
             socketConnect: id => dispatch( socketConnect(id) ),
             socketDisconnect: id => dispatch( socketDisconnect(id) ),
 
@@ -160,6 +168,9 @@ export default connect(
             updateConfigCrocodile: config => dispatch( updateConfigCrocodile(config) ),
             updateRoomList: rooms => dispatch( updateRoomList(rooms) ),
             updateRoom: room => dispatch( updateRoom(room) ),
+
+
+            apiTestConnection: data => dispatch( apiTestConnection(data) ),
         }
     }
 )(withSnackbar(Root));

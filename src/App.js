@@ -23,6 +23,7 @@ const store = createStore(
     applyMiddleware(
         thunk,
         createSocketEmitMiddleware(IO),
+        //apiRequest(IO),
     )
 );
 
