@@ -1,6 +1,9 @@
 import React, { PureComponent, Fragment } from 'react';
 import { withStyles } from "@material-ui/core";
 import { connect } from 'react-redux';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import Stop from '@material-ui/icons/Stop';
+import Pause from '@material-ui/icons/Pause';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Toolbar as ToolbarComponent, Fab, Nickname } from '../components';
 import { Score } from './';
@@ -111,7 +114,7 @@ class Toolbar extends PureComponent {
                     isGameRunning ? (
                         <Fragment>
                             <Fab
-                                icon="Stop"
+                                icon={<Stop />}
                                 size={button_size}
                                 onClick={this.handleStopGame}
                                 className={classes.button}
@@ -119,7 +122,7 @@ class Toolbar extends PureComponent {
                             {
                                 isPlayButton && (
                                     <Fab
-                                        icon="PlayArrow"
+                                        icon={<PlayArrow />}
                                         size={button_size}
                                         onClick={this.handleStartMoving}
                                         className={classes.button}
@@ -129,7 +132,7 @@ class Toolbar extends PureComponent {
                             {
                                 isPauseButton && (
                                     <Fab
-                                        icon="Pause"
+                                        icon={<Pause />}
                                         size={button_size}
                                         onClick={this.handleStopMoving}
                                         className={classes.button}
@@ -139,7 +142,7 @@ class Toolbar extends PureComponent {
                         </Fragment>
                     ) : (
                         <Fab
-                            icon="PlayArrow"
+                            icon={<PlayArrow />}
                             size={button_size}
                             onClick={this.handleStart}
                         />

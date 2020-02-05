@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import RotateLeft from '@material-ui/icons/RotateLeft';
 import { connect } from 'react-redux';
 import { withStyles, Box } from "@material-ui/core";
 import { KEY_MAP } from '../helpers/constants';
@@ -66,15 +70,15 @@ const styles = () => ({
 
 const ARROWS_MAP = [
     {
-        icon: 'KeyboardArrowLeft',
+        icon: <KeyboardArrowLeft />,
         action: KEY_MAP.LEFT,
         position: 'left',
     },{
-        icon: 'KeyboardArrowRight',
+        icon: <KeyboardArrowRight />,
         action: KEY_MAP.RIGHT,
         position: 'right',
     },{
-        icon: 'KeyboardArrowDown',
+        icon: <KeyboardArrowDown />,
         action: KEY_MAP.SPACE,
         position: 'down',
     }
@@ -113,7 +117,7 @@ class MobileBar extends PureComponent {
                         className={classes.arrows}
                     >
                         <Fab
-                            icon="RotateLeft"
+                            icon={<RotateLeft />}
                             onClick={key_map[KEY_MAP.UP]}
                             className={cx(classes.touchButton, classes.arrow, classes.arrow_rightCenter)}
                         />

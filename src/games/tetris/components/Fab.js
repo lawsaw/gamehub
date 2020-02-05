@@ -17,13 +17,13 @@ class Fab extends PureComponent {
 
     render() {
         const { classes, className, icon, ...props } = this.props;
-        let iconComponent = require(`@material-ui/icons/${icon}`);
+        //let iconComponent = require(`@material-ui/icons/${icon}`);
         return (
             <FabMaterial
                 className={cx(classes.button, className)}
                 {...props}
             >
-                {iconComponent.default.type.render()}
+                {icon}
             </FabMaterial>
         )
     }
