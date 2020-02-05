@@ -1,6 +1,7 @@
-export const SOCKET_SERVER = 'http://localhost:3005/';
+//export const SOCKET_SERVER = 'http://localhost:3005/';
 //export const SOCKET_SERVER = 'http://192.168.100.158:3005/';
 //export const SOCKET_SERVER = 'https://lawsaw-crocodile.herokuapp.com/';
+export const SOCKET_SERVER = 'https://lawsaw-gamehub.herokuapp.com/';
 
 export const SOCKET_CHANNEL = 'SOCKET_CHANNEL';
 
