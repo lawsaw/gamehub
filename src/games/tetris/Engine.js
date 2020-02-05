@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { MOVE_DIRECTION, KEY_MAP } from './helpers/constants';
 import { storeActionData, moveFigure, moveFigureDown, rotateFigure } from '../../actions/tetris';

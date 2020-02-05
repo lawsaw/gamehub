@@ -50,18 +50,23 @@ class Connection extends PureComponent {
     }
 
     renderStepTypeServer = () => {
-        const socket = this.context;
         return (
-            <Fragment>
-                <Typography>
-                    Share your ID with your friend
-                </Typography>
-                <Typography>
-                    <code>
-                        {socket.id}
-                    </code>
-                </Typography>
-            </Fragment>
+            <SocketContext.Consumer>
+                {
+                    socket => (
+                        <Fragment>
+                            <Typography>
+                                Share your ID with your friend
+                            </Typography>
+                            <Typography>
+                                <code>
+                                    {socket.id}
+                                </code>
+                            </Typography>
+                        </Fragment>
+                    )
+                }
+            </SocketContext.Consumer>
         )
     }
 
@@ -72,14 +77,16 @@ class Connection extends PureComponent {
         }));
     }
 
-    handleClientSubmit = () => {
-        this.handleNicknameSubmitDecorator(this.submitClient);
-    }
-
-    submitClient = () => {
+    submitClient = async () => {
+        const validateResponse = this.context;
         const { server_id } = this.state;
         const { socketMakeConnection } = this.props;
-        socketMakeConnection(server_id);
+        let response = await socketMakeConnection(server_id);
+        validateResponse(response);
+    }
+
+    handleClientSubmit = () => {
+        this.handleNicknameSubmitDecorator(this.submitClient);
     }
 
     handleBack = () => {
@@ -106,7 +113,7 @@ class Connection extends PureComponent {
     }
 }
 
-Connection.contextType = {socket: SocketContext, response: ResponseContext};
+Connection.contextType = ResponseContext;
 
 export default connect(
     store => {

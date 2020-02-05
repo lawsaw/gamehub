@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { TextInput } from '../../../components';
 import { preventMultipleSubmit } from '../helpers/etc';
-import { updateConfig } from "../../../actions/crocodile";
+import { updateConfig, updateRoomList } from "../../../actions/crocodile";
 import { socketValidateNickname } from "../../../socket/crocodile";
+import ResponseContext from '../../../helpers/ResponseContext';
 
 class Nickname extends PureComponent {
 
@@ -23,10 +24,14 @@ class Nickname extends PureComponent {
         });
     }
 
-    submitNickname = () => {
-        const { nickname } = this.props;
-        const { socketValidateNickname } = this.props;
-        socketValidateNickname(nickname);
+    submitNickname = async () => {
+        const validateResponse = this.context;
+        const { nickname, updateConfig, socketValidateNickname, updateRoomList } = this.props;
+        let response = await socketValidateNickname(nickname);
+        validateResponse(response, ({ config, rooms }) => {
+            updateConfig(config);
+            updateRoomList(rooms);
+        });
     }
 
     handleNicknameSubmit = () => {
@@ -46,6 +51,8 @@ class Nickname extends PureComponent {
     }
 }
 
+Nickname.contextType = ResponseContext;
+
 export default connect(
     store => {
         return {
@@ -55,6 +62,7 @@ export default connect(
     dispatch => {
         return {
             updateConfig: config => dispatch( updateConfig(config) ),
+            updateRoomList: rooms => dispatch( updateRoomList(rooms) ),
             socketValidateNickname: nickname => dispatch( socketValidateNickname(nickname) ),
         }
     }

@@ -26,7 +26,6 @@ class Resizer extends PureComponent {
 
     componentDidMount() {
         this.setSizeForce();
-        console.log('dsfds');
         window.addEventListener('resize', this.listener, false);
     }
 

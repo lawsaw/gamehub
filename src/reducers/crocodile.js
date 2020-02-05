@@ -64,6 +64,7 @@ export default function room(state = initialState, action) {
                 ...state,
                 config: {
                     ...initialConfig,
+                    nickname: state.config.nickname,
                 }
             }
 

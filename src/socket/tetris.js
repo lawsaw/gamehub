@@ -1,4 +1,5 @@
 import { GAME_TETRIS, META_SOCKET_EMIT } from '../helpers/constants';
+import { stopGame, resetConfig } from "../actions/tetris";
 
 const ACTION_INIT = {
     type: GAME_TETRIS,
@@ -54,5 +55,21 @@ export function socketGameFinish() {
     return {
         action: GAME_FINISH,
         ...ACTION_INIT
+    };
+}
+
+export const GAME_RESET = 'GAME_RESET';
+export function socketGameReset() {
+    return dispatch => {
+        dispatch( stopGame() );
+        dispatch( socketMakeConnection() );
+    };
+}
+
+export const GAME_DISCONNECT = 'GAME_DISCONNECT';
+export function socketGameDisconnect() {
+    return dispatch => {
+        dispatch( stopGame() );
+        dispatch( resetConfig() );
     };
 }

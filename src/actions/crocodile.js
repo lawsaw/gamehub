@@ -2,7 +2,9 @@ export const UPDATE_ROOM = 'UPDATE_ROOM';
 export function updateRoom(room) {
     return {
         type: UPDATE_ROOM,
-        payload: room,
+        payload: {
+            room
+        },
     };
 }
 
@@ -34,6 +36,8 @@ export const UPDATE_ROOM_LIST = 'UPDATE_ROOM_LIST';
 export function updateRoomList(rooms) {
     return {
         type: UPDATE_ROOM_LIST,
-        payload: rooms,
+        payload: {
+            rooms
+        },
     };
 }

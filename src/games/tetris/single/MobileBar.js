@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
-import { withStyles, Button, Box } from "@material-ui/core";
+import { withStyles, Box } from "@material-ui/core";
 import { KEY_MAP } from '../helpers/constants';
 import { Fab } from '../components';
 

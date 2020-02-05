@@ -15,7 +15,7 @@ import theme from './helpers/theme';
 import App from './App';
 import mainReducer from './reducers';
 import { SOCKET_SERVER } from "./helpers/constants";
-import { createSocketEmitMiddleware, apiRequest } from './helpers/etc';
+import { apiRequest } from './helpers/etc';
 
 const IO = socketIOClient(SOCKET_SERVER);
 
@@ -23,7 +23,6 @@ const store = createStore(
     mainReducer,
     applyMiddleware(
         thunk,
-        //createSocketEmitMiddleware(IO),
         apiRequest(IO),
     )
 );

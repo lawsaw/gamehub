@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from "@material-ui/core";
 import { Toolbar as ToolbarComponent } from '../components';

@@ -32,6 +32,14 @@ export function startNewGame() {
     };
 }
 
+export const START_NEW_GAME_AND_MOVE = 'START_NEW_GAME_AND_MOVE';
+export function startNewGameAndMove() {
+    return dispatch => {
+        dispatch( startNewGame() );
+        dispatch( startMoving() );
+    }
+}
+
 export const STOP_GAME = 'STOP_GAME';
 export function stopGame() {
     return {

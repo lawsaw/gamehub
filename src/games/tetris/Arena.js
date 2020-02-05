@@ -2,14 +2,12 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {withStyles, Box } from "@material-ui/core";
-import withWidth, { isWidthDown, isWidthUp } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Engine } from './';
 import { MobileBar, Single } from './single';
 import { Opponent } from './opponent';
-import { setApp } from "../../actions/app";
 import { closeResults } from "../../actions/tetris";
 import { TETRIS } from '../../helpers/routes';
-import { Results } from '../../components';
 
 const styles = () => ({
     layout: {

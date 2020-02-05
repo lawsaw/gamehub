@@ -15,10 +15,10 @@ class App extends PureComponent {
     }
 
     validateResponse = (response, callback) => {
-        if(response.error) {
+        if(response && response.error) {
             this.showSnackbar(response.error, 'error');
         } else {
-            callback(response);
+            if(callback && typeof callback === 'function') callback(response);
         }
     }
 

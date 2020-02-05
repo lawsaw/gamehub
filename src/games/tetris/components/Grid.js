@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { withStyles, Box } from "@material-ui/core";
-import { fade } from '@material-ui/core/styles/colorManipulator';
+//import { fade } from '@material-ui/core/styles/colorManipulator';
 import { ROWS_HIDDEN, ROWS, COLS, COL_SIZE } from '../helpers/constants';
 
 const styles = () => ({

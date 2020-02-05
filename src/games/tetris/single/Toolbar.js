@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { Toolbar as ToolbarComponent, Fab, Nickname } from '../components';
 import { Score } from './';
-import { startMoving, startNewGame, stopGame, stopMoving } from "../../../actions/tetris";
+import { startMoving, startNewGame, stopGame, stopMoving, startNewGameAndMove } from "../../../actions/tetris";
 import { Opponent } from '../opponent';
 import { ROWS, ROWS_HIDDEN } from "../helpers/constants";
 import { setApp } from "../../../actions/app";
-import { socketSendButtonAction } from "../../../socket/tetris";
+import { socketSendButtonAction, socketGameReset } from "../../../socket/tetris";
+import ResponseContext from '../../../helpers/ResponseContext';
 
 const OPPONENT_COL_SIZE = {
     'MIN': 10,
@@ -72,30 +73,20 @@ class Toolbar extends PureComponent {
         })
     }
 
-    handleAction = (action) => {
+    handleAction = async (action) => {
+        const validateResponse = this.context;
         const { isOpponent, socketSendButtonAction } = this.props;
-        let doAction = () => {
-            switch(action) {
-                case 'startNewGame':
-                    this.props[action]();
-                    this.props['startMoving']();
-                    break;
-                default:
-                    this.props[action]();
-                    break;
-            }
-        };
-        if(!isOpponent) {
-            doAction();
-        } else {
-            socketSendButtonAction(action);
-            doAction();
+        let doAction = () => action in this.props && this.props[action]();
+        if(!isOpponent) doAction();
+        else {
+            let response = await socketSendButtonAction(action);
+            validateResponse(response, doAction);
         }
     }
 
     handleStart = (e) => {
         e.currentTarget.blur();
-        this.handleAction('startNewGame');
+        this.handleAction('startNewGameAndMove');
     }
 
     handleStartMoving = () => {
@@ -107,7 +98,8 @@ class Toolbar extends PureComponent {
     }
 
     handleStopGame = () => {
-        this.handleAction('stopGame');
+        const action = this.props.isOpponent ? 'socketGameReset' : 'stopGame';
+        this.handleAction(action);
     }
 
     renderPlayPauseButtons = () => {
@@ -191,6 +183,8 @@ class Toolbar extends PureComponent {
 
 }
 
+Toolbar.contextType = ResponseContext;
+
 export default connect(
     store => {
         const { isGameRunning, isPause, opponent, config } = store.tetris;
@@ -208,8 +202,10 @@ export default connect(
             stopGame: () => { dispatch(stopGame()) },
             startMoving: () => { dispatch(startMoving()) },
             stopMoving: () => { dispatch(stopMoving()) },
+            startNewGameAndMove: () => { dispatch(startNewGameAndMove()) },
             setApp: options => dispatch( setApp(options) ),
             socketSendButtonAction: button_action => dispatch( socketSendButtonAction(button_action) ),
+            socketGameReset: () => dispatch( socketGameReset() ),
         }
     }
 )(withWidth()(withStyles(styles)(Toolbar)));

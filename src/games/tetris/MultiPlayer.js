@@ -60,6 +60,7 @@ export default connect(
             isConnected: store.socket.isConnected,
             is_lobby: opponent === null,
             results_data: isResultModalOpen ? {
+                title: score > opponent.score ? 'You won!' : score < opponent.score ? 'You lost!' : 'Победила дружба!',
                 data: [{
                     label: `You (${config.nickname}):`,
                     value: score,
@@ -67,7 +68,6 @@ export default connect(
                     label: `Opponent (${opponent.nickname}):`,
                     value: opponent.score,
                 }],
-                title: score > opponent.score ? 'You won!' : score < opponent.score ? 'You lost!' : 'Победила дружба!',
             } : null,
         }
     },

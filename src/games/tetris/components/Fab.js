@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { withStyles, Fab as FabMaterial } from "@material-ui/core";
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 const styles = () => ({
     button: {},
@@ -31,4 +30,4 @@ class Fab extends PureComponent {
 
 }
 
-export default withStyles(styles)(withWidth()(Fab));
+export default withStyles(styles)((Fab));
