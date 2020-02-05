@@ -43,7 +43,7 @@ class GamePainter extends PureComponent {
     }
 
     render() {
-        const { classes, onWordSelect, isWordDefined, words, ...props } = this.props;
+        const { classes, onWordSelect, word, words, ...props } = this.props;
         return (
             <Fragment>
                 <Game
@@ -53,7 +53,7 @@ class GamePainter extends PureComponent {
                     <Paint onConvertToImage={this.handleConvertToImage} />
                 </Game>
                 <Dialog
-                    open={isWordDefined}
+                    open={!word}
                 >
                     <Box
                         className={classes.wordList}
@@ -81,7 +81,7 @@ class GamePainter extends PureComponent {
 export default connect(
     store => {
         return {
-            isWordDefined: !store.crocodile.room.word,
+            word: store.crocodile.room.word,
             words: store.crocodile.room.words,
         }
     },
