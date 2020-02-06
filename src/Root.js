@@ -4,6 +4,7 @@ import { withStyles, Grid } from "@material-ui/core";
 import { Header, Footer } from './containers';
 import { ROUTES } from './helpers/routes';
 import IO from './IO';
+import { Page404 } from './pages';
 
 const styles = () => ({
     layout: {
@@ -65,6 +66,10 @@ class Root extends PureComponent {
                                     />
                                 ))
                             }
+                            <Route
+                                path="/:errorPage"
+                                component={props => <Page404 {...props} />}
+                            />
                         </Switch>
                     </Grid>
                     <Grid

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -27,29 +27,53 @@ const store = createStore(
     )
 );
 
-const Component = () => {
-    return (
-        <Router>
-            <Provider
-                store={store}
-            >
-                <MuiThemeProvider theme={theme}>
-                    <SnackbarProvider maxSnack={3} anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
-                    }}>
-                        <CssBaseline />
-                        <SocketContext.Provider value={IO}>
-                            <Route component={App} />
-                        </SocketContext.Provider>
-                    </SnackbarProvider>
-                </MuiThemeProvider>
-            </Provider>
-        </Router>
-    )
-};
+// const Component = () => {
+//     return (
+//         <Router>
+//             <Provider
+//                 store={store}
+//             >
+//                 <MuiThemeProvider theme={theme}>
+//                     <SnackbarProvider maxSnack={3} anchorOrigin={{
+//                         vertical: 'top',
+//                         horizontal: 'center',
+//                     }}>
+//                         <CssBaseline />
+//                         <SocketContext.Provider value={IO}>
+//                             <Route component={App} />
+//                         </SocketContext.Provider>
+//                     </SnackbarProvider>
+//                 </MuiThemeProvider>
+//             </Provider>
+//         </Router>
+//     )
+// };
 
-ReactDOM.render(Component(), document.getElementById('root'));
+class Comp extends PureComponent {
+    render() {
+        return (
+            <Router>
+                <Provider
+                    store={store}
+                >
+                    <MuiThemeProvider theme={theme}>
+                        <SnackbarProvider maxSnack={3} anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}>
+                            <CssBaseline />
+                            <SocketContext.Provider value={IO}>
+                                <Route component={App} />
+                            </SocketContext.Provider>
+                        </SnackbarProvider>
+                    </MuiThemeProvider>
+                </Provider>
+            </Router>
+        )
+    }
+}
+
+ReactDOM.render(<Comp />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

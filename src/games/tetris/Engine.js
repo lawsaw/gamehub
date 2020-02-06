@@ -15,22 +15,52 @@ class Engine extends PureComponent {
             [KEY_MAP.RIGHT]: () => props.moveFigure(MOVE_DIRECTION.RIGHT),
             [KEY_MAP.SPACE]: () => props.moveFigureDown(),
         };
+        this.lock = {
+            inner: false,
+            outer: false,
+        };
+        this.timer = null;
     }
 
     componentDidMount() {
         const { storeActionData, moveFigureDown } = this.props;
         storeActionData(moveFigureDown, this.key_map);
-        document.addEventListener('keydown', this.handleKeyPress);
+        document.addEventListener('keydown', this.handleKeyPressDown);
+        document.addEventListener('keyup', this.handleKeyPressUp);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('keydown', this.handleKeyPress);
+        document.removeEventListener('keydown', this.handleKeyPressDown);
+        document.removeEventListener('keyup', this.handleKeyPressUp);
     }
 
-    handleKeyPress = (e) => {
+    doPeriodic = (func) => {
+        if(this.lock.inner) return false;
+        if(!this.lock.outer) func();
+        this.lock.inner = true;
+        this.timer = setTimeout(() => {
+            func();
+            this.lock.inner = false;
+        }, 100);
+    }
+
+    handleKeyPressDown = (e) => {
         const { code } = e;
         const { key_map } = this.props;
-        if(code in key_map) key_map[code]();
+        if(code in key_map) {
+            this.doPeriodic( () => key_map[code]() );
+        }
+        if(!this.lock.outer) this.lock.outer = true;
+    }
+
+    handleKeyPressUp = (e) => {
+        const { code } = e;
+        const { key_map } = this.props;
+        if(code in key_map) {
+            clearTimeout(this.timer);
+            this.lock.inner = false;
+            this.lock.outer = false;
+        }
     }
 
     render() {
