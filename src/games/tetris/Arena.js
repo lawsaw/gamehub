@@ -45,7 +45,7 @@ class Arena extends PureComponent {
 
         let is_mobile = isWidthDown('xs', width);
         let is_tablet = isWidthDown('sm', width);
-        let col_size = is_mobile ? 17 : 30;
+        let col_size = is_mobile ? 20 : 30;
 
         return (
             <Fragment>

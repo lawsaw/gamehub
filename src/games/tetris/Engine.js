@@ -2,7 +2,7 @@ import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { MOVE_DIRECTION, KEY_MAP } from './helpers/constants';
 import { storeActionData, moveFigure, moveFigureDown, rotateFigure } from '../../actions/tetris';
-import { getPrevRotationPosition, getNextRotationPosition } from './helpers/etc';
+import { getPrevRotationPosition, getNextRotationPosition, pressingRule } from './helpers/etc';
 
 class Engine extends PureComponent {
 
@@ -15,16 +15,20 @@ class Engine extends PureComponent {
             [KEY_MAP.RIGHT]: () => props.moveFigure(MOVE_DIRECTION.RIGHT),
             [KEY_MAP.SPACE]: () => props.moveFigureDown(),
         };
-        this.lock = {
-            inner: false,
-            outer: false,
-        };
-        this.timer = null;
+        // this.lock = {
+        //     inner: false,
+        //     outer: false,
+        // };
+        // this.timer = null;
+        this.pressingFunc = pressingRule(this.key_map);
     }
 
     componentDidMount() {
         const { storeActionData, moveFigureDown } = this.props;
         storeActionData(moveFigureDown, this.key_map);
+
+
+
         document.addEventListener('keydown', this.handleKeyPressDown);
         document.addEventListener('keyup', this.handleKeyPressUp);
     }
@@ -34,33 +38,43 @@ class Engine extends PureComponent {
         document.removeEventListener('keyup', this.handleKeyPressUp);
     }
 
-    doPeriodic = (func) => {
-        if(this.lock.inner) return false;
-        if(!this.lock.outer) func();
-        this.lock.inner = true;
-        this.timer = setTimeout(() => {
-            func();
-            this.lock.inner = false;
-        }, 100);
-    }
+    // doPeriodic = (func) => {
+    //     if(this.lock.inner) return false;
+    //     if(!this.lock.outer) func();
+    //     this.lock.inner = true;
+    //     this.timer = setTimeout(() => {
+    //         func();
+    //         this.lock.inner = false;
+    //     }, 100);
+    // }
 
     handleKeyPressDown = (e) => {
+
+
         const { code } = e;
-        const { key_map } = this.props;
-        if(code in key_map) {
-            this.doPeriodic( () => key_map[code]() );
-        }
-        if(!this.lock.outer) this.lock.outer = true;
+        this.pressingFunc.onPressDown(code);
+
+
+        // const { key_map } = this.props;
+        // if(code in key_map) {
+        //     this.doPeriodic( () => {
+        //         console.log('press');
+        //         key_map[code]()
+        //     } );
+        // }
+        // if(!this.lock.outer) this.lock.outer = true;
     }
 
     handleKeyPressUp = (e) => {
         const { code } = e;
-        const { key_map } = this.props;
-        if(code in key_map) {
-            clearTimeout(this.timer);
-            this.lock.inner = false;
-            this.lock.outer = false;
-        }
+        this.pressingFunc.onPressUp(code);
+
+        // const { key_map } = this.props;
+        // if(code in key_map) {
+        //     clearTimeout(this.timer);
+        //     this.lock.inner = false;
+        //     this.lock.outer = false;
+        // }
     }
 
     render() {

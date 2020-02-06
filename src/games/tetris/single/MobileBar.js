@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { createRef, PureComponent } from 'react';
+import ReactDOM from 'react-dom';
 import cx from 'classnames';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
@@ -8,6 +9,7 @@ import { connect } from 'react-redux';
 import { withStyles, Box } from "@material-ui/core";
 import { KEY_MAP } from '../helpers/constants';
 import { Fab } from '../components';
+//import { pressingRule } from "../helpers/etc";
 
 const ARROW_SIZE = 60;
 
@@ -86,6 +88,61 @@ const ARROWS_MAP = [
 
 class MobileBar extends PureComponent {
 
+    constructor(props) {
+        super(props);
+        this.ref_map = {
+            [KEY_MAP.LEFT]: createRef(),
+            [KEY_MAP.RIGHT]: createRef(),
+            [KEY_MAP.SPACE]: createRef(),
+            [KEY_MAP.UP]: createRef(),
+        }
+        // this.listener_map = {};
+        // this.pressingFunc = null;
+        // this.is_loaded = false;
+    }
+
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     if(!this.is_loaded && this.props.key_map !== null) {
+    //         this.init();
+    //         this.is_loaded = true;
+    //     }
+    // }
+
+    // componentWillUnmount() {
+    //     for(let code in this.ref_map) {
+    //         let button = ReactDOM.findDOMNode(this.ref_map[code].current);
+    //         button.removeEventListener('mousedown', this.listener_map[code].onDown, false);
+    //         button.removeEventListener('touchstart', this.listener_map[code].onDown, false);
+    //         button.removeEventListener('mouseup', this.listener_map[code].onUp, false);
+    //         button.removeEventListener('touchend', this.listener_map[code].onUp, false);
+    //         button.removeEventListener('touchcancel', this.listener_map[code].onUp, false);
+    //     }
+    // }
+
+    // init = () => {
+    //     const { key_map } = this.props;
+    //     this.pressingFunc = pressingRule(key_map);
+    //     for(let code in this.ref_map) {
+    //         let button = ReactDOM.findDOMNode(this.ref_map[code].current);
+    //         this.listener_map[code] = {};
+    //         this.listener_map[code].onDown = this.handleMouseDown(code);
+    //         this.listener_map[code].onUp = this.handleMouseUp(code);
+    //         button.addEventListener('mousedown', this.listener_map[code].onDown, false);
+    //         button.addEventListener('touchstart', this.listener_map[code].onDown, false);
+    //         button.addEventListener('mouseup', this.listener_map[code].onUp, false);
+    //         button.addEventListener('touchend', this.listener_map[code].onUp, false);
+    //         button.addEventListener('touchcancel', this.listener_map[code].onUp, false);
+    //     }
+    // }
+
+    // handleMouseDown = code => {
+    //     return () => this.pressingFunc.startInterval(code);
+    // }
+    //
+    // handleMouseUp = code => {
+    //     return () => this.pressingFunc.stopInterval(code);
+    // }
+
     render() {
         const { classes, key_map } = this.props;
         return (
@@ -105,6 +162,7 @@ class MobileBar extends PureComponent {
                                     icon={icon}
                                     onClick={key_map[action]}
                                     className={cx(classes.touchButton, classes[`arrow`], classes[`arrow_${position}`])}
+                                    ref={this.ref_map[action]}
                                 />
                             ))
                         }
@@ -120,6 +178,7 @@ class MobileBar extends PureComponent {
                             icon={<RotateLeft />}
                             onClick={key_map[KEY_MAP.UP]}
                             className={cx(classes.touchButton, classes.arrow, classes.arrow_rightCenter)}
+                            ref={this.ref_map[KEY_MAP.UP]}
                         />
                     </Box>
                 </Box>
@@ -135,6 +194,7 @@ export default connect(
         let isKeyPressingAllowed = !isPause && isGameRunning;
         return {
             key_map: isKeyPressingAllowed ? key_map : {},
+            //key_map
         }
     },
     null

@@ -89,7 +89,7 @@ class Resizer extends PureComponent {
             size = this.setType2(parentOffsetHeight);
             if(size.width > parentOffsetWidth) size = this.setType1(parentOffsetWidth);
         } else {
-            console.log('type 3');
+            //console.log('type 3');
         }
         return size;
     }

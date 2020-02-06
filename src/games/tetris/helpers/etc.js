@@ -1,5 +1,5 @@
 import { cloneDeep } from "lodash";
-import { ROTATION_CIRCLE, FIGURES, COLS, ROWS, SPEED_RAISE_FOR_SCORE, SPEED, SPEED_STEP } from './constants';
+import { ROTATION_CIRCLE, FIGURES, COLS, ROWS, SPEED_RAISE_FOR_SCORE, SPEED, SPEED_STEP, KEY_MAP } from './constants';
 
 export function generateGrid(hor, ver) {
     return Array.from({length: ver}, () => Array.from({length: hor}, () => 0));
@@ -114,4 +114,73 @@ export function getScoreOptimalSpeed(score, speed) {
         speed -= SPEED_STEP;
     }
     return speed;
+}
+
+export function pressingRule(key_map) {
+    let lock = {
+        inner: false,
+        outer: false,
+    };
+    let timer = null;
+    let interval = null;
+
+
+    let getPeriod = (code) => {
+        return (code === KEY_MAP.UP) || (code === KEY_MAP.DOWN) ? 200 : 75;
+    };
+    let doPeriodic = (func, code) => {
+        if(lock.inner) return false;
+        if(!lock.outer) func();
+        lock.inner = true;
+        let period = getPeriod(code);
+        timer = setTimeout(() => {
+            func();
+            lock.inner = false;
+        }, period);
+    };
+    let onPressDown = (code) => {
+        if(code in key_map) {
+            doPeriodic(() => {
+                // console.log({
+                //     key_map,
+                //     code,
+                // });
+                key_map[code]();
+            }, code);
+        }
+        if(!lock.outer) lock.outer = true;
+    };
+    let onPressUp = (code) => {
+        if(code in key_map) {
+            clearTimeout(timer);
+            lock.inner = false;
+            lock.outer = false;
+        }
+    };
+
+
+    let startInterval = (code) => {
+        key_map[code]();
+        // stopInterval();
+        // key_map[code]();
+        // let period = getPeriod(code);
+        // interval = setInterval(() => {
+        //     console.log({
+        //         key_map,
+        //         code,
+        //     });
+        //     key_map[code]();
+        // }, period);
+    };
+    let stopInterval = () => {
+        //clearInterval(interval);
+    };
+
+    return {
+        onPressDown,
+        onPressUp,
+        startInterval,
+        stopInterval,
+    };
+
 }
