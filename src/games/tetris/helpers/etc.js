@@ -127,10 +127,10 @@ export function pressingRule(key_map) {
     let doPeriodic = (func, code, timer_type) => {
         if(lock.inner) return false;
         let is_rotate_key = (code === KEY_MAP.UP) || (code === KEY_MAP.DOWN);
-        let period_interval = is_rotate_key ? 500 : 300;
+        let period_interval = is_rotate_key ? 450 : 300;
         let period_timeout = is_rotate_key ? 200 : 75;
         lock.inner = true;
-        if(!lock.outer && timer_type !== 'interval') func();
+        if(!lock.outer) func();
         if(timer_type === 'interval') {
             timer = setInterval(() => {
                 func();
