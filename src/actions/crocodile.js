@@ -34,6 +34,7 @@ export function resetConfig() {
 
 export const UPDATE_ROOM_LIST = 'UPDATE_ROOM_LIST';
 export function updateRoomList(rooms) {
+    console.log(rooms);
     return {
         type: UPDATE_ROOM_LIST,
         payload: {

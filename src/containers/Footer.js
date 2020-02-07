@@ -16,13 +16,13 @@ class Footer extends PureComponent {
 
     render() {
         const { classes, status } = this.props;
-        return (
+        return status ? (
             <Toolbar
                 className={classes.footerToolbar}
             >
                 {status}
             </Toolbar>
-        )
+        ) : null
     }
 
 }

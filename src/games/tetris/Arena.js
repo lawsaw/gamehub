@@ -7,7 +7,6 @@ import { Engine } from './';
 import { MobileBar, Single } from './single';
 import { Opponent } from './opponent';
 import { closeResults } from "../../actions/tetris";
-import { TETRIS } from '../../helpers/routes';
 
 const styles = () => ({
     layout: {
@@ -33,12 +32,6 @@ const styles = () => ({
 });
 
 class Arena extends PureComponent {
-
-    handleLeave = () => {
-        const { history } = this.props;
-        console.log(history);
-        history.push(TETRIS.link);
-    }
 
     render() {
         const { classes, width, isOpponent } = this.props;
@@ -91,7 +84,6 @@ export default connect(
     },
     dispatch => {
         return {
-            //setApp: options => dispatch( setApp(options) ),
             closeResults: () => { dispatch(closeResults()) },
         }
     }

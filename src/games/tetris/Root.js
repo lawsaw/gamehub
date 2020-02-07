@@ -1,11 +1,7 @@
 import React, { PureComponent, forwardRef } from 'react';
-import { withStyles, Container, Grid, CardContent, Typography, CardActionArea, Card } from "@material-ui/core";
+import { Container, Grid, CardContent, Typography, CardActionArea, Card } from "@material-ui/core";
 import { RouteLink } from '../../components';
 import { TETRIS_ROUTES } from '../../helpers/routes';
-
-const styles = () => ({
-
-});
 
 class Root extends PureComponent {
 
@@ -71,4 +67,4 @@ class Root extends PureComponent {
 
 }
 
-export default withStyles(styles)(Root);
+export default Root;

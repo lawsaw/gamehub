@@ -28,6 +28,10 @@ export const MOVE_STEP_MAP = {
     [MOVE_DIRECTION.RIGHT]: ([row, col]) => ([row, col + 1]),
 };
 
+export const LOBBY_STEP_NICKNAME = 'LOBBY_STEP_NICKNAME';
+export const LOBBY_STEP_TYPE_SELECTING = 'LOBBY_STEP_TYPE_SELECTING';
+export const LOBBY_STEP_CONNECTION = 'LOBBY_STEP_CONNECTION';
+
 export const KEY_MAP = {
     LEFT: 'ArrowLeft',
     RIGHT: 'ArrowRight',

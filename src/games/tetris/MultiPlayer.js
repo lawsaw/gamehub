@@ -4,17 +4,9 @@ import { Results } from '../../components';
 import { Arena } from './';
 import { Lobby } from './lobby';
 import { resetConfig, stopGame, closeResults } from '../../actions/tetris';
-import { setApp } from "../../actions/app";
 import { socketDisconnect, socketGameFinish } from "../../socket/tetris";
 
 class MultiPlayer extends PureComponent {
-
-    componentDidMount() {
-        const { setApp } = this.props;
-        setApp({
-
-        });
-    }
 
     componentWillUnmount() {
         const { resetConfig, is_lobby, socketDisconnect, stopGame } = this.props;
@@ -74,7 +66,6 @@ export default connect(
     dispatch => {
         return {
             resetConfig: () => dispatch( resetConfig() ),
-            setApp: options => dispatch( setApp(options) ),
             stopGame: () => dispatch( stopGame() ),
             socketDisconnect: () => dispatch( socketDisconnect() ),
             socketGameFinish: () => dispatch( socketGameFinish() ),

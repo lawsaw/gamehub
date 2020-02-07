@@ -2,10 +2,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withStyles, Box } from "@material-ui/core";
 import { Nickname, TypeSelecting, Connection } from './';
-
-const LOBBY_STEP_NICKNAME = 'LOBBY_STEP_NICKNAME';
-const LOBBY_STEP_TYPE_SELECTING = 'LOBBY_STEP_TYPE_SELECTING';
-const LOBBY_STEP_CONNECTION = 'LOBBY_STEP_CONNECTION';
+import { socketUpdateUser } from "../../../socket/helper";
+import { GAME_TETRIS } from "../../../helpers/constants";
+import { LOBBY_STEP_NICKNAME, LOBBY_STEP_TYPE_SELECTING, LOBBY_STEP_CONNECTION } from "../helpers/constants";
 
 const styles = () => ({
     lobby: {
@@ -22,6 +21,13 @@ class Lobby extends PureComponent {
             [LOBBY_STEP_TYPE_SELECTING]: <TypeSelecting />,
             [LOBBY_STEP_CONNECTION]: <Connection />,
         };
+    }
+
+    componentDidMount() {
+        const { socketUpdateUser } = this.props;
+        socketUpdateUser({
+           game: GAME_TETRIS,
+        });
     }
 
     render() {
@@ -43,5 +49,10 @@ export default connect(
         return {
             step: store.tetris.config.step,
         }
+    },
+    dispatch => {
+      return {
+          socketUpdateUser: data => dispatch( socketUpdateUser(data) ),
+      }
     }
 )(withStyles(styles)(Lobby));

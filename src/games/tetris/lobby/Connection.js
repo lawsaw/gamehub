@@ -7,6 +7,7 @@ import { TextInput, Stepper } from "../../../components";
 import { preventMultipleSubmit } from "../../../helpers/etc";
 import { socketMakeConnection } from '../../../socket/tetris';
 import ResponseContext from '../../../helpers/ResponseContext';
+import { LOBBY_STEP_TYPE_SELECTING } from "../helpers/constants";
 
 const styles = theme => ({
     form: {
@@ -92,7 +93,7 @@ class Connection extends PureComponent {
     handleBack = () => {
         const { updateConfig } = this.props;
         updateConfig({
-            step: 'LOBBY_STEP_TYPE_SELECTING',
+            step: LOBBY_STEP_TYPE_SELECTING,
         })
     }
 

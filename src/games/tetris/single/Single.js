@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core";
 import { PlayerInterface } from '../components';
 import { Field, Toolbar, Preview } from './';
 import { COL_SIZE } from "../helpers/constants";
-import {HEADER_HEIGHT} from "../../../helpers/constants";
+import { HEADER_HEIGHT } from "../../../helpers/constants";
 
 const styles = theme => ({
     toolbar: {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withStyles, Box, Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
 import { updateConfig } from "../../../actions/tetris";
 import { Stepper } from "../../../components";
+import { LOBBY_STEP_NICKNAME, LOBBY_STEP_CONNECTION } from "../helpers/constants";
 
 const styles = theme => ({
     form: {
@@ -27,14 +28,14 @@ class TypeSelecting extends PureComponent {
     handleBack = () => {
         const { updateConfig } = this.props;
         updateConfig({
-            step: 'LOBBY_STEP_NICKNAME',
+            step: LOBBY_STEP_NICKNAME,
         })
     }
 
     handleNext = () => {
         const { updateConfig } = this.props;
         updateConfig({
-            step: 'LOBBY_STEP_CONNECTION',
+            step: LOBBY_STEP_CONNECTION,
         })
     }
 
