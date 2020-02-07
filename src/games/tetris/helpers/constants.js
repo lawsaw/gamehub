@@ -180,8 +180,3 @@ export const FIGURES = {
         ],
     }
 };
-
-export const SOCKET_ON_CLIENT_CONNECT = 'SOCKET_ON_CLIENT_CONNECT';
-export const SOCKET_ON_ARENA = 'SOCKET_ON_ARENA';
-export const SOCKET_ON_GAME_INIT = 'SOCKET_ON_GAME_INIT';
-export const SOCKET_ON_GAME_EXIT = 'SOCKET_ON_GAME_EXIT';
