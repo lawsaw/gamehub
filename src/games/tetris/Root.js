@@ -36,7 +36,6 @@ class Root extends PureComponent {
                             ));
                             let cardActionArea = props => (
                                 <CardActionArea
-                                    className={classes.actionArea}
                                     {...props}
                                 />
                             );
@@ -49,9 +48,7 @@ class Root extends PureComponent {
                                     md={4}
                                     lg={3}
                                 >
-                                    <Card
-                                        className={classes.card}
-                                    >
+                                    <Card>
                                         <LinkCustom
                                             component={cardActionArea}
                                         />

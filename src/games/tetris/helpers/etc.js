@@ -122,65 +122,68 @@ export function pressingRule(key_map) {
         outer: false,
     };
     let timer = null;
-    let interval = null;
-
 
     let getPeriod = (code) => {
         return (code === KEY_MAP.UP) || (code === KEY_MAP.DOWN) ? 200 : 75;
     };
-    let doPeriodic = (func, code) => {
+
+    let doPeriodic = (func, code, timer_type) => {
         if(lock.inner) return false;
-        if(!lock.outer) func();
         lock.inner = true;
+        if(!lock.outer) func();
         let period = getPeriod(code);
-        timer = setTimeout(() => {
-            func();
-            lock.inner = false;
-        }, period);
+        if(timer_type === 'interval') {
+            timer = setInterval(() => {
+                func();
+                lock.inner = false;
+            }, period);
+        } else {
+            timer = setTimeout(() => {
+                func();
+                lock.inner = false;
+            }, period);
+        }
     };
-    let onPressDown = (code) => {
+
+    let start = (code, timer_type) => {
         if(code in key_map) {
-            doPeriodic(() => {
-                // console.log({
-                //     key_map,
-                //     code,
-                // });
-                key_map[code]();
-            }, code);
+            doPeriodic(key_map[code], code, timer_type);
         }
         if(!lock.outer) lock.outer = true;
     };
+
+    let finish = () => {
+        lock.inner = false;
+        lock.outer = false;
+    }
+
+    let onPressDown = (code) => {
+        start(code, 'timeout');
+    };
+
     let onPressUp = (code) => {
         if(code in key_map) {
             clearTimeout(timer);
-            lock.inner = false;
-            lock.outer = false;
+            finish();
         }
     };
 
-
-    let startInterval = (code) => {
-        key_map[code]();
-        // stopInterval();
-        // key_map[code]();
-        // let period = getPeriod(code);
-        // interval = setInterval(() => {
-        //     console.log({
-        //         key_map,
-        //         code,
-        //     });
-        //     key_map[code]();
-        // }, period);
+    let onTouchDown = (code) => {
+        start(code, 'interval');
     };
-    let stopInterval = () => {
-        //clearInterval(interval);
+
+    let onTouchUp = (code) => {
+        if(code in key_map) {
+            clearInterval(timer);
+            finish();
+        }
     };
 
     return {
         onPressDown,
         onPressUp,
-        startInterval,
-        stopInterval,
+        onTouchDown,
+        onTouchUp,
     };
 
 }
