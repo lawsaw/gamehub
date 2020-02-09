@@ -10,6 +10,7 @@ import { withStyles, Box } from "@material-ui/core";
 import { KEY_MAP } from '../helpers/constants';
 import { Fab } from '../components';
 import { pressingRule } from "../helpers/etc";
+import { isTouchDevice } from "../../../helpers/etc";
 
 const ARROW_SIZE = 60;
 
@@ -116,6 +117,7 @@ class MobileBar extends PureComponent {
             button.removeEventListener('mouseup', this.listener_map[code].onUp, false);
             button.removeEventListener('touchend', this.listener_map[code].onUp, false);
             button.removeEventListener('touchcancel', this.listener_map[code].onUp, false);
+            button.removeEventListener('contextmenu', this.handleContextMenu, false);
         }
     }
 
@@ -125,14 +127,28 @@ class MobileBar extends PureComponent {
         for(let code in this.ref_map) {
             let button = ReactDOM.findDOMNode(this.ref_map[code].current);
             this.listener_map[code] = {};
-            this.listener_map[code].onDown = this.handleMouseDown(code);
-            this.listener_map[code].onUp = this.handleMouseUp(code);
-            button.addEventListener('mousedown', this.listener_map[code].onDown, false);
-            button.addEventListener('touchstart', this.listener_map[code].onDown, false);
-            button.addEventListener('mouseup', this.listener_map[code].onUp, false);
-            button.addEventListener('touchend', this.listener_map[code].onUp, false);
-            button.addEventListener('touchcancel', this.listener_map[code].onUp, false);
+            this.listener_map[code].onDown = this.setRuleDecorator(this.handleMouseDown(code));
+            this.listener_map[code].onUp = this.setRuleDecorator(this.handleMouseUp(code));
+            if(isTouchDevice()) {
+                button.addEventListener('touchstart', this.listener_map[code].onDown, false);
+                button.addEventListener('touchend', this.listener_map[code].onUp, false);
+            } else {
+                button.addEventListener('mousedown', this.listener_map[code].onDown, false);
+                button.addEventListener('mouseup', this.listener_map[code].onUp, false);
+            }
+            button.addEventListener('contextmenu', this.handleContextMenu, false);
         }
+    }
+
+    setRuleDecorator = (func) => {
+        return () => {
+            const { isKeyPressingAllowed } = this.props;
+            return isKeyPressingAllowed ? func() : false;
+        }
+    }
+
+    handleContextMenu = (e) => {
+        e.preventDefault();
     }
 
     handleMouseDown = code => {
@@ -176,7 +192,7 @@ class MobileBar extends PureComponent {
                     >
                         <Fab
                             icon={<RotateLeft />}
-                            onClick={key_map[KEY_MAP.UP]}
+                            //onClick={key_map[KEY_MAP.UP]}
                             className={cx(classes.touchButton, classes.arrow, classes.arrow_rightCenter)}
                             ref={this.ref_map[KEY_MAP.UP]}
                         />
@@ -194,7 +210,8 @@ export default connect(
         let isKeyPressingAllowed = !isPause && isGameRunning;
         return {
             //key_map: isKeyPressingAllowed ? key_map : {},
-            key_map
+            key_map,
+            isKeyPressingAllowed
         }
     },
     null

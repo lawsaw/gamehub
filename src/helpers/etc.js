@@ -65,3 +65,12 @@ export function apiRequest(socket, channelName=SOCKET_CHANNEL) {
         };
     };
 }
+
+export function isTouchDevice() {
+    try {
+        document.createEvent("TouchEvent");
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
