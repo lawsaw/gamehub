@@ -150,38 +150,21 @@ export function pressingRule(key_map) {
         if(!lock.outer) lock.outer = true;
     };
 
-    let finish = () => {
+    let onPressDown = (code, isInterval) => {
+        if(isInterval) start(code, 'interval');
+        else start(code, 'timeout');
+    };
+
+    let onPressUp = (code, isInterval) => {
+        if(isInterval) clearInterval(timer);
+        else clearTimeout(timer);
         lock.inner = false;
         lock.outer = false;
-    }
-
-    let onPressDown = (code) => {
-        start(code, 'timeout');
-    };
-
-    let onPressUp = (code) => {
-        if(code in key_map) {
-            clearTimeout(timer);
-            finish();
-        }
-    };
-
-    let onTouchDown = (code) => {
-        start(code, 'interval');
-    };
-
-    let onTouchUp = (code) => {
-        if(code in key_map) {
-            clearInterval(timer);
-            finish();
-        }
     };
 
     return {
         onPressDown,
         onPressUp,
-        onTouchDown,
-        onTouchUp,
     };
 
 }

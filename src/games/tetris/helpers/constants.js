@@ -40,8 +40,18 @@ export const KEY_MAP = {
     SPACE: 'Space',
 };
 
+export const SYMBOLS = {
+    T: 'T',
+    Z: 'Z',
+    S: 'S',
+    Q: 'Q',
+    J: 'J',
+    L: 'L',
+    I: 'I',
+};
+
 export const FIGURES = {
-    'T': {
+    [SYMBOLS.T]: {
         [MOVE_DIRECTION.UP]: [
             [0,1,0],
             [1,1,1],
@@ -61,7 +71,7 @@ export const FIGURES = {
             [1,0],
         ],
     },
-    'Z': {
+    [SYMBOLS.Z]: {
         [MOVE_DIRECTION.UP]: [
             [0,1],
             [1,1],
@@ -81,7 +91,7 @@ export const FIGURES = {
             [0,1,1],
         ],
     },
-    'S': {
+    [SYMBOLS.S]: {
         [MOVE_DIRECTION.UP]: [
             [1,0],
             [1,1],
@@ -101,7 +111,7 @@ export const FIGURES = {
             [1,1,0],
         ],
     },
-    'Q': {
+    [SYMBOLS.Q]: {
         [MOVE_DIRECTION.UP]: [
             [1,1],
             [1,1],
@@ -119,7 +129,7 @@ export const FIGURES = {
             [1,1],
         ],
     },
-    'J': {
+    [SYMBOLS.J]: {
         [MOVE_DIRECTION.UP]: [
             [1,1],
             [1,0],
@@ -139,7 +149,7 @@ export const FIGURES = {
             [0,0,1],
         ],
     },
-    'L': {
+    [SYMBOLS.L]: {
         [MOVE_DIRECTION.UP]: [
             [1,1],
             [0,1],
@@ -159,7 +169,7 @@ export const FIGURES = {
             [1,1,1],
         ],
     },
-    'I': {
+    [SYMBOLS.I]: {
         [MOVE_DIRECTION.UP]: [
             [1],
             [1],

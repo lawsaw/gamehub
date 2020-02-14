@@ -32,12 +32,14 @@ class Engine extends PureComponent {
 
     handleKeyPressDown = (e) => {
         const { code } = e;
-        this.pressingFunc.onPressDown(code);
+        const { isKeyPressingAllowed } = this.props;
+        if(isKeyPressingAllowed) this.pressingFunc.onPressDown(code);
     }
 
     handleKeyPressUp = (e) => {
         const { code } = e;
-        this.pressingFunc.onPressUp(code);
+        const { isKeyPressingAllowed } = this.props;
+        if(isKeyPressingAllowed) this.pressingFunc.onPressUp(code);
     }
 
     render() {
@@ -51,7 +53,8 @@ export default connect(
         const { isGameRunning, isPause, key_map } = store.tetris;
         let isKeyPressingAllowed = !isPause && isGameRunning;
         return {
-            key_map: isKeyPressingAllowed ? key_map : {},
+            key_map,
+            isKeyPressingAllowed,
         }
     },
     dispatch => {

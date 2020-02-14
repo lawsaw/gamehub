@@ -6,7 +6,6 @@ import { TETRIS_ROUTES } from '../../helpers/routes';
 class Root extends PureComponent {
 
     render() {
-        const { classes } = this.props;
         return (
             <Container>
                 <Grid

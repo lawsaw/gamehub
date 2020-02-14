@@ -103,9 +103,15 @@ class MobileBar extends PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        const { isKeyPressingAllowed } = this.props;
         if(!this.is_loaded && this.props.key_map !== null) {
             this.init();
             this.is_loaded = true;
+        }
+        if(!isKeyPressingAllowed) {
+            for(let code in this.listener_map) {
+                this.listener_map[code].pressingFunc.onPressUp(code, true);
+            }
         }
     }
 
@@ -123,12 +129,13 @@ class MobileBar extends PureComponent {
 
     init = () => {
         const { key_map } = this.props;
-        this.pressingFunc = pressingRule(key_map);
         for(let code in this.ref_map) {
             let button = ReactDOM.findDOMNode(this.ref_map[code].current);
-            this.listener_map[code] = {};
-            this.listener_map[code].onDown = this.setRuleDecorator(this.handleMouseDown(code));
-            this.listener_map[code].onUp = this.setRuleDecorator(this.handleMouseUp(code));
+            this.listener_map[code] = {
+                pressingFunc: pressingRule(key_map),
+                onDown: this.setRuleDecorator(() => this.listener_map[code].pressingFunc.onPressDown(code, true)),
+                onUp: this.setRuleDecorator(() => this.listener_map[code].pressingFunc.onPressUp(code, true)),
+            };
             if(isTouchDevice()) {
                 button.addEventListener('touchstart', this.listener_map[code].onDown, false);
                 button.addEventListener('touchend', this.listener_map[code].onUp, false);
@@ -149,14 +156,6 @@ class MobileBar extends PureComponent {
 
     handleContextMenu = (e) => {
         e.preventDefault();
-    }
-
-    handleMouseDown = code => {
-        return () => this.pressingFunc.onTouchDown(code);
-    }
-
-    handleMouseUp = code => {
-        return () => this.pressingFunc.onTouchUp(code);
     }
 
     render() {
@@ -209,9 +208,8 @@ export default connect(
         const { isGameRunning, isPause, key_map } = store.tetris;
         let isKeyPressingAllowed = !isPause && isGameRunning;
         return {
-            //key_map: isKeyPressingAllowed ? key_map : {},
             key_map,
-            isKeyPressingAllowed
+            isKeyPressingAllowed,
         }
     },
     null
