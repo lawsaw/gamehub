@@ -27,14 +27,14 @@ class Home extends PureComponent {
                     spacing={1}
                 >
                     {
-                        GAMES.map(({ name, description, link }) => {
+                        GAMES.map(({ label, description, link }) => {
                             let LinkCustom = forwardRef((props, ref) => (
                                 <RouteLink
                                     to={link}
                                     label={
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                {name}
+                                                {label}
                                             </Typography>
                                             <Typography variant="body2" color="textSecondary" component="p">
                                                 {description}

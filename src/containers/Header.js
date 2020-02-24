@@ -50,8 +50,9 @@ class Header extends PureComponent {
                         )
                     }
                     <Typography variant="h6" className={classes.title}>
+                        GameHub
                         {
-                            header && `${header}`
+                            header && `/${header}`
                         }
                         {
                             sub_header && `/${sub_header}`

@@ -1,6 +1,5 @@
 import { UPDATE_ROOM, CLEAN_ROOM, UPDATE_CONFIG, RESET_CONFIG, UPDATE_ROOM_LIST } from "../actions/crocodile";
 import { cloneDeep } from "lodash";
-import { STATUS_MAP } from '../games/crocodile/helpers/constants';
 
 let initialConfig = {
     nickname: '',
@@ -32,7 +31,7 @@ export default function room(state = initialState, action) {
             newState.room = {
                 ...newState.room,
                 ...room,
-                appStatusText: room.status ? STATUS_MAP[room.status](room) : null,
+                //appStatusText: room.status ? STATUS_MAP[room.status](room) : null,
             };
             // newState.app = {
             //     ...newState.app,

@@ -6,68 +6,23 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { SnackbarProvider } from 'notistack';
-import SocketContext from './helpers/SocketContext';
-import thunk from 'redux-thunk';
-import socketIOClient from 'socket.io-client';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
 import theme from './helpers/theme';
 import App from './App';
-import mainReducer from './reducers';
-import { SOCKET_SERVER } from "./helpers/constants";
-import { apiRequest } from './helpers/etc';
-
-const IO = socketIOClient(SOCKET_SERVER);
-
-const store = createStore(
-    mainReducer,
-    applyMiddleware(
-        thunk,
-        apiRequest(IO),
-    )
-);
-
-// const Component = () => {
-//     return (
-//         <Router>
-//             <Provider
-//                 store={store}
-//             >
-//                 <MuiThemeProvider theme={theme}>
-//                     <SnackbarProvider maxSnack={3} anchorOrigin={{
-//                         vertical: 'top',
-//                         horizontal: 'center',
-//                     }}>
-//                         <CssBaseline />
-//                         <SocketContext.Provider value={IO}>
-//                             <Route component={App} />
-//                         </SocketContext.Provider>
-//                     </SnackbarProvider>
-//                 </MuiThemeProvider>
-//             </Provider>
-//         </Router>
-//     )
-// };
 
 class Comp extends PureComponent {
     render() {
         return (
             <Router>
-                <Provider
-                    store={store}
-                >
-                    <MuiThemeProvider theme={theme}>
-                        <SnackbarProvider maxSnack={3} anchorOrigin={{
+                <MuiThemeProvider theme={theme}>
+                    <SnackbarProvider maxSnack={3} anchorOrigin={{
                             vertical: 'top',
                             horizontal: 'center',
-                        }}>
-                            <CssBaseline />
-                            <SocketContext.Provider value={IO}>
-                                <Route component={App} />
-                            </SocketContext.Provider>
-                        </SnackbarProvider>
-                    </MuiThemeProvider>
-                </Provider>
+                        }}
+                    >
+                        <CssBaseline />
+                        <Route component={App} />
+                    </SnackbarProvider>
+                </MuiThemeProvider>
             </Router>
         )
     }

@@ -45,6 +45,7 @@ class GameInterface extends PureComponent {
         setApp({
             sub_header: null,
             topAction: null,
+            status: null,
         });
         this.is_left = true;
     }

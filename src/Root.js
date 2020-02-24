@@ -24,7 +24,6 @@ const styles = () => ({
         flexGrow: 1,
     },
     footer: {
-        backgroundColor: '#121216',
         //height: 25,
     },
 });

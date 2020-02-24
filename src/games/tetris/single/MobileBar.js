@@ -115,6 +115,10 @@ class MobileBar extends PureComponent {
         }
     }
 
+    componentDidMount() {
+        if(ReactDOM.findDOMNode(this.ref_map[KEY_MAP.LEFT].current)) this.init();
+    }
+
     componentWillUnmount() {
         for(let code in this.ref_map) {
             let button = ReactDOM.findDOMNode(this.ref_map[code].current);

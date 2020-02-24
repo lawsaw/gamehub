@@ -17,8 +17,7 @@ export const HOME = {
 export const TETRIS = {
     link: '/tetris',
     label: 'Tetris',
-    name: 'Tetris',
-    description: 'Classic tetris, that you can play single or with friend.',
+    description: 'Use ←, ↑, →, ↓ and SPACE keys to move figures',
     page: props => <Page
         header={'Tetris'}
         component={<Tetris {...props} />}
@@ -28,8 +27,7 @@ export const TETRIS = {
 export const CROCODILE = {
     link: '/crocodile',
     label: 'Crocodile',
-    name: 'Crocodile',
-    description: 'You can guess the word that painter draws or you can be painter.',
+    description: 'Do your best to draw the meaning of the word or be the first to guess the word that the painter is drawing.',
     page: props => <Page
         header={'Crocodile'}
         component={<Crocodile {...props} />}
@@ -37,11 +35,11 @@ export const CROCODILE = {
 };
 
 export const TETRIS_SINGLE = {
-    link: '/tetris/singleplayer',
+    link: '/tetris/single',
     label: 'Singleplayer',
     description: 'Play with your own',
     page: props => <Page
-        header={'Tetris/singleplayer'}
+        header={`${TETRIS.label}/single`}
         component={<SinglePlayer {...props} />}
     />
 };
@@ -51,7 +49,7 @@ export const TETRIS_ONLINE = {
     label: 'Multiplayer',
     description: 'Play vs your friend',
     page: props => <Page
-        header={'Tetris/multiplayer'}
+        header={`${TETRIS.label}/multiplayer`}
         component={<MultiPlayer {...props} />}
     />
 };

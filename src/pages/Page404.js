@@ -7,7 +7,7 @@ class Page404 extends PureComponent {
         console.log(this.props);
         return (
             <Typography
-                variant="h3"
+                variant="h1"
             >
                 404
             </Typography>
